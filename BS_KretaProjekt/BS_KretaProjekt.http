@@ -1,0 +1,6 @@
+@BS_KretaProjekt_HostAddress = http://localhost:5273
+
+GET {{BS_KretaProjekt_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
