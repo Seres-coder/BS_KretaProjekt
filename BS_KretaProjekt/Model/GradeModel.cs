@@ -48,9 +48,9 @@ namespace BS_KretaProjekt.Model
         }
         #endregion
         #region -Grade Listing
-        public IEnumerable<GradeListDto> AllGrades()
+        public IEnumerable<GradeListDto> AllGrades(int id)
         {
-            return _context.Jegyek.Include(x => x.Tanar).Include(x => x.tantargy).Select(x => new GradeListDto
+            return _context.Jegyek.Include(x => x.Tanar).Include(x => x.tantargy).Where(x=>x.diak_id==id).Select(x => new GradeListDto
             {
                 jegy_id = x.jegy_id,
                 datum = x.datum,
