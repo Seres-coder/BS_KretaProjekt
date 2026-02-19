@@ -110,6 +110,9 @@ namespace BS_KretaProjekt.Persistence
 
         public int tanar_id { get; set; }
         public List<Tanar> Tanar { get; set; }
+
+        public int diak_id { get; set; }
+        public List<Diak> diak { get; set; }
     }
 
     public class Orarend
