@@ -89,7 +89,7 @@ namespace BS_KretaProjekt.Model
             }
             await Task.CompletedTask;
         }
-        public async Task DeleteStudentData(int id, StudentDto dto)
+        public async Task DeleteStudentData(int id)
         {
             using (var trx = _context.Database.BeginTransaction())
             {
@@ -99,7 +99,7 @@ namespace BS_KretaProjekt.Model
             }
             await Task.CompletedTask;
         }
-        public async Task DeleteTeacherData(int id, TeacherDto dto)
+        public async Task DeleteTeacherData(int id)
         {
             using (var trx = _context.Database.BeginTransaction())
             {
@@ -107,6 +107,7 @@ namespace BS_KretaProjekt.Model
                 _context.SaveChanges();
                 trx.Commit();
             }
+            await Task.CompletedTask;
         }
     }
 }
