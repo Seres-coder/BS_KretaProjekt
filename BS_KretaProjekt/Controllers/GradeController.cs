@@ -41,7 +41,7 @@ namespace BS_KretaProjekt.Controllers
         {
             try
             {
-                _model.DeleteGrade(id);
+               await _model.DeleteGrade(id);
                 return Ok();
             }
             catch (InvalidOperationException)
