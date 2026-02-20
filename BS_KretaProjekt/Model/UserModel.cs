@@ -12,6 +12,16 @@ namespace BS_KretaProjekt.Model
             _context = context;
         }
         #region Password Change
+
+        public void ChangePassword(int userId, string ujjelszo)
+        {
+            var trx = _context.Database.BeginTransaction();
+            {
+                var user = _context.Users.Where(x => x.user_id == userId).First().jelszo = HashPassword(ujjelszo);
+                _context.SaveChanges();
+                trx.Commit();
+            }
+        }
         private string HashPassword(string password)
         {
             using var sha = System.Security.Cryptography.SHA256.Create();
