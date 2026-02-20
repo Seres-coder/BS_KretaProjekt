@@ -104,11 +104,11 @@ namespace BS_KretaProjekt.Controllers
             }
         }
         [HttpDelete("deletestudentdata")]
-        public ActionResult DeleteStudentData([FromQuery] int id)
+        public   async Task<ActionResult> DeleteStudentData([FromQuery] int id)
         {
             try
             {
-                _model.DeleteStudentData(id);
+                await _model.DeleteStudentData(id);
                 return Ok();
             }
             catch (InvalidOperationException)
@@ -122,11 +122,11 @@ namespace BS_KretaProjekt.Controllers
         }
 
         [HttpDelete("deleteteacherdata")]
-        public ActionResult DeleteTeacherData([FromQuery] int id)
+        public async Task<ActionResult> DeleteTeacherData([FromQuery] int id)
         {
             try
             {
-                _model.DeleteTeacherData(id);
+                await _model.DeleteTeacherData(id);
                 return Ok();
             }
             catch (InvalidOperationException)

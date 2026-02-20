@@ -93,6 +93,7 @@ namespace BS_KretaProjekt.Persistence
         public Diak Fogado { get; set; }
         public int user_id { get; set; }/*küldő user ->admin vagy tanar*/
         public User User { get; set; }
+        public DateTimeOffset kuldesidopontja { get; set; }
 
     }
 
@@ -124,12 +125,11 @@ namespace BS_KretaProjekt.Persistence
         public Osztaly osztaly { get; set; }
 
         public DayOfWeek nap { get; set; }
-        public string ora { get; set; }
+        public int ora { get; set; }  // hányadik óra 0-9
         public int tantargy_id { get; set; }
         public Tantargy tantargy { get; set; }
-
         public int tanar_id { get; set; }
-        public List<Tanar> Tanar { get; set; }
+        public Tanar Tanar { get; set; }
     }
 
     public class Osztaly
