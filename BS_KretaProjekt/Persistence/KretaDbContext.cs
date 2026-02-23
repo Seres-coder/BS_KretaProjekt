@@ -37,8 +37,7 @@ namespace BS_KretaProjekt.Persistence
         public int tanar_id { get; set; }
         public string tanar_nev { get; set; }
         public string szak { get; set; }
-        public int diak_id { get; set; }
-        public List<Diak> diak { get; set; }
+        public ICollection<Diak> Diakok { get; set; }
 
         public int jegy_id { get; set; }
         public List<Jegy> jegy { get; set; }
@@ -110,10 +109,10 @@ namespace BS_KretaProjekt.Persistence
         public Tantargy tantargy { get; set; }
 
         public int tanar_id { get; set; }
-        public List<Tanar> Tanar { get; set; }
+        public Tanar Tanar { get; set; }
 
         public int diak_id { get; set; }
-        public List<Diak> diak { get; set; }
+        public Diak Diak { get; set; }
     }
 
     public class Orarend

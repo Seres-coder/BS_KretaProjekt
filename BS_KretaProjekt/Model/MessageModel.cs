@@ -64,7 +64,7 @@ namespace BS_KretaProjekt.Model
         #endregion
 
         #region Delete Message
-        public async Task DeleteMessage(int uzenet_id)
+        public async Task DeleteMessage(int uzenet_id, int message_id)
         {
             if (!_context.Uzenetek.Any(x => x.uzenet_id == uzenet_id))
             {
