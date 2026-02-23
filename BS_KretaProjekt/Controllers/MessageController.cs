@@ -58,11 +58,11 @@ namespace BS_KretaProjekt.Controllers
 
         }
         [HttpDelete("deletemessage")]
-        public async Task<ActionResult> DeleteMessage([FromQuery] int id)
+        public async Task<ActionResult> DeleteMessage([FromQuery] int id, [FromQuery] int message_id)
         {
             try
             {
-                await _model.DeleteMessage(id);
+                await _model.DeleteMessage(id,message_id);
                 return Ok();
             }
             catch (InvalidOperationException)

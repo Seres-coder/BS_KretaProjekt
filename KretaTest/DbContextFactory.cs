@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace KretaTest
 {
     public  class DbContextFactory
     {
         public static KretaDbContext Create()
         {
+
             //memory-ba van csak tárolva ameddig fut az egész
             var connection = new SqliteConnection("Data Source= :memory:");
             //legyen nyitva mindig, utána úgy is eldobja
@@ -29,5 +31,6 @@ namespace KretaTest
             //adjuk vissza a adatbázist
             return context;
         }
+    
     }
 }
