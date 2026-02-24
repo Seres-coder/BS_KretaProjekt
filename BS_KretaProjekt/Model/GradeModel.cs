@@ -29,14 +29,14 @@ namespace BS_KretaProjekt.Model
                     diak_id = diakId,
                     tanar_id = tanarId
                 });
-                _context.SaveChanges();
-                trx.Commit();
+                await _context.SaveChangesAsync();
+                await trx.CommitAsync();
             }
             await Task.CompletedTask;
         }
         #endregion
         #region -Grade Modify
-        public async Task ModifyMesage(GradeModify dto)
+        public async Task GradeModify(GradeModify dto)
         {
             using (var trx = _context.Database.BeginTransaction())
             {
@@ -53,8 +53,8 @@ namespace BS_KretaProjekt.Model
         {
             using var trx = _context.Database.BeginTransaction();
             _context.Remove(_context.Jegyek.First(x => x.jegy_id == id));
-            _context.SaveChanges();
-            trx.Commit();
+            await _context.SaveChangesAsync();
+            await trx.CommitAsync();
         }
         #endregion
         #region -Grade Listing

@@ -32,7 +32,23 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region -Grade Modify
-
+        [HttpPut("grademodify")]
+        public async Task<ActionResult> ModifyGrade([FromBody] GradeModify dto)
+        {
+            try
+            {
+                await _model.GradeModify( dto);
+                return Ok();
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
         #endregion
 
         #region -Grade Delete

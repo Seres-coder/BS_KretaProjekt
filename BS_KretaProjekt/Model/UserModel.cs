@@ -46,11 +46,11 @@ namespace BS_KretaProjekt.Model
                 {
                     _context.Diakok.Add(new Diak
                     {
-                        diak_id = id,
+                        user_id = id,
                     });
                 }
-                _context.SaveChanges();
-                trx.Commit();
+                await _context.SaveChangesAsync();
+                await trx.CommitAsync();
             }
         }
         #endregion
@@ -79,8 +79,6 @@ namespace BS_KretaProjekt.Model
                 _context.Tanarok.Add(new Tanar
                 {
                     user_id = userId,
-                    tanar_id = userId,
-          
                     tantargy_id = tantargyid,
 
                 });
