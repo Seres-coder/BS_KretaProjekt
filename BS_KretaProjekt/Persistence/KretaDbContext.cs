@@ -37,13 +37,14 @@ namespace BS_KretaProjekt.Persistence
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int tanar_id { get; set; }
-        public string tanar_nev { get; set; }
-        public string szak { get; set; }
-        public int tantargy_id { get; set; }
+        public string? tanar_nev { get; set; }
+        public string? szak { get; set; }
+        public int? tantargy_id { get; set; }
         public Tantargy Tantargy { get; set; }
+        [Required]
         public int user_id { get; set; }
         public User User { get; set; }
-        public List<Jegy> jegyek { get; set; }
+        public List<Jegy>? jegyek { get; set; }
     }
     [Index(nameof(emailcim), IsUnique = true)]
     public class Diak
@@ -52,17 +53,18 @@ namespace BS_KretaProjekt.Persistence
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int diak_id { get; set; }
 
-        public string diak_nev { get; set; }
+        public string? diak_nev { get; set; }
+        [Required]
         public int user_id { get; set; }
         public User User { get; set; }
 
-        public int osztaly_id { get; set; }
+        public int? osztaly_id { get; set; }
         public Osztaly Osztaly { get; set; }
-        public DateTime szuletesi_datum { get; set; }
-        public string lakcim { get; set; }
-        public string szuloneve { get; set; }
-        public string emailcim { get; set; }
-        public List<Jegy> jegyek { get; set; }
+        public DateTime? szuletesi_datum { get; set; }
+        public string? lakcim { get; set; }
+        public string? szuloneve { get; set; }
+        public string? emailcim { get; set; }
+        public List<Jegy>? jegyek { get; set; }
 
     }
     public class Tantargy

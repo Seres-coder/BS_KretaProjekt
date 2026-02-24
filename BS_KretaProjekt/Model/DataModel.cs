@@ -17,12 +17,12 @@ namespace BS_KretaProjekt.Model
             {
                 diak_nev = x.diak_nev,
                 user_id = x.user_id,
-                osztaly_id = x.osztaly_id,
+                osztaly_id = (int)x.osztaly_id,
                 lakcim = x.lakcim,
                 szuloneve = x.szuloneve,
                 emailcim = x.emailcim,
                 jegyek = x.jegyek,
-                szuletesi_datum = x.szuletesi_datum,
+                szuletesi_datum = (DateTime)x.szuletesi_datum,
             });
         }
         public IEnumerable<TeacherDto> GetTeacher()
@@ -34,8 +34,9 @@ namespace BS_KretaProjekt.Model
                 szak = x.szak,
             });
         }
-        public async Task ModifyStudetData(int id, StudentDto dto)
+        public async Task ModifyStudetData(StudentDto dto)
         {
+            var id = _context.Diakok.Where(x => x.diak_nev == dto.diak_nev).First().diak_id;
             using (var trx = _context.Database.BeginTransaction())
             {
                 _context.Diakok.Where(x => x.diak_id == id).First().diak_nev = dto.diak_nev;
@@ -63,17 +64,17 @@ namespace BS_KretaProjekt.Model
         }
         public async Task AddStudentData(StudentDto dto)
         {
+          
             using (var trx = _context.Database.BeginTransaction())
             {
-                _context.Diakok.Add(new Diak
-                {
-                    diak_nev = dto.diak_nev,
-                    osztaly_id = dto.osztaly_id,
-                    lakcim = dto.lakcim,
-                    szuloneve = dto.szuloneve,
-                    emailcim = dto.emailcim,
-                    szuletesi_datum = dto.szuletesi_datum,
-                });
+               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().diak_nev = dto.diak_nev;
+               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().osztaly_id = dto.osztaly_id;
+               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().lakcim = dto.lakcim;
+               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().szuloneve = dto.szuloneve;
+               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().emailcim = dto.emailcim;
+               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().szuletesi_datum = dto.szuletesi_datum;
+                await _context.SaveChangesAsync();
+                await trx.CommitAsync();
             }
             await Task.CompletedTask;
         }
@@ -86,6 +87,8 @@ namespace BS_KretaProjekt.Model
                     tanar_nev = dto.tanar_nev,
                     szak = dto.szak,
                 });
+                await _context.SaveChangesAsync();
+                await trx.CommitAsync();
             }
             await Task.CompletedTask;
         }
@@ -94,8 +97,8 @@ namespace BS_KretaProjekt.Model
             using (var trx = _context.Database.BeginTransaction())
             {
                 _context.Diakok.Remove(_context.Diakok.Where(x => x.diak_id == id).First());
-                _context.SaveChanges();
-                trx.Commit();
+                await _context.SaveChangesAsync();
+                await trx.CommitAsync();
             }
             await Task.CompletedTask;
         }
@@ -104,8 +107,8 @@ namespace BS_KretaProjekt.Model
             using (var trx = _context.Database.BeginTransaction())
             {
                 _context.Tanarok.Remove(_context.Tanarok.Where(x => x.tanar_id == id).First());
-                _context.SaveChanges();
-                trx.Commit();
+                await _context.SaveChangesAsync();
+                await trx.CommitAsync();
             }
             await Task.CompletedTask;
         }
