@@ -16,7 +16,7 @@ namespace KretaTest
         {
 
             //memory-ba van csak tárolva ameddig fut az egész
-            var connection = new SqliteConnection("Data Source= :memory:");
+            var connection = new SqliteConnection("Data Source=:memory:");
             //legyen nyitva mindig, utána úgy is eldobja
             connection.Open();
 
@@ -31,6 +31,25 @@ namespace KretaTest
             //adjuk vissza a adatbázist
             return context;
         }
-    
+        public static KretaDbContext CreateEmpty()
+        {
+
+            //memory-ba van csak tárolva ameddig fut az egész
+            var connection = new SqliteConnection("Data Source=:memory:");
+            //legyen nyitva mindig, utána úgy is eldobja
+            connection.Open();
+
+            var options = new DbContextOptionsBuilder<KretaDbContext>().UseSqlite(connection).EnableSensitiveDataLogging().Options;
+
+            var context = new KretaDbContext(options);
+
+            //ha még nincs meg az adatbázis hozza létre
+            context.Database.EnsureCreated();
+            //legyenek adataink
+
+            //adjuk vissza a adatbázist
+            return context;
+        }
+
     }
 }

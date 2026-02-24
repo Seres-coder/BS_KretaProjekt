@@ -59,11 +59,11 @@ namespace BS_KretaProjekt.Controllers
         }
 
         [HttpPut("modifyteacherdata")]
-        public async Task<ActionResult> ModifyTeacherData([FromBody] TeacherDto dto, int id)
+        public async Task<ActionResult> ModifyTeacherData([FromBody] TeacherDto dto)
         {
             try
             {
-                await _model.ModifyTeacherData(id, dto);
+                await _model.ModifyTeacherData( dto);
                 return Ok();
             }
             catch (InvalidOperationException)

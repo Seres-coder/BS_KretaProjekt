@@ -10,7 +10,7 @@ namespace BS_KretaProjekt.Dto
         public string lakcim { get; set; }
         public string szuloneve { get; set; }
         public string emailcim { get; set; }
-        public int jegyek { get; set; }
+        public List<Jegy> jegyek { get; set; }
         public DateTime szuletesi_datum { get; set; }
 
     }

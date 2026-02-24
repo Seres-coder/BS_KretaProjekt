@@ -50,14 +50,14 @@ namespace BS_KretaProjekt.Model
             }
             await Task.CompletedTask;
         }
-        public async Task ModifyTeacherData(int id, TeacherDto dto)
+        public async Task ModifyTeacherData( TeacherDto dto)
         {
             using (var trx = _context.Database.BeginTransaction())
             {
-                _context.Tanarok.Where(x => x.tanar_id == id).First().tanar_nev = dto.tanar_nev;
-                _context.Tanarok.Where(x => x.tanar_id == id).First().szak = dto.szak;
-                _context.SaveChanges();
-                trx.Commit();
+                _context.Tanarok.Where(x => x.tanar_id == dto.tanar_id).First().tanar_nev = dto.tanar_nev;
+                _context.Tanarok.Where(x => x.tanar_id == dto.tanar_id).First().szak = dto.szak;
+                await _context.SaveChangesAsync();
+                await trx.CommitAsync();
             }
             await Task.CompletedTask;
         }

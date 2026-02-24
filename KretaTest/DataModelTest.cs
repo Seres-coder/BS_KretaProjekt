@@ -14,6 +14,7 @@ namespace KretaTest
             _context = DbContextFactory.Create();
             _model = new DataModel(_context);
         }
+       
 
         [Fact]
         public void GetDiak()
@@ -31,6 +32,7 @@ namespace KretaTest
                 Assert.False(string.IsNullOrWhiteSpace(x.emailcim));
             });
         }
+        
         [Fact]
         public void GetTeacher()
         {
@@ -109,5 +111,6 @@ namespace KretaTest
             Assert.Equal(before_count - 1, _context.Tanarok.Count());
             Assert.False(_context.Tanarok.Any(x => x.tanar_id == teacher.tanar_id));
         }
+        
     }
 }
