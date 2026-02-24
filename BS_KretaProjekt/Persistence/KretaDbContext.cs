@@ -40,11 +40,12 @@ namespace BS_KretaProjekt.Persistence
         public string? tanar_nev { get; set; }
         public string? szak { get; set; }
         public int? tantargy_id { get; set; }
-        public Tantargy Tantargy { get; set; }
+        public Tantargy? Tantargy { get; set; }
         [Required]
         public int user_id { get; set; }
         public User User { get; set; }
         public List<Jegy>? jegyek { get; set; }
+        public List<Orarend> Orarend { get; set; }
     }
     [Index(nameof(emailcim), IsUnique = true)]
     public class Diak
@@ -59,7 +60,7 @@ namespace BS_KretaProjekt.Persistence
         public User User { get; set; }
 
         public int? osztaly_id { get; set; }
-        public Osztaly Osztaly { get; set; }
+        public Osztaly? Osztaly { get; set; }
         public DateTime? szuletesi_datum { get; set; }
         public string? lakcim { get; set; }
         public string? szuloneve { get; set; }
@@ -67,14 +68,16 @@ namespace BS_KretaProjekt.Persistence
         public List<Jegy>? jegyek { get; set; }
 
     }
+    [Index(nameof(tantargy_nev), IsUnique =true)]
     public class Tantargy
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int tantargy_id { get; set; }
         public string tantargy_nev { get; set; }
-        public int orarend_id { get; set; }= 0;
-        public Orarend Orarend { get; set; }
+
+        public List<Orarend>? Orarend { get; set; }
+
     }
 
     public class Uzenet
@@ -110,8 +113,7 @@ namespace BS_KretaProjekt.Persistence
 
         public int diak_id { get; set; }
         public Diak Diak { get; set; }
-        public int orarend_id { get; set; } = 0;
-        public Orarend Orarend { get; set; }
+
     }
 
     public class Orarend
@@ -120,14 +122,14 @@ namespace BS_KretaProjekt.Persistence
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int orarend_id { get; set; }
         public int osztaly_id { get; set; }
-        public Osztaly osztaly { get; set; }
+        public Osztaly? osztaly { get; set; }
 
         public DayOfWeek nap { get; set; }
         public int ora { get; set; }  // hányadik óra 0-9
         public int tantargy_id { get; set; }
-        public Tantargy tantargy { get; set; }
+        public Tantargy? tantargy { get; set; }
         public int tanar_id { get; set; }
-        public Tanar Tanar { get; set; }
+        public Tanar? Tanar { get; set; }
     }
     [Index(nameof(osztaly_nev), IsUnique = true)]
     public class Osztaly
@@ -138,8 +140,8 @@ namespace BS_KretaProjekt.Persistence
         public int osztaly_id { get; set; }
         public string osztaly_nev { get; set; }
 
-        public int orarend_id { get; set; } = 0;
-        public Orarend Orarend { get; set; }
+
+        public List<Orarend> Orarend { get; set; }
     }
     public class Hianyzas
     {

@@ -15,13 +15,12 @@ namespace BS_KretaProjekt.Model
         {
             return _context.Diakok.Select(x => new StudentDto
             {
-                diak_nev = x.diak_nev,
+                diak_nev = x.diak_nev!,
                 user_id = x.user_id,
                 osztaly_id = (int)x.osztaly_id,
-                lakcim = x.lakcim,
-                szuloneve = x.szuloneve,
-                emailcim = x.emailcim,
-                jegyek = x.jegyek,
+                lakcim = x.lakcim!,
+                szuloneve = x.szuloneve!,
+                emailcim = x.emailcim!,
                 szuletesi_datum = (DateTime)x.szuletesi_datum,
             });
         }
