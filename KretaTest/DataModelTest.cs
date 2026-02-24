@@ -21,7 +21,6 @@ namespace KretaTest
         {
             var result = _model.GetDiak();
 
-            Assert.NotNull(result);
             Assert.NotEmpty(result);
 
             Assert.All(result, x =>
