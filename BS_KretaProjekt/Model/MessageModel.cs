@@ -44,8 +44,8 @@ namespace BS_KretaProjekt.Model
                 kuldoname = _context.Tanarok.Where(y => y.user_id == x.user_id).First().tanar_nev,
                 tartalom = x.tartalom,
                 kuldesidopontja=x.kuldesidopontja,
-            }).OrderByDescending(x=>x.kuldesidopontja);
-            
+            }).ToList().OrderByDescending(x => x.kuldesidopontja);
+
         }
         #endregion
 

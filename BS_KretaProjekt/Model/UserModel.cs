@@ -82,6 +82,7 @@ namespace BS_KretaProjekt.Model
                     tantargy_id = tantargyid,
 
                 });
+                _context.Users.Where(x => x.user_id == userId).First().Role = "Tanar";
                await _context.SaveChangesAsync();
                await trx.CommitAsync();
             }

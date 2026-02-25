@@ -1,5 +1,6 @@
 ﻿using BS_KretaProjekt.Dto;
 using BS_KretaProjekt.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,8 @@ namespace BS_KretaProjekt.Controllers
         {
             try
             {
-                return Ok(_model.GetDiak());
+                var response=_model.GetDiak();
+                return Ok(response);
             }
             catch (Exception)
             {
@@ -40,12 +42,13 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
+        [Authorize(Roles ="Tanar")]
         [HttpPut("modifystudentdata")]
         public async Task<ActionResult> ModifyStudetData([FromBody] StudentDto dto)
         {
             try
             {
-                await _model.ModifyStudetData(dto);
+                await _model.ModifyStudentData(dto);
                 return Ok();
             }
             catch (InvalidOperationException)
@@ -76,33 +79,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
 
-        [HttpPost("addstudentdata")]
-        public async Task<ActionResult> AddStudentData([FromBody] StudentDto dto)
-        {
-            try
-            {
-                await _model.AddStudentData(dto);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpPost("addteacherdata")]
-        public async Task<ActionResult> AddTeacherData([FromBody] TeacherDto dto)
-        {
-            try
-            {
-                await _model.AddTeacherData(dto);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
+    
         [HttpDelete("deletestudentdata")]
         public   async Task<ActionResult> DeleteStudentData([FromQuery] int id)
         {

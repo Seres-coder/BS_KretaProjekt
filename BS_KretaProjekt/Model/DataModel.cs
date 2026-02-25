@@ -1,6 +1,7 @@
 ﻿using System.Formats.Asn1;
 using BS_KretaProjekt.Dto;
 using BS_KretaProjekt.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace BS_KretaProjekt.Model
 {
@@ -13,16 +14,19 @@ namespace BS_KretaProjekt.Model
         }
         public IEnumerable<StudentDto> GetDiak()
         {
-            return _context.Diakok.Select(x => new StudentDto
-            {
-                diak_nev = x.diak_nev!,
-                user_id = x.user_id,
-                osztaly_id = (int)x.osztaly_id,
-                lakcim = x.lakcim!,
-                szuloneve = x.szuloneve!,
-                emailcim = x.emailcim!,
-                szuletesi_datum = (DateTime)x.szuletesi_datum,
-            });
+            return _context.Diakok
+                .Select(x => new StudentDto
+                {
+                   
+                    diak_nev = x.diak_nev ?? "",
+                    user_id = x.user_id,
+                    osztaly_id = x.osztaly_id ?? 0,
+                    lakcim = x.lakcim ?? "",
+                    szuloneve = x.szuloneve ?? "",
+                    emailcim = x.emailcim ?? "",
+                    szuletesi_datum = x.szuletesi_datum ?? DateTime.MinValue
+                })
+                .ToList();
         }
         public IEnumerable<TeacherDto> GetTeacher()
         {
@@ -33,20 +37,20 @@ namespace BS_KretaProjekt.Model
                 szak = x.szak,
             });
         }
-        public async Task ModifyStudetData(StudentDto dto)
+        public async Task ModifyStudentData(StudentDto dto)
         {
-            var id = _context.Diakok.Where(x => x.diak_nev == dto.diak_nev).First().diak_id;
+            var diak = await _context.Diakok
+                .SingleOrDefaultAsync(x => x.diak_id == dto.diak_id);
             using (var trx = _context.Database.BeginTransaction())
             {
-                _context.Diakok.Where(x => x.diak_id == id).First().diak_nev = dto.diak_nev;
-                _context.Diakok.Where(x => x.diak_id == id).First().osztaly_id = dto.osztaly_id;
-                _context.Diakok.Where(x => x.diak_id == id).First().lakcim = dto.lakcim;
-                _context.Diakok.Where(x => x.diak_id == id).First().szuloneve = dto.szuloneve;
-                _context.Diakok.Where(x => x.diak_id == id).First().emailcim = dto.emailcim;
-                _context.Diakok.Where(x => x.diak_id == id).First().jegyek = dto.jegyek;
-                _context.Diakok.Where(x => x.diak_id == id).First().szuletesi_datum = dto.szuletesi_datum;
-                _context.SaveChanges();
-                trx.Commit();
+                diak.diak_nev = dto.diak_nev;
+                diak.osztaly_id = dto.osztaly_id;
+                diak.lakcim = dto.lakcim;
+                diak.szuloneve = dto.szuloneve;
+                diak.emailcim = dto.emailcim;
+                diak.szuletesi_datum = dto.szuletesi_datum;
+                await _context.SaveChangesAsync();
+                await trx.CommitAsync();
             }
             await Task.CompletedTask;
         }
@@ -61,36 +65,7 @@ namespace BS_KretaProjekt.Model
             }
             await Task.CompletedTask;
         }
-        public async Task AddStudentData(StudentDto dto)
-        {
-          
-            using (var trx = _context.Database.BeginTransaction())
-            {
-               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().diak_nev = dto.diak_nev;
-               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().osztaly_id = dto.osztaly_id;
-               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().lakcim = dto.lakcim;
-               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().szuloneve = dto.szuloneve;
-               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().emailcim = dto.emailcim;
-               _context.Diakok.Where(x=> x.user_id == dto.user_id).First().szuletesi_datum = dto.szuletesi_datum;
-                await _context.SaveChangesAsync();
-                await trx.CommitAsync();
-            }
-            await Task.CompletedTask;
-        }
-        public async Task AddTeacherData(TeacherDto dto)
-        {
-            using (var trx = _context.Database.BeginTransaction())
-            {
-                _context.Tanarok.Add(new Tanar
-                {
-                    tanar_nev = dto.tanar_nev,
-                    szak = dto.szak,
-                });
-                await _context.SaveChangesAsync();
-                await trx.CommitAsync();
-            }
-            await Task.CompletedTask;
-        }
+       
         public async Task DeleteStudentData(int id)
         {
             using (var trx = _context.Database.BeginTransaction())
