@@ -5,189 +5,180 @@
 
 
 
-        public static void Seed(KretaDbContext context)
+
+        public static void Seed(KretaDbContext db)
         {
-            context.Database.EnsureCreated();
+            db.Database.EnsureCreated();
 
-            if (context.Users.Any())
-                return; // Már van adat
+            if (db.Users.Any())
+                return;
 
-            // =========================
-            // USERS
-            // =========================
-            var adminUser = new User { belepesnev = "admin", jelszo = "1234", Role = "Admin" };
-            var tanarUser1 = new User { belepesnev = "tanar1", jelszo = "1234", Role = "Tanar" };
-            var tanarUser2 = new User { belepesnev = "tanar2", jelszo = "1234", Role = "Tanar" };
-            var diakUser1 = new User { belepesnev = "diak1", jelszo = "1234", Role = "Diak" };
-            var diakUser2 = new User { belepesnev = "diak2", jelszo = "1234", Role = "Diak" };
+            // 1. Users first (independent)
+            var users = new[]
+            {
+                new User { belepesnev = "admin", jelszo = "admin123", Role = "Admin" },
+                new User { belepesnev = "tanar1", jelszo = "tanar123", Role = "Tanar" },
+                new User { belepesnev = "diak1", jelszo = "diak123", Role = "Diak" }
+            };
+            db.Users.AddRange(users);
+            db.SaveChanges();
 
-            context.Users.AddRange(adminUser, tanarUser1, tanarUser2, diakUser1, diakUser2);
-            context.SaveChanges();
+            var adminUserId = users[0].user_id;
+            var tanarUserId = users[1].user_id;
+            var diakUserId = users[2].user_id;
 
-            // =========================
-            // OSZTÁLYOK
-            // =========================
-            var osztaly10A = new Osztaly { osztaly_nev = "10.A" };
-            var osztaly10B = new Osztaly { osztaly_nev = "10.B" };
-            context.Osztalyok.AddRange(osztaly10A, osztaly10B);
-            context.SaveChanges();
+            // 2. Independent entities: Osztalyok, Tantargyok
+            var osztalyok = new[]
+            {
+                new Osztaly { osztaly_nev = "10.A" },
+                new Osztaly { osztaly_nev = "11.B" }
+            };
+            db.Osztalyok.AddRange(osztalyok);
+            db.SaveChanges();
 
-            // =========================
-            // TANTÁRGYAK
-            // =========================
-            var matek = new Tantargy { tantargy_nev = "Matematika", Orarend = new List<Orarend>() };
-            var info = new Tantargy { tantargy_nev = "Informatika", Orarend = new List<Orarend>() };
-            var fizika = new Tantargy { tantargy_nev = "Fizika", Orarend = new List<Orarend>() };
-            context.Tantargyok.AddRange(matek, info, fizika);
-            context.SaveChanges();
+            var osztaly1Id = osztalyok[0].osztaly_id;
+            var osztaly2Id = osztalyok[1].osztaly_id;
 
-            // =========================
-            // TANÁROK
-            // =========================
-            var tanar1 = new Tanar
+            var tantargyok = new[]
             {
-                tanar_nev = "Kiss Péter",
-                szak = "Matematika",
-                User = tanarUser1,
-                Tantargy = matek,
-                jegyek = new List<Jegy>(),
-                Orarend = new List<Orarend>()
+                new Tantargy { tantargy_nev = "Matematika" },
+                new Tantargy { tantargy_nev = "Magyar" },
+                new Tantargy { tantargy_nev = "Angol" }
             };
-            var tanar2 = new Tanar
-            {
-                tanar_nev = "Nagy Eszter",
-                szak = "Informatika",
-                User = tanarUser2,
-                Tantargy = info,
-                jegyek = new List<Jegy>(),
-                Orarend = new List<Orarend>()
-            };
-            context.Tanarok.AddRange(tanar1, tanar2);
-            context.SaveChanges();
+            db.Tantargyok.AddRange(tantargyok);
+            db.SaveChanges();
 
-            // =========================
-            // DIÁKOK
-            // =========================
-            var diak1 = new Diak
-            {
-                diak_nev = "Nagy Anna",
-                User = diakUser1,
-                Osztaly = osztaly10A,
-                szuletesi_datum = new DateTime(2008, 5, 10),
-                lakcim = "Budapest",
-                szuloneve = "Nagy Éva",
-                emailcim = "anna@test.hu",
-                jegyek = new List<Jegy>()
-            };
-            var diak2 = new Diak
-            {
-                diak_nev = "Kovács Bence",
-                User = diakUser2,
-                Osztaly = osztaly10B,
-                szuletesi_datum = new DateTime(2008, 7, 20),
-                lakcim = "Debrecen",
-                szuloneve = "Kovács Erika",
-                emailcim = "bence@test.hu",
-                jegyek = new List<Jegy>()
-            };
-            context.Diakok.AddRange(diak1, diak2);
-            context.SaveChanges();
+            var matekId = tantargyok[0].tantargy_id;
+            var magyarId = tantargyok[1].tantargy_id;
+            var angolId = tantargyok[2].tantargy_id;
 
-            // =========================
-            // ÓRAREND
-            // =========================
-            var orarend1 = new Orarend
+            // 3. Tanarok (needs user_id)
+            var tanarok = new[]
             {
-                osztaly = osztaly10A,
-                nap = DayOfWeek.Monday,
-                ora = 1,
-                tantargy = matek,
-                Tanar = tanar1
+                new Tanar
+                {
+                    tanar_nev = "Kovács Tanár",
+                    szak = "Matematika szakos",
+                    tantargy_id = matekId,
+                    Tantargy = tantargyok[0],
+                    user_id = tanarUserId,
+                    User = users[1],
+                    Orarend = new List<Orarend>()
+                }
             };
-            var orarend2 = new Orarend
-            {
-                osztaly = osztaly10A,
-                nap = DayOfWeek.Monday,
-                ora = 2,
-                tantargy = info,
-                Tanar = tanar2
-            };
-            var orarend3 = new Orarend
-            {
-                osztaly = osztaly10B,
-                nap = DayOfWeek.Tuesday,
-                ora = 1,
-                tantargy = fizika,
-                Tanar = tanar1
-            };
-            context.Orarendek.AddRange(orarend1, orarend2, orarend3);
-            context.SaveChanges();
+            db.Tanarok.AddRange(tanarok);
+            db.SaveChanges();
 
-            // =========================
-            // JEGYEK
-            // =========================
-            var jegy1 = new Jegy
-            {
-                datum = DateTimeOffset.Now,
-                updatedatum = DateTimeOffset.Now,
-                ertek = 5,
-                tantargy = matek,
-                Tanar = tanar1,
-                Diak = diak1
-            };
-            var jegy2 = new Jegy
-            {
-                datum = DateTimeOffset.Now,
-                updatedatum = DateTimeOffset.Now,
-                ertek = 4,
-                tantargy = info,
-                Tanar = tanar2,
-                Diak = diak1
-            };
-            var jegy3 = new Jegy
-            {
-                datum = DateTimeOffset.Now,
-                updatedatum = DateTimeOffset.Now,
-                ertek = 3,
-                tantargy = fizika,
-                Tanar = tanar1,
-                Diak = diak2
-            };
-            context.Jegyek.AddRange(jegy1, jegy2, jegy3);
-            context.SaveChanges();
+            var tanar1Id = tanarok[0].tanar_id;
 
-            // =========================
-            // ÜZENETEK
-            // =========================
-            var uzenet1 = new Uzenet
+            // 4. Diakok (needs user_id, optional osztaly_id)
+            var diakok = new[]
             {
-                cim = "Dolgozat",
-                tartalom = "Holnap dolgozat lesz.",
-                Fogado = diak1,
-                User = tanarUser1,
-                kuldesidopontja = DateTimeOffset.Now
+                new Diak
+                {
+                    diak_nev = "Nagy Diák",
+                    emailcim = "diak1@example.com",
+                    osztaly_id = osztaly1Id,
+                    Osztaly = osztalyok[0],
+                    user_id = diakUserId,
+                    User = users[2],
+                    jegyek = new List<Jegy>()
+                }
             };
-            var uzenet2 = new Uzenet
-            {
-                cim = "Hiányzás",
-                tartalom = "Kérlek pótold az órát.",
-                Fogado = diak2,
-                User = tanarUser2,
-                kuldesidopontja = DateTimeOffset.Now
-            };
-            context.Uzenetek.AddRange(uzenet1, uzenet2);
-            context.SaveChanges();
+            db.Diakok.AddRange(diakok);
+            db.SaveChanges();
 
-            // =========================
-            // HIÁNYZÁSOK
-            // =========================
-            var hianyzas1 = new Hianyzas { hianyzottorakszama = 2 };
-            var hianyzas2 = new Hianyzas { hianyzottorakszama = 3 };
-            context.Hianyzasok.AddRange(hianyzas1, hianyzas2);
-            context.SaveChanges();
+            var diak1Id = diakok[0].diak_id;
+
+            // 5. Orarend (needs osztaly_id, tantargy_id, tanar_id)
+            var orarendek = new[]
+            {
+                new Orarend
+                {
+                    osztaly_id = osztaly1Id,
+                    osztaly = osztalyok[0],
+                    nap = DayOfWeek.Monday,
+                    ora = 1,
+                    tantargy_id = matekId,
+                    tantargy = tantargyok[0],
+                    tanar_id = tanar1Id,
+                    Tanar = tanarok[0]
+                },
+                new Orarend
+                {
+                    osztaly_id = osztaly1Id,
+                    osztaly = osztalyok[0],
+                    nap = DayOfWeek.Monday,
+                    ora = 2,
+                    tantargy_id = magyarId,
+                    tantargy = tantargyok[1],
+                    tanar_id = tanar1Id,
+                    Tanar = tanarok[0]
+                }
+            };
+            db.Orarendek.AddRange(orarendek);
+            db.SaveChanges();
+
+            // 6. Uzenetek (needs fogado_id=diak_id, user_id=tanar/admin)
+            var uzenetek = new[]
+            {
+                new Uzenet
+                {
+                    tartalom = "Üdvözlöm a diákot!",
+                    cim = "Üzenet diák1-nek",
+                    fogado_id = diak1Id,
+                    Fogado = diakok[0],
+                    user_id = tanarUserId,
+                    User = users[1],
+                    kuldesidopontja = DateTimeOffset.Now.AddDays(-1)
+                }
+            };
+            db.Uzenetek.AddRange(uzenetek);
+            db.SaveChanges();
+
+            // 7. Jegyek (needs tantargy_id, tanar_id, diak_id)
+            var jegyek = new[]
+            {
+                new Jegy
+                {
+                    datum = DateTimeOffset.Now.AddDays(-10),
+                    updatedatum = DateTimeOffset.Now.AddDays(-5),
+                    ertek = 4,
+                    tantargy_id = matekId,
+                    tantargy = tantargyok[0],
+                    tanar_id = tanar1Id,
+                    Tanar = tanarok[0],
+                    diak_id = diak1Id,
+                    Diak = diakok[0]
+                },
+                new Jegy
+                {
+                    datum = DateTimeOffset.Now.AddDays(-3),
+                    updatedatum = DateTimeOffset.Now,
+                    ertek = 5,
+                    tantargy_id = angolId,
+                    tantargy = tantargyok[2],
+                    tanar_id = tanar1Id,
+                    Tanar = tanarok[0],
+                    diak_id = diak1Id,
+                    Diak = diakok[0]
+                }
+            };
+            db.Jegyek.AddRange(jegyek);
+            db.SaveChanges();
+
+            // 8. Hianyzasok (independent)
+            var hianyzasok = new[]
+            {
+                new Hianyzas { hianyzottorakszama = 2 },
+                new Hianyzas { hianyzottorakszama = 0 }
+            };
+            db.Hianyzasok.AddRange(hianyzasok);
+            db.SaveChanges();
         }
     }
 }
+
 
 
 

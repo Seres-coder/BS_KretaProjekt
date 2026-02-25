@@ -4,6 +4,8 @@ namespace BS_KretaProjekt.Dto
 {
     public class StudentDto
     {
+
+        public int diak_id { get; set; }
         public string diak_nev { get; set; }
         public int user_id { get; set; }
         public int osztaly_id { get; set; }

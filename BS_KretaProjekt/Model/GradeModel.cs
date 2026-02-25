@@ -15,25 +15,39 @@ namespace BS_KretaProjekt.Model
         #region Grade Add
         public async Task AddNewGrade(GradeAdd dto)
         {
-            using (var trx = _context.Database.BeginTransaction())
+            using var trx = await _context.Database.BeginTransactionAsync();
+
+
+            var tanarId = await _context.Tanarok
+                .Where(x => x.tanar_nev == dto.tanar_nev)
+                .Select(x => x.tanar_id)
+                .FirstAsync();
+
+            var tantargyId = await _context.Tantargyok
+                .Where(x => x.tantargy_nev == dto.tantargy_nev)
+                .Select(x => x.tantargy_id)
+                .FirstAsync();
+
+            var diakId = await _context.Diakok
+                .Where(x => x.diak_nev == dto.diak_nev)
+                .Select(x => x.diak_id)
+                .FirstAsync();
+
+            _context.Jegyek.Add(new Jegy
             {
-                var tanarId = _context.Tanarok.First(x => x.tanar_nev == dto.tanar_nev).tanar_id;
-                var tantargyId = _context.Tantargyok.First(x => x.tantargy_nev == dto.tantargy_nev).tantargy_id;
-                var diakId = _context.Diakok.First(x => x.diak_nev == dto.diak_nev).diak_id;
-                _context.Jegyek.Add(new Jegy
-                {
-                    datum = DateTimeOffset.Now,
-                    updatedatum = DateTimeOffset.Now,
-                    ertek = dto.ertek,
-                    tantargy_id = tantargyId,
-                    diak_id = diakId,
-                    tanar_id = tanarId
-                });
-                await _context.SaveChangesAsync();
-                await trx.CommitAsync();
-            }
-            await Task.CompletedTask;
+                datum = DateTimeOffset.Now,
+                updatedatum = DateTimeOffset.Now,
+                ertek = dto.ertek,
+                tantargy_id = tantargyId, 
+                diak_id = diakId,
+                tanar_id = tanarId 
+                                   
+            });
+
+            await _context.SaveChangesAsync();
+            await trx.CommitAsync();
         }
+
         #endregion
         #region -Grade Modify
         public async Task GradeModify(GradeModify dto)
