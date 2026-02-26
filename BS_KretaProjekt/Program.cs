@@ -20,6 +20,13 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
+    db.Database.EnsureCreated();
+}
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -34,3 +41,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
