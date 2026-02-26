@@ -29,7 +29,7 @@ namespace KretaTest
                 nap = DayOfWeek.Monday,
                 ora = 1,
                 tantargy = "Matematika",
-                Tanarnev = "Kovács János"
+                Tanarnev = "Kovács Tanár"
             };
             await _model.CreateTimeTable(dto);
             var after_count = _context.Orarendek.Count();
@@ -42,11 +42,11 @@ namespace KretaTest
             var dto = new UpdateOrarendDto
             {
                 orarend_id = orarend.orarend_id,
-                osztaly_nev = "9.A",
+                osztaly_nev = "10.A",
                 nap = DayOfWeek.Tuesday,
                 ora = 2,
-                tantargy_nev = "Informatika",
-                tanar_nev = "Nagy Anna"
+                tantargy_nev = "Magyar",
+                tanar_nev = "Kovács Tanár"
             };
             await _model.ModifyTimeTable(dto);
             var modified_orarend = _context.Orarendek.First(x => x.orarend_id == orarend.orarend_id);

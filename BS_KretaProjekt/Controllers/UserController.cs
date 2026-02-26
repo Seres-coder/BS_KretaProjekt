@@ -22,11 +22,11 @@ namespace BS_KretaProjekt.Controllers
         #region Password Change
         [Authorize]
         [HttpPut("updatepassword")]
-        public ActionResult UpdatePassword(int userid, string password)
+        public async Task<ActionResult> UpdatePassword([FromQuery]int userid, [FromQuery]  string password)
         {
             try
             {
-                _model.ChangePassword(userid, password);
+                await _model.ChangePassword(userid, password);
                 return Ok();
             }
             catch (InvalidOperationException)
@@ -43,11 +43,11 @@ namespace BS_KretaProjekt.Controllers
         #region Registration(At first you can only registrate as a student,the admin can upgrade to being teacher)
 
         [HttpPost("registration")]
-        public ActionResult RegistrationController(string name, string password)
+        public async Task<ActionResult> RegistrationController([FromQuery] string name, [FromQuery]  string password)
         {
             try
             {
-                _model.Registration(name, password);
+                await _model.Registration(name, password);
                 return Ok();
             }
             catch (InvalidOperationException e)
@@ -64,7 +64,7 @@ namespace BS_KretaProjekt.Controllers
         #region Login checker
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> LoginController(string username, string password)
+        public async Task<ActionResult<UserDto>> LoginController([FromQuery] string username, [FromQuery]  string password)
         {
             try
             {
@@ -93,13 +93,13 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region Role update
-        [Authorize(Roles = "Admin")]
+       
         [HttpPut("upgraderole")]
-        public ActionResult UpdateRole(int id, string tantargy)
+        public async Task<ActionResult> UpdateRole([FromQuery] int id, [FromQuery]  string tantargy)
         {
             try
             {
-                _model.PromoteToTanar(id, tantargy);
+                await _model.PromoteToTanar(id, tantargy);
                 return Ok();
             }
             catch (InvalidOperationException)

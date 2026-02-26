@@ -1,5 +1,6 @@
 ﻿using BS_KretaProjekt.Dto;
 using BS_KretaProjekt.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,13 +15,14 @@ namespace BS_KretaProjekt.Controllers
         {
             _model = model;
         }
-
+      
         [HttpGet("diaklistazasa")]
         public ActionResult<IEnumerable<StudentDto>> GetDiak()
         {
             try
             {
-                return Ok(_model.GetDiak());
+                var response=_model.GetDiak();
+                return Ok(response);
             }
             catch (Exception)
             {
@@ -28,6 +30,7 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
+      
         [HttpGet("tanarlistazasa")]
         public ActionResult<IEnumerable<StudentDto>> GetTeacher()
         {
@@ -40,12 +43,13 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
+       
         [HttpPut("modifystudentdata")]
-        public async Task<ActionResult> ModifyStudetData([FromBody] StudentDto dto,int id)
+        public async Task<ActionResult> ModifyStudetData([FromBody] StudentDto dto)
         {
             try
             {
-                await _model.ModifyStudetData(id,dto);
+                await _model.ModifyStudentData(dto);
                 return Ok();
             }
             catch (InvalidOperationException)
@@ -57,13 +61,13 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-
+       
         [HttpPut("modifyteacherdata")]
-        public async Task<ActionResult> ModifyTeacherData([FromBody] TeacherDto dto, int id)
+        public async Task<ActionResult> ModifyTeacherData([FromBody] TeacherDto dto)
         {
             try
             {
-                await _model.ModifyTeacherData(id, dto);
+                await _model.ModifyTeacherData( dto);
                 return Ok();
             }
             catch (InvalidOperationException)
@@ -76,33 +80,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
 
-        [HttpPost("addstudentdata")]
-        public async Task<ActionResult> AddStudentData([FromBody] StudentDto dto)
-        {
-            try
-            {
-                await _model.AddStudentData(dto);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpPost("addteacherdata")]
-        public async Task<ActionResult> AddTeacherData([FromBody] TeacherDto dto)
-        {
-            try
-            {
-                await _model.AddTeacherData(dto);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
+       
         [HttpDelete("deletestudentdata")]
         public   async Task<ActionResult> DeleteStudentData([FromQuery] int id)
         {
@@ -120,7 +98,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-
+        
         [HttpDelete("deleteteacherdata")]
         public async Task<ActionResult> DeleteTeacherData([FromQuery] int id)
         {

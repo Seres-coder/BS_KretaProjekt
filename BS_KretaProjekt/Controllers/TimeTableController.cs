@@ -1,5 +1,6 @@
 ﻿using BS_KretaProjekt.Dto;
 using BS_KretaProjekt.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace BS_KretaProjekt.Controllers
         {
             _model = model;
         }
+       
         [HttpPost("orarendkrealas")]
         public async Task<ActionResult> AddTimeTabel([FromBody] CreateOrarendDto dto)
         {
@@ -27,6 +29,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
+    
         [HttpPut("modifytimetable")]
         public async Task<ActionResult> ModifyTimeTable([FromBody] UpdateOrarendDto dto)
         {
@@ -44,6 +47,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
+       
         [HttpDelete("deletetimetable")]
         public async Task<ActionResult> DeleteTimeTable([FromQuery] int id)
         {

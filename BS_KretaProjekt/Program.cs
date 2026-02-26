@@ -1,10 +1,12 @@
 using BS_KretaProjekt.Model;
 using BS_KretaProjekt.Persistence;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddDbContextPool<KretaDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("KreateDb")));
+builder.Services.AddDbContextPool<KretaDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("KreateDb")));
 builder.Services.AddTransient<DataModel>();
 builder.Services.AddTransient<GradeModel>();
 builder.Services.AddTransient<MessageModel>();
@@ -17,12 +19,13 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
     db.Database.EnsureCreated();
-    DbSeeder.Seed(db);
 }
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -38,3 +41,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

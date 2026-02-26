@@ -1,5 +1,6 @@
 ﻿using BS_KretaProjekt.Dto;
 using BS_KretaProjekt.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace BS_KretaProjekt.Controllers
         }
 
         #region Grade Add
+      
         [HttpPost("gradeadd")]
         public async Task<ActionResult> AddNewGrade([FromBody] GradeAdd dto)
         {
@@ -32,10 +34,28 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region -Grade Modify
-
+      
+        [HttpPut("grademodify")]
+        public async Task<ActionResult> ModifyGrade([FromBody] GradeModify dto)
+        {
+            try
+            {
+                await _model.GradeModify( dto);
+                return Ok();
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
         #endregion
 
         #region -Grade Delete
+       
         [HttpDelete("gradedelete")]
         public async Task<ActionResult> DeleteGrade([FromQuery] int id)
         {
