@@ -37,23 +37,26 @@ namespace BS_KretaProjekt.Model
                 szak = x.szak,
             });
         }
-        public async Task ModifyStudentData(StudentDto dto)
+        
+           public async Task ModifyStudentData(StudentDto dto)
         {
-            var diak = await _context.Diakok
-                .SingleOrDefaultAsync(x => x.diak_id == dto.diak_id);
-            using (var trx = _context.Database.BeginTransaction())
-            {
-                diak.diak_nev = dto.diak_nev;
-                diak.osztaly_id = dto.osztaly_id;
-                diak.lakcim = dto.lakcim;
-                diak.szuloneve = dto.szuloneve;
-                diak.emailcim = dto.emailcim;
-                diak.szuletesi_datum = dto.szuletesi_datum;
-                await _context.SaveChangesAsync();
-                await trx.CommitAsync();
-            }
-            await Task.CompletedTask;
+            var diak = await _context.Diakok.SingleOrDefaultAsync(x => x.diak_id == dto.diak_id);
+            if (diak is null)
+                throw new InvalidOperationException(); 
+
+            await using var trx = await _context.Database.BeginTransactionAsync();
+            diak.diak_id=dto.diak_id;   
+            diak.diak_nev = dto.diak_nev;
+            diak.osztaly_id = dto.osztaly_id;
+            diak.lakcim = dto.lakcim;
+            diak.szuloneve = dto.szuloneve;
+            diak.emailcim = dto.emailcim;
+            diak.szuletesi_datum = dto.szuletesi_datum;
+
+            await _context.SaveChangesAsync();
+            await trx.CommitAsync();
         }
+        
         public async Task ModifyTeacherData( TeacherDto dto)
         {
             using (var trx = _context.Database.BeginTransaction())
@@ -65,7 +68,7 @@ namespace BS_KretaProjekt.Model
             }
             await Task.CompletedTask;
         }
-       
+
         public async Task DeleteStudentData(int id)
         {
             using (var trx = _context.Database.BeginTransaction())
@@ -74,7 +77,6 @@ namespace BS_KretaProjekt.Model
                 await _context.SaveChangesAsync();
                 await trx.CommitAsync();
             }
-            await Task.CompletedTask;
         }
         public async Task DeleteTeacherData(int id)
         {
