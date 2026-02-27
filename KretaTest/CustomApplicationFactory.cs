@@ -49,6 +49,7 @@ namespace KretaTest
                 var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
                 db.Database.EnsureCreated();
                 DbSeeder.Seed(db);
+
             });
         }
 

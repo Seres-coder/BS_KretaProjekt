@@ -1,9 +1,11 @@
-﻿using BS_KretaProjekt.Persistence;
+﻿using BS_KretaProjekt.Dto;
+using BS_KretaProjekt.Persistence;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -20,11 +22,22 @@ namespace KretaTest
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false,
+                HandleCookies = true
             });
         }
         [Fact]
         public async Task AddTimeTable()
         {
+
+            var responseTanar = await _client.PostAsync(
+           "api/user/login?username=tanar1&password=tanar123",
+           null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+            responseTanar.EnsureSuccessStatusCode();
+            var contenttanar = await responseTanar.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(contenttanar,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             var data = new
             {
@@ -47,6 +60,16 @@ namespace KretaTest
         [Fact]
         public async Task ModifyTimeTable()
         {
+            var responseTanar = await _client.PostAsync(
+           "api/user/login?username=tanar1&password=tanar123",
+           null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+            responseTanar.EnsureSuccessStatusCode();
+            var contenttanar = await responseTanar.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(contenttanar,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
             var orarendid = GetSeededOrarendId();
             var data = new
             {
@@ -64,6 +87,16 @@ namespace KretaTest
         [Fact]
         public async Task DeleteTimeTable()
         {
+            var responseTanar = await _client.PostAsync(
+           "api/user/login?username=tanar1&password=tanar123",
+           null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+            responseTanar.EnsureSuccessStatusCode();
+            var contenttanar = await responseTanar.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(contenttanar,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
             var response = await _client.DeleteAsync("/api/timetable/deletetimetable?id=1");
             Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         }

@@ -15,7 +15,7 @@ namespace BS_KretaProjekt.Controllers
         {
             _model = model;
         }
-       
+        [Authorize(Roles = "Tanar")]
         [HttpPost("orarendkrealas")]
         public async Task<ActionResult> AddTimeTabel([FromBody] CreateOrarendDto dto)
         {
@@ -29,7 +29,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-    
+        [Authorize(Roles = "Tanar")]
         [HttpPut("modifytimetable")]
         public async Task<ActionResult> ModifyTimeTable([FromBody] UpdateOrarendDto dto)
         {
@@ -47,7 +47,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-       
+        [Authorize(Roles = "Tanar")]
         [HttpDelete("deletetimetable")]
         public async Task<ActionResult> DeleteTimeTable([FromQuery] int id)
         {

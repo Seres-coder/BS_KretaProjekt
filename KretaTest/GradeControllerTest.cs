@@ -1,4 +1,5 @@
-﻿using BS_KretaProjekt.Persistence;
+﻿using BS_KretaProjekt.Dto;
+using BS_KretaProjekt.Persistence;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -22,12 +23,23 @@ namespace KretaTest
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false,
+                HandleCookies = true
             });
         }
 
         [Fact]
         public async Task AddNewGrade()
         {
+            var responseTanar = await _client.PostAsync(
+           "api/user/login?username=tanar1&password=tanar123",
+           null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+            responseTanar.EnsureSuccessStatusCode();
+            var contenttanar = await responseTanar.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(contenttanar,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
             var data = new
             {
                 tanar_nev = "Kovács Tanár",
@@ -42,6 +54,8 @@ namespace KretaTest
         //scope mivel eddig mukododtt mostmeg mar for some reason nem?
         private int GetSeededJegyId()
         {
+
+
             using var scope = _factory.Services.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
             return db.Jegyek.Select(j => j.jegy_id).First();
@@ -49,6 +63,16 @@ namespace KretaTest
         [Fact]
         public async Task ModifyGrade()
         {
+            var responseTanar = await _client.PostAsync(
+           "api/user/login?username=tanar1&password=tanar123",
+           null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+            responseTanar.EnsureSuccessStatusCode();
+            var contenttanar = await responseTanar.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(contenttanar,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
             var jegyId = GetSeededJegyId();
             var data = new
             {
@@ -65,12 +89,24 @@ namespace KretaTest
         [Fact]
         public async Task DeleteGrade()
         {
+            var responseTanar = await _client.PostAsync(
+           "api/user/login?username=tanar1&password=tanar123",
+           null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+            responseTanar.EnsureSuccessStatusCode();
+            var contenttanar = await responseTanar.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(contenttanar,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
             var response = await _client.DeleteAsync("api/grade/gradedelete?id=1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
         public async Task GetAllGrades()
         {
+
+
             var response = await _client.GetAsync("api/grade/allgrade?id=1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
