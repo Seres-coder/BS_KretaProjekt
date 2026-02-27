@@ -13,10 +13,12 @@ namespace KretaTest
 {
     public class GradeControllerTest : IClassFixture<CustomApplicationFactory>
     {
+        private readonly CustomApplicationFactory _factory;
         private readonly HttpClient _client;
 
         public GradeControllerTest(CustomApplicationFactory factory)
         {
+            _factory = factory;
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false,
@@ -37,12 +39,20 @@ namespace KretaTest
             var response = await _client.PostAsync("api/grade/gradeadd", content);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        //scope mivel eddig mukododtt mostmeg mar for some reason nem?
+        private int GetSeededJegyId()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
+            return db.Jegyek.Select(j => j.jegy_id).First();
+        }
         [Fact]
         public async Task ModifyGrade()
         {
+            var jegyId = GetSeededJegyId();
             var data = new
             {
-                jegy_id = 1,
+                jegy_id = jegyId,
                 tanar_nev = "Kovács Tanár",
                 tantargy_nev = "Matematika",
                 diak_nev = "Nagy Diák",
