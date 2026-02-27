@@ -12,9 +12,11 @@ namespace KretaTest
 {
     public class TimeTableControllerTest : IClassFixture<CustomApplicationFactory>
     {
+        private readonly CustomApplicationFactory _factory;
         private readonly HttpClient _client;
         public TimeTableControllerTest(CustomApplicationFactory factory)
         {
+            _factory = factory;
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false,
@@ -36,12 +38,19 @@ namespace KretaTest
             var response = await _client.PostAsync("/api/timetable/orarendkrealas", content);
             Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         }
+        private int GetSeededOrarendId()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
+            return db.Orarendek.Select(j => j.orarend_id).First();
+        }
         [Fact]
         public async Task ModifyTimeTable()
         {
+            var orarendid = GetSeededOrarendId();
             var data = new
             {
-                orarend_id = 1,
+                orarend_id = orarendid,
                 osztaly_nev = "10.A",
                 nap = 2,
                 ora = 2,

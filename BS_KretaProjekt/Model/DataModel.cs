@@ -68,15 +68,22 @@ namespace BS_KretaProjekt.Model
             }
             await Task.CompletedTask;
         }
-
         public async Task DeleteStudentData(int id)
         {
-            using (var trx = _context.Database.BeginTransaction())
-            {
-                _context.Diakok.Remove(_context.Diakok.Where(x => x.diak_id == id).First());
-                await _context.SaveChangesAsync();
-                await trx.CommitAsync();
-            }
+            var diak = await _context.Diakok.SingleOrDefaultAsync(x => x.diak_id == id);
+            if (diak is null)
+                throw new InvalidOperationException("nincs ilyen diak");
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.user_id == diak.user_id);
+            var jegyek = _context.Jegyek.Where(x => x.diak_id == id);
+            var uzenetek = _context.Uzenetek.Where(x => x.fogado_id == id);
+            await using var trx = await _context.Database.BeginTransactionAsync();
+            _context.Jegyek.RemoveRange(jegyek);
+            _context.Uzenetek.RemoveRange(uzenetek);
+            _context.Diakok.Remove(diak);
+            if (user != null)
+                _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            await trx.CommitAsync();
         }
         public async Task DeleteTeacherData(int id)
         {

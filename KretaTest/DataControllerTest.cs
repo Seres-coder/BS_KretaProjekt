@@ -75,15 +75,41 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PutAsync("/api/data/modifyteacherdata", content);
         }
-        /*
+
         [Fact]
-        public async Task DeleteStudentData_OK()
+        public async Task DeleteStudentData_NotFound()
         {
-            var response = await _client.DeleteAsync("/api/data/deletestudentdata?id=1");
+           var response= await _client.DeleteAsync("/api/data/deletestudentdata?id=9999");
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+        [Fact]
+        public async Task DeleteStudentData_Ok()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
+            int id = db.Diakok.Select(d => d.diak_id).First();
+
+            var response = await _client.DeleteAsync($"/api/data/deletestudentdata?id={id}");
+
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        */
 
+        [Fact]
+        public async Task DeleteTeacherData_OK()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
+            int id = db.Tanarok.Select(d => d.tanar_id).First();
+            var response = await _client.DeleteAsync($"/api/data/deleteteacherdata?id={id}");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteTeacherData_NotFound()
+        {
+            var response = await _client.DeleteAsync("/api/data/deleteteacherdata?id=9999999");
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
 
     }
 }
