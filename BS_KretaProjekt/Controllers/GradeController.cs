@@ -17,7 +17,7 @@ namespace BS_KretaProjekt.Controllers
         }
 
         #region Grade Add
-      
+        [Authorize(Roles = "Tanar")]
         [HttpPost("gradeadd")]
         public async Task<ActionResult> AddNewGrade([FromBody] GradeAdd dto)
         {
@@ -34,7 +34,7 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region -Grade Modify
-      
+        [Authorize(Roles = "Tanar")]
         [HttpPut("grademodify")]
         public async Task<ActionResult> ModifyGrade([FromBody] GradeModify dto)
         {
@@ -55,7 +55,7 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region -Grade Delete
-       
+        [Authorize(Roles = "Tanar")]
         [HttpDelete("gradedelete")]
         public async Task<ActionResult> DeleteGrade([FromQuery] int id)
         {

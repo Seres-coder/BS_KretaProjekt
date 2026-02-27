@@ -15,7 +15,7 @@ namespace BS_KretaProjekt.Controllers
         {
             _model = model;
         }
-      
+        [Authorize(Roles ="Tanar")]
         [HttpGet("diaklistazasa")]
         public ActionResult<IEnumerable<StudentDto>> GetDiak()
         {
@@ -30,7 +30,7 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
-      
+        [Authorize(Roles = "Tanar")]
         [HttpGet("tanarlistazasa")]
         public ActionResult<IEnumerable<StudentDto>> GetTeacher()
         {
@@ -43,7 +43,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-       
+        [Authorize(Roles = "Tanar")]
         [HttpPut("modifystudentdata")]
         public async Task<ActionResult> ModifyStudetData([FromBody] StudentDto dto)
         {
@@ -61,7 +61,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-       
+        [Authorize(Roles = "Tanar")]
         [HttpPut("modifyteacherdata")]
         public async Task<ActionResult> ModifyTeacherData([FromBody] TeacherDto dto)
         {
@@ -80,7 +80,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
 
-       
+        [Authorize(Roles = "Tanar")]
         [HttpDelete("deletestudentdata")]
         public   async Task<ActionResult> DeleteStudentData([FromQuery] int id)
         {
@@ -98,7 +98,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-        
+        [Authorize(Roles = "Tanar")]
         [HttpDelete("deleteteacherdata")]
         public async Task<ActionResult> DeleteTeacherData([FromQuery] int id)
         {

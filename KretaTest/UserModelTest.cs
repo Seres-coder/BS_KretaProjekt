@@ -22,13 +22,19 @@ namespace KretaTest
         }
 
         [Fact]
-        public async Task Registration()
+        public async Task Registration_Correct()
         {
-            int before = _context.Users.Count();
-            int befored =  _context.Diakok.Count();
-            await _model.Registration("Józsikaa", "asd");
-            Assert.Equal(_context.Users.Count(), before+1);
-            Assert.Equal(_context.Diakok.Count(), befored+1);
+            var belepesnev = "tesztnev";
+            var password = "teeszt123";
+            var before = await _context.Users.CountAsync();
+            await _model.Registration(belepesnev, password);
+            var after = await _context.Users.CountAsync();
+            Assert.Equal(before + 1, after);
+            var createdUser = await _context.Users.SingleOrDefaultAsync(x => x.belepesnev == belepesnev);
+            Assert.NotNull(createdUser);
+            Assert.Equal(belepesnev, createdUser.belepesnev);
+            Assert.False(string.IsNullOrWhiteSpace(createdUser.jelszo));
+            Assert.NotEqual(password, createdUser.jelszo);
         }
         [Fact]
         public void Login()
@@ -39,13 +45,37 @@ namespace KretaTest
         [Fact]
         public async Task PromoteTanar()
         {
-            int before = _context.Users.Count();
-            int beforet = _context.Tanarok.Count();
-            int id = _context.Users.Where(x => x.belepesnev == "diak1").First().user_id;
-            await _model.PromoteToTanar(id, "Matematika");
-            Assert.Equal(_context.Users.Count(), before + 1);
-            Assert.Equal(_context.Diakok.Count(), before - 1);
-            Assert.Equal(_context.Tanarok.Count(), before + 1);
+            int usersBefore = _context.Users.Count();
+            int diakBefore = _context.Diakok.Count();
+            int tanarBefore = _context.Tanarok.Count();
+
+            int userId = _context.Users.First(x => x.belepesnev == "diak1").user_id;
+
+            await _model.PromoteToTanar(userId, "Matematika");
+
+            Assert.Equal(usersBefore, _context.Users.Count());
+            Assert.Equal(diakBefore - 1, _context.Diakok.Count());
+            Assert.Equal(tanarBefore + 1, _context.Tanarok.Count());
+
+            var user = _context.Users.First(x => x.user_id == userId);
+            Assert.Equal("Tanar", user.Role);
+
+            var tanar = _context.Tanarok.First(t => t.user_id == userId);
+            Assert.NotNull(tanar);
+        }
+
+        [Fact]
+        public async Task ChangePassword()
+        {
+            var user = await _context.Users.FirstAsync(x => x.belepesnev == "diak1");
+            var oldHash = user.jelszo;
+            var newPlainPassword = "ujjelszo_123";
+            await _model.ChangePassword(user.user_id, newPlainPassword);
+            var updated = await _context.Users.FirstAsync(x => x.user_id == user.user_id);
+            Assert.NotNull(updated);
+            Assert.False(string.IsNullOrWhiteSpace(updated.jelszo));
+            Assert.NotEqual(oldHash, updated.jelszo);
+            Assert.NotEqual(newPlainPassword, updated.jelszo);
         }
 
     }

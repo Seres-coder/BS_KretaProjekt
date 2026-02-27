@@ -26,7 +26,7 @@ namespace BS_KretaProjekt.Persistence
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int user_id { get; set; }
+        public int  user_id { get; set; }
         
         public string belepesnev { get; set; }
         public string jelszo { get; set; }
@@ -43,9 +43,9 @@ namespace BS_KretaProjekt.Persistence
         public Tantargy? Tantargy { get; set; }
         [Required]
         public int user_id { get; set; }
-        public User User { get; set; } 
+        public User? User { get; set; } 
         public List<Jegy>? jegyek { get; set; }
-        public List<Orarend> Orarend { get; set; }
+        public List<Orarend>? Orarend { get; set; }
     }
     [Index(nameof(emailcim), IsUnique = true)]
     public class Diak
