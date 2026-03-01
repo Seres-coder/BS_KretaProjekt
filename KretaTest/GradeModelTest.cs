@@ -51,14 +51,29 @@ namespace KretaTest
         }
 
         [Fact]
+        public async Task AddNewGrade_ThrowsInvalidOperation()
+        {
+            var dto = new GradeAdd
+            {
+                diak_nev = "Nagy Diák",
+                ertek = 0, // <-- trigger
+                tanar_nev = "Kovács Tanár",
+                tantargy_nev = "Matematika"
+            };
+
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _model.AddNewGrade(dto));
+            Assert.Equal("Nincs minden adat megadva", ex.Message);
+        }
+
+        [Fact]
         public async Task GradeModify_Valid()
         {
             var grade = _context.Jegyek.First();
             var dto = new GradeModify
             {
-               ertek = 1,
-               jegy_id=grade.jegy_id,
-               updatedatum= DateTimeOffset.Now.AddDays(-5),
+                ertek = 1,
+                jegy_id = grade.jegy_id,
+                updatedatum = DateTimeOffset.Now.AddDays(-5),
 
 
             };
@@ -69,10 +84,25 @@ namespace KretaTest
             Assert.Equal(dto.jegy_id, modifed.jegy_id);
             Assert.Equal(dto.updatedatum, modifed.updatedatum);
         }
+        [Fact]
+        public async Task GradeModify_ThrowsInvalidOperation()
+        {
+            var grade = _context.Jegyek.First();
+
+            var dto = new GradeModify
+            {
+                jegy_id = grade.jegy_id,
+                ertek = 0, // <-- trigger
+                updatedatum = DateTimeOffset.Now
+            };
+
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _model.GradeModify(dto));
+            Assert.Equal("Nincs minden adat megadva", ex.Message);
+        }
 
 
         [Fact]
-        public async Task GradeDelete()
+        public async Task GradeDelete_Valid()
         {
             var before_count = _context.Jegyek.Count();
             var id = _context.Jegyek.First().jegy_id;
@@ -80,19 +110,37 @@ namespace KretaTest
             Assert.Equal(before_count - 1, _context.Jegyek.Count());
         }
         [Fact]
-        public void AllGradesByStudent()
+        public async Task GradeDelete_ThrowsKeyNotFound()
+        {
+            // olyan ID, ami biztosan nem létezik
+            var nonExistingId = _context.Jegyek.Any()
+                ? _context.Jegyek.Max(j => j.jegy_id) + 999
+                : 999999;
+
+            var ex = await Assert.ThrowsAsync<KeyNotFoundException>(() => _model.DeleteGrade(nonExistingId));
+            Assert.Equal("Nincs ilyen jegy", ex.Message);
+        }
+
+        [Fact]
+        public void AllGradesByStudent_Valid()
         {
             var grades_student = _model.AllGrades(1, 0);
             Assert.NotEmpty(grades_student);
             Assert.Equal(2, grades_student.Count());
         }
         [Fact]
-        public void AllGradesByTeacher()
+        public void AllGradesByTeacher_Valid()
         {
             var grades_student = _model.AllGrades(0, 1);
             Assert.NotEmpty(grades_student);
             Assert.Equal(2, grades_student.Count());
 
+        }
+        [Fact]
+        public void AllGrades_ThrowsInvalidOperation()
+        {
+            var ex = Assert.Throws<InvalidOperationException>(() => _model.AllGrades(1, 1));
+            Assert.Equal("Nem lehet egyszerre diák és tanár id alapján keresni", ex.Message);
         }
     }
 }

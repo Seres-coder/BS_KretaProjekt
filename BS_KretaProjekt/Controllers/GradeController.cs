@@ -26,6 +26,10 @@ namespace BS_KretaProjekt.Controllers
                 await _model.AddNewGrade(dto);
                 return Ok();
             }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
+            }
             catch (Exception)
             {
                 return BadRequest();
@@ -45,12 +49,13 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (InvalidOperationException)
             {
-                return NotFound();
+                return BadRequest();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
+
         }
         #endregion
 
@@ -64,7 +69,7 @@ namespace BS_KretaProjekt.Controllers
                await _model.DeleteGrade(id);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
@@ -72,6 +77,7 @@ namespace BS_KretaProjekt.Controllers
             {
                 return BadRequest();
             }
+
         }
         #endregion
 
@@ -83,6 +89,10 @@ namespace BS_KretaProjekt.Controllers
             try
             {
                 return Ok(_model.AllGrades(id));
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
             }
             catch (Exception)
             {

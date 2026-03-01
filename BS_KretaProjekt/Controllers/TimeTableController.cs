@@ -24,10 +24,15 @@ namespace BS_KretaProjekt.Controllers
                 await _model.CreateTimeTable(dto);
                 return Ok();
             }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
+            }
             catch (Exception)
             {
                 return BadRequest();
             }
+
         }
         [Authorize(Roles = "Tanar")]
         [HttpPut("modifytimetable")]
@@ -39,6 +44,10 @@ namespace BS_KretaProjekt.Controllers
                 return Ok();
             }
             catch (InvalidOperationException)
+            {
+                return BadRequest();
+            }
+            catch (InvalidCastException)
             {
                 return NotFound();
             }
@@ -56,7 +65,7 @@ namespace BS_KretaProjekt.Controllers
                 await _model.DeleteTimeTable(id);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidCastException)
             {
                 return NotFound();
             }

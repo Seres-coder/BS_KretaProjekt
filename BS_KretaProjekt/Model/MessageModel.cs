@@ -15,6 +15,9 @@ namespace BS_KretaProjekt.Model
         #region Create Message
         public async Task CreateMessage(CreateMessageDto dto)
         {
+            if(string.IsNullOrWhiteSpace(dto.cim) || string.IsNullOrWhiteSpace(dto.tartalom) || dto.fogado_id == 0 || dto.user_id == 0)
+                throw new InvalidOperationException("Nincs minden adat megadva");
+
             using (var trx  = _context.Database.BeginTransaction())
             {
                 _context.Uzenetek.Add(new Uzenet
@@ -37,6 +40,9 @@ namespace BS_KretaProjekt.Model
         #region Send Message
         public IEnumerable<MessageDto> GetMessages(int user_id)
         {
+            if(!_context.Users.Any(x => x.user_id == user_id))
+                throw new KeyNotFoundException("nincs ilyen user");
+
             return _context.Uzenetek.Include(x => x.User).Include(x => x.Fogado).Where(x => x.fogado_id == user_id).Select(x => new MessageDto
             {
                 Id=x.uzenet_id,
@@ -52,6 +58,9 @@ namespace BS_KretaProjekt.Model
         #region Get one message by id
         public MessageDto GetOneMessage(int user_id,int uzenet_id)
         {
+            if (!_context.Users.Any(x => x.user_id == user_id))
+                throw new KeyNotFoundException("nincs ilyen user");
+
             return _context.Uzenetek.Where(x => x.fogado_id == user_id && x.uzenet_id == uzenet_id).Select(x => new MessageDto
             {
                 Id = x.uzenet_id,
