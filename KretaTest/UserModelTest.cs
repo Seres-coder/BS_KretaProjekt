@@ -36,6 +36,8 @@ namespace KretaTest
             Assert.False(string.IsNullOrWhiteSpace(createdUser.jelszo));
             Assert.NotEqual(password, createdUser.jelszo);
         }
+
+
         [Fact]
         public void Login()
         {
@@ -63,6 +65,21 @@ namespace KretaTest
             var tanar = _context.Tanarok.First(t => t.user_id == userId);
             Assert.NotNull(tanar);
         }
+        [Fact]
+        public async Task PromoteToTanar_ThrowsArgumentOutOfRange()
+        {
+            var ex = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _model.PromoteToTanar(0, "Matematika"));
+            Assert.Contains("Érvénytelen userId.", ex.Message);
+        }
+        [Fact]
+        public async Task PromoteToTanar_ThrowsArgumentException_subjectempty()
+        {
+            // létező userId (diák vagy bárki, itt csak a tantargy checkig jutunk)
+            var userId = await _context.Users.Select(u => u.user_id).FirstAsync();
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => _model.PromoteToTanar(userId, ""));
+            Assert.Contains("A tantárgy nem lehet üres.", ex.Message);
+        }
 
         [Fact]
         public async Task ChangePassword()
@@ -76,6 +93,30 @@ namespace KretaTest
             Assert.False(string.IsNullOrWhiteSpace(updated.jelszo));
             Assert.NotEqual(oldHash, updated.jelszo);
             Assert.NotEqual(newPlainPassword, updated.jelszo);
+        }
+
+        [Fact]
+        public async Task ChangePassword_ThrowsArgumentException_epmtypassword()
+        {
+            var user = await _context.Users.FirstAsync();
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => _model.ChangePassword(user.user_id, ""));
+            Assert.Contains("Az új jelszó nem lehet üres.", ex.Message);
+        }
+
+        [Fact]
+        public async Task Registration_ThrowsArgumentException_emptyusername()
+        {
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => _model.Registration("", "pw123"));
+            Assert.Contains("A felhasználónév nem lehet üres.", ex.Message);
+        }
+        [Fact]
+        public async Task Registration_ThrowsInvalidOperation_alreadyexist()
+        {
+            
+            var existingName = await _context.Users.Select(u => u.belepesnev).FirstAsync();
+            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _model.Registration(existingName, "pw123"));
+            Assert.Equal("mar letezik", ex.Message);
         }
 
     }

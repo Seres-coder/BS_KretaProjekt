@@ -17,12 +17,16 @@ namespace BS_KretaProjekt.Controllers
         }
         [Authorize(Roles ="Tanar")]
         [HttpGet("diaklistazasa")]
-        public ActionResult<IEnumerable<StudentDto>> GetDiak()
+        public async Task <ActionResult<IEnumerable<StudentDto>>> GetDiak()
         {
             try
             {
-                var response=_model.GetDiak();
+                var response= await _model.GetDiak();
                 return Ok(response);
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
             }
             catch (Exception)
             {
@@ -32,11 +36,16 @@ namespace BS_KretaProjekt.Controllers
         }
         [Authorize(Roles = "Tanar")]
         [HttpGet("tanarlistazasa")]
-        public ActionResult<IEnumerable<StudentDto>> GetTeacher()
+        public async Task <ActionResult<IEnumerable<StudentDto>>> GetTeacher()
         {
             try
             {
-                return Ok(_model.GetTeacher());
+                await _model.GetTeacher();
+                return Ok();
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
             }
             catch (Exception)
             {
@@ -54,12 +63,17 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (InvalidOperationException)
             {
+                return BadRequest();
+            }
+            catch (KeyNotFoundException)
+            {
                 return NotFound();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
+
         }
         [Authorize(Roles = "Tanar")]
         [HttpPut("modifyteacherdata")]
@@ -71,6 +85,10 @@ namespace BS_KretaProjekt.Controllers
                 return Ok();
             }
             catch (InvalidOperationException)
+            {
+                return BadRequest();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
@@ -97,6 +115,7 @@ namespace BS_KretaProjekt.Controllers
             {
                 return BadRequest();
             }
+
         }
         [Authorize(Roles = "Tanar")]
         [HttpDelete("deleteteacherdata")]
@@ -115,6 +134,7 @@ namespace BS_KretaProjekt.Controllers
             {
                 return BadRequest();
             }
+
         }
 
 

@@ -24,6 +24,10 @@ namespace BS_KretaProjekt.Controllers
                 await _model.CreateMessage(dto);
                 return Ok();
             }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
+            }
             catch (Exception)
             {
                 return BadRequest();
@@ -36,6 +40,10 @@ namespace BS_KretaProjekt.Controllers
             try
             {
                 return Ok(_model.GetMessages(user_id));
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
             }
             catch (Exception)
             {
@@ -51,6 +59,10 @@ namespace BS_KretaProjekt.Controllers
             {
                 return Ok(_model.GetOneMessage(user_id,uzenet_id));
             }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
             catch (Exception)
             {
                 return BadRequest();
@@ -65,7 +77,7 @@ namespace BS_KretaProjekt.Controllers
                 await _model.DeleteMessage(id,message_id);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidCastException)
             {
                 return NotFound();
             }

@@ -80,7 +80,8 @@ namespace KretaTest
                 tanar_nev = "Kovács Tanár",
                 tantargy_nev = "Matematika",
                 diak_nev = "Nagy Diák",
-                ertek = 4
+                ertek = 4,
+                updatedatum = DateTimeOffset.UtcNow
             };
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PutAsync("api/grade/grademodify", content);
