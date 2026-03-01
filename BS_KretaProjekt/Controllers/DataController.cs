@@ -15,14 +15,18 @@ namespace BS_KretaProjekt.Controllers
         {
             _model = model;
         }
-      
+        [Authorize(Roles ="Tanar")]
         [HttpGet("diaklistazasa")]
-        public ActionResult<IEnumerable<StudentDto>> GetDiak()
+        public async Task <ActionResult<IEnumerable<StudentDto>>> GetDiak()
         {
             try
             {
-                var response=_model.GetDiak();
+                var response= await _model.GetDiak();
                 return Ok(response);
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
             }
             catch (Exception)
             {
@@ -30,20 +34,25 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
-      
+        [Authorize(Roles = "Tanar")]
         [HttpGet("tanarlistazasa")]
-        public ActionResult<IEnumerable<StudentDto>> GetTeacher()
+        public async Task <ActionResult<IEnumerable<StudentDto>>> GetTeacher()
         {
             try
             {
-                return Ok(_model.GetTeacher());
+                await _model.GetTeacher();
+                return Ok();
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
         }
-       
+        [Authorize(Roles = "Tanar")]
         [HttpPut("modifystudentdata")]
         public async Task<ActionResult> ModifyStudetData([FromBody] StudentDto dto)
         {
@@ -54,14 +63,19 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (InvalidOperationException)
             {
+                return BadRequest();
+            }
+            catch (KeyNotFoundException)
+            {
                 return NotFound();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
+
         }
-       
+        [Authorize(Roles = "Tanar")]
         [HttpPut("modifyteacherdata")]
         public async Task<ActionResult> ModifyTeacherData([FromBody] TeacherDto dto)
         {
@@ -72,6 +86,10 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (InvalidOperationException)
             {
+                return BadRequest();
+            }
+            catch (KeyNotFoundException)
+            {
                 return NotFound();
             }
             catch (Exception)
@@ -80,7 +98,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
 
-       
+        [Authorize(Roles = "Tanar")]
         [HttpDelete("deletestudentdata")]
         public   async Task<ActionResult> DeleteStudentData([FromQuery] int id)
         {
@@ -97,8 +115,9 @@ namespace BS_KretaProjekt.Controllers
             {
                 return BadRequest();
             }
+
         }
-        
+        [Authorize(Roles = "Tanar")]
         [HttpDelete("deleteteacherdata")]
         public async Task<ActionResult> DeleteTeacherData([FromQuery] int id)
         {
@@ -115,6 +134,7 @@ namespace BS_KretaProjekt.Controllers
             {
                 return BadRequest();
             }
+
         }
 
 

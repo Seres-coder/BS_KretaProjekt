@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace KretaTest
 {
@@ -48,6 +49,7 @@ namespace KretaTest
                 var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
                 db.Database.EnsureCreated();
                 DbSeeder.Seed(db);
+
             });
         }
 

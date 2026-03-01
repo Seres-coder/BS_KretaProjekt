@@ -15,6 +15,9 @@ namespace BS_KretaProjekt.Model
         #region Create TimeTable
         public async Task CreateTimeTable(CreateOrarendDto dto)
         { 
+            if(string.IsNullOrWhiteSpace(dto.tantargy) || string.IsNullOrWhiteSpace(dto.Tanarnev) || dto.osztaly_id == 0 || dto.nap == DayOfWeek.Sunday || dto.nap == DayOfWeek.Saturday || dto.ora <= 0)
+                throw new InvalidOperationException("Nincs minden adat megadva");
+
             var tantargyId = _context.Tantargyok.First(x => x.tantargy_nev == dto.tantargy).tantargy_id;
             var tanarId = _context.Tanarok.First(x => x.tanar_nev == dto.Tanarnev).tanar_id;
 
@@ -40,7 +43,10 @@ namespace BS_KretaProjekt.Model
         #region Modify TimeTable
         public async Task ModifyTimeTable(UpdateOrarendDto dto)
         {
-      
+
+            if(string.IsNullOrWhiteSpace(dto.tantargy_nev) || string.IsNullOrWhiteSpace(dto.tanar_nev) || string.IsNullOrWhiteSpace(dto.osztaly_nev) || dto.nap == DayOfWeek.Sunday || dto.nap == DayOfWeek.Saturday || dto.ora <= 0)
+                throw new InvalidOperationException("Nincs minden adat megadva");
+
             var tantargyId = _context.Tantargyok.First(x => x.tantargy_nev == dto.tantargy_nev).tantargy_id;
             var tanarId = _context.Tanarok.First(x => x.tanar_nev == dto.tanar_nev).tanar_id;
             var osztalyid= _context.Osztalyok.First(x=>x.osztaly_nev==dto.osztaly_nev).osztaly_id;
@@ -70,7 +76,7 @@ namespace BS_KretaProjekt.Model
         public async Task DeleteTimeTable(int orarend_id)
         {
             if (!_context.Orarendek.Any(x => x.orarend_id == orarend_id))
-                throw new InvalidCastException("Nincs ilyen órarend!");
+                throw new KeyNotFoundException("Nincs ilyen órarend!");
 
             using (var trx = _context.Database.BeginTransaction())
             {
@@ -90,6 +96,8 @@ namespace BS_KretaProjekt.Model
         #region TimeTable Listing
         public Dictionary<DayOfWeek, List<TimeTableItemDto>> GetTimeTable(int osztaly_id)
         {
+           
+
             var result = 
             _context.Orarendek
                 .Include(x => x.tantargy)

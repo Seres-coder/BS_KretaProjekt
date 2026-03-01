@@ -1,9 +1,11 @@
-﻿using BS_KretaProjekt.Persistence;
+﻿using BS_KretaProjekt.Dto;
+using BS_KretaProjekt.Persistence;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -12,17 +14,30 @@ namespace KretaTest
 {
     public class TimeTableControllerTest : IClassFixture<CustomApplicationFactory>
     {
+        private readonly CustomApplicationFactory _factory;
         private readonly HttpClient _client;
         public TimeTableControllerTest(CustomApplicationFactory factory)
         {
+            _factory = factory;
             _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false,
+                HandleCookies = true
             });
         }
         [Fact]
         public async Task AddTimeTable()
         {
+
+            var responseTanar = await _client.PostAsync(
+           "api/user/login?username=tanar1&password=tanar123",
+           null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+            responseTanar.EnsureSuccessStatusCode();
+            var contenttanar = await responseTanar.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(contenttanar,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             var data = new
             {
@@ -36,12 +51,29 @@ namespace KretaTest
             var response = await _client.PostAsync("/api/timetable/orarendkrealas", content);
             Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         }
+        private int GetSeededOrarendId()
+        {
+            using var scope = _factory.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
+            return db.Orarendek.Select(j => j.orarend_id).First();
+        }
         [Fact]
         public async Task ModifyTimeTable()
         {
+            var responseTanar = await _client.PostAsync(
+           "api/user/login?username=tanar1&password=tanar123",
+           null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+            responseTanar.EnsureSuccessStatusCode();
+            var contenttanar = await responseTanar.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(contenttanar,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            var orarendid = GetSeededOrarendId();
             var data = new
             {
-                orarend_id = 1,
+                orarend_id = orarendid,
                 osztaly_nev = "10.A",
                 nap = 2,
                 ora = 2,
@@ -55,6 +87,16 @@ namespace KretaTest
         [Fact]
         public async Task DeleteTimeTable()
         {
+            var responseTanar = await _client.PostAsync(
+           "api/user/login?username=tanar1&password=tanar123",
+           null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+            responseTanar.EnsureSuccessStatusCode();
+            var contenttanar = await responseTanar.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(contenttanar,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
             var response = await _client.DeleteAsync("/api/timetable/deletetimetable?id=1");
             Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
         }

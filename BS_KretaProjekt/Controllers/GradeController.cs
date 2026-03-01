@@ -17,7 +17,7 @@ namespace BS_KretaProjekt.Controllers
         }
 
         #region Grade Add
-      
+        [Authorize(Roles = "Tanar")]
         [HttpPost("gradeadd")]
         public async Task<ActionResult> AddNewGrade([FromBody] GradeAdd dto)
         {
@@ -25,6 +25,10 @@ namespace BS_KretaProjekt.Controllers
             {
                 await _model.AddNewGrade(dto);
                 return Ok();
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
             }
             catch (Exception)
             {
@@ -34,7 +38,7 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region -Grade Modify
-      
+        [Authorize(Roles = "Tanar")]
         [HttpPut("grademodify")]
         public async Task<ActionResult> ModifyGrade([FromBody] GradeModify dto)
         {
@@ -45,17 +49,18 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (InvalidOperationException)
             {
-                return NotFound();
+                return BadRequest();
             }
             catch (Exception)
             {
                 return BadRequest();
             }
+
         }
         #endregion
 
         #region -Grade Delete
-       
+        [Authorize(Roles = "Tanar")]
         [HttpDelete("gradedelete")]
         public async Task<ActionResult> DeleteGrade([FromQuery] int id)
         {
@@ -64,7 +69,7 @@ namespace BS_KretaProjekt.Controllers
                await _model.DeleteGrade(id);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
@@ -72,6 +77,7 @@ namespace BS_KretaProjekt.Controllers
             {
                 return BadRequest();
             }
+
         }
         #endregion
 
@@ -83,6 +89,10 @@ namespace BS_KretaProjekt.Controllers
             try
             {
                 return Ok(_model.AllGrades(id));
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest();
             }
             catch (Exception)
             {

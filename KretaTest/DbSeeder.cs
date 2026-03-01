@@ -1,11 +1,19 @@
-﻿namespace BS_KretaProjekt.Persistence
+﻿using System.Text;
+
+namespace BS_KretaProjekt.Persistence
 {
     public static class DbSeeder
     {
 
 
 
-
+        private static string HashPassword(string password)
+        {
+            using var sha = System.Security.Cryptography.SHA256.Create();
+            var bytes = Encoding.UTF8.GetBytes(password);
+            var hash = sha.ComputeHash(bytes);
+            return Convert.ToBase64String(hash);
+        }
         public static void Seed(KretaDbContext db)
         {
             db.Database.EnsureCreated();
@@ -16,9 +24,9 @@
             // 1. Users first (independent)
             var users = new[]
             {
-                new User { belepesnev = "admin", jelszo = "admin123", Role = "Admin" },
-                new User { belepesnev = "tanar1", jelszo = "tanar123", Role = "Tanar" },
-                new User { belepesnev = "diak1", jelszo = "diak123", Role = "Diak" }
+                new User { belepesnev = "admin", jelszo = HashPassword("admin123"), Role = "Admin" },
+                new User { belepesnev = "tanar1", jelszo = HashPassword("tanar123"), Role = "Tanar" },
+                new User { belepesnev = "diak1", jelszo = HashPassword("diak123"), Role = "Diak" }
             };
             db.Users.AddRange(users);
             db.SaveChanges();
