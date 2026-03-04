@@ -1,16 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kreta-Menu</title>
-    <style>
-        
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kreta-Menu</title>
+<style>
+ body{
+    margin:0;
+    background:#E0C097;
+    font-family: Arial, sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.menu-box{
+    width: min(1100px, 92vw);
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    padding: 30px;
+    margin:auto;
+}
+.menu-button{
+    height: 220px;
+    background:#B85C38;
+    border: none;
+    border-radius: 18px;
+    cursor:pointer;
+    font-size: 56px;
+    font-weight: 900;
+    color:#000;
+    text-align:left;
+    padding: 34px 40px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    border:3px solid #5C3D2E;  
+    box-shadow:0 8px 20px rgba(0,0,0,0.25); 
+}
+.menu-button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.18);
+}
+
+.menu-button:active{
+    transform: translateY(0px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.footer{
+    margin-top:auto;
+    background:#B85C38;
+    color:black;
+    text-align:center;
+    padding:15px;
+    width:100%;
+    font-size:14px;
+    border:3px solid #5C3D2E;  
+    box-shadow:0 8px 20px rgba(0,0,0,0.25); 
+}
+.footer a{
+    color:black;
+    text-decoration:underline;
+}
+
+/* INVERT TÉMA */
+.theme-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:10px 16px;
+    font-size:14px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#ffffff;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    z-index:1000;
+}
+.dark-theme .theme-btn{
+    background:#255F38;
+    color:white;
+    box-shadow:0 4px 10px rgba(39,57,28,0.9);
+}
+.dark-theme{
+    background:#18230F;
+}
+
+.dark-theme .menu-button{
+    background:#255F38;  
+    border:3px solid #27391C;
+    box-shadow:0 4px 10px rgba(39,57,28,0.9);
+    color:white;
+}
+
+.dark-theme input{
+border:3px solid #27391C;
+box-shadow:0 4px 10px rgba(39,57,28,0.8);
+}
+
+.dark-theme .menu-button{
+    border:3px solid #27391C;
+    box-shadow:0 4px 10px rgba(39,57,28,0.9);
+}
+
+.dark-theme .footer{
+    background:#255F38;
+    border-top:2px solid #27391C;
+    border:3px solid #27391C;
+}
+
+
     </style>
 </head>
 <body>
     
+    <button onclick="toggleTheme()" class="theme-btn">Téma váltás</button>
 
+  <div class="menu-box">
+    <button class="menu-button">Órarend</button>
+    <button class="menu-button">Ügyintézés</button>
+    <button class="menu-button">Jegyek</button>
+  </div>
+  
+  <div class="footer">
+    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Adatkezelési tájékoztató</a><br>
+    Verzió: 1.0.0 - (2026.03.04.)<br>
+    <br>
+    Támogatott böngészők:<br>
+    Google Chrome, Mozilla Firefox, Opera, Microsoft Edge<br>
+    <br>
+    Készitette:Seres Dániel és Bagó Norman
+    </div>
+    
 
     <script src="KretaMenu.js"></script>
 </body>
