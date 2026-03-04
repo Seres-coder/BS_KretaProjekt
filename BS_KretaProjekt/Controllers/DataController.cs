@@ -15,6 +15,35 @@ namespace BS_KretaProjekt.Controllers
         {
             _model = model;
         }
+        [HttpGet("getmydata")]
+        public async Task<ActionResult<StudentDto>> GetMyData(int user_id)
+        {
+            try
+            {
+                var response = await _model.GetMyData(user_id);
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+        [Authorize(Roles = "Tanar")]
+        [HttpGet("getmyteacherdata")]
+        public async Task<ActionResult<StudentDto>> GetMyTeacherData(int user_id)
+        {
+            try
+            {
+                var response = await _model.GetMyTeacherData(user_id);
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
         [Authorize(Roles ="Tanar")]
         [HttpGet("diaklistazasa")]
         public async Task <ActionResult<IEnumerable<StudentDto>>> GetDiak()
