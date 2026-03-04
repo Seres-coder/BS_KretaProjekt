@@ -108,15 +108,36 @@ box-shadow:0 4px 10px rgba(39,57,28,0.8);
     border:3px solid #27391C;
 }
 
+/* KIJELENTKEZÉS */
+
+.kijelentkezes-button{
+    position:fixed;
+    bottom:20px;
+    left:20px;   /* ha jobb alsó sarok kell akkor: right:20px */
+
+    background:white;
+    border:none;
+    border-radius:10px;
+    padding:12px 25px;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+
+    border:3px solid #5C3D2E;
+    box-shadow:0 8px 20px rgba(0,0,0,0.25);
+}
+
+
 
     </style>
 </head>
 <body>
     
-    <button onclick="toggleTheme()" class="theme-btn">Téma váltás</button>
+<button onclick="toggleTheme()" class="theme-btn">Téma váltás</button>
+<button onclick="window.location.href='../Bejelentkezes/KretaBejelentkezes.html'" class="kijelentkezes-button">Kijelentkezés</button>
 
   <div class="menu-box">
-    <button class="menu-button">Órarend</button>
+    <button onclick="window.location.href='../Orarend/KretaOrarend.html'" class="menu-button">Órarend</button>
     <button class="menu-button">Ügyintézés</button>
     <button class="menu-button">Jegyek</button>
   </div>
