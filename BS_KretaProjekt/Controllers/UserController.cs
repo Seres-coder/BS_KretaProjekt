@@ -20,7 +20,6 @@ namespace BS_KretaProjekt.Controllers
         }
 
         #region Password Change
-        [Authorize]
         [HttpPut("updatepassword")]
         public async Task<IActionResult> UpdatePassword([FromQuery] int userid, [FromQuery] string password)
         {
