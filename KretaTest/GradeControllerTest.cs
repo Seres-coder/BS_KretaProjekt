@@ -51,6 +51,26 @@ namespace KretaTest
             var response = await _client.PostAsync("api/grade/gradeadd", content);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        [Fact]
+        public async Task AddNewGrade_ReturnsBadRequest()
+        {
+            var login = await _client.PostAsync("api/user/login?username=tanar1&password=tanar123", null);
+            login.EnsureSuccessStatusCode();
+
+            var data = new
+            {
+                tanar_nev = "Kovács Tanár",
+                tantargy_nev = "Matematika",
+                diak_nev = "Nagy Diák",
+                ertek = 0 // <-- trigger
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/grade/gradeadd", content);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
         //scope mivel eddig mukododtt mostmeg mar for some reason nem?
         private int GetSeededJegyId()
         {
@@ -88,6 +108,27 @@ namespace KretaTest
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
+        public async Task ModifyGrade_ReturnsBadRequest_WhenMissingData()
+        {
+            var login = await _client.PostAsync("api/user/login?username=tanar1&password=tanar123", null);
+            login.EnsureSuccessStatusCode();
+
+            var jegyId = GetSeededJegyId();
+
+            var data = new
+            {
+                jegy_id = jegyId,
+                ertek = 0, // <-- trigger
+                updatedatum = DateTimeOffset.UtcNow
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var response = await _client.PutAsync("api/grade/grademodify", content);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
         public async Task DeleteGrade()
         {
             var responseTanar = await _client.PostAsync(
@@ -103,13 +144,20 @@ namespace KretaTest
             var response = await _client.DeleteAsync("api/grade/gradedelete?id=1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
+
         [Fact]
         public async Task GetAllGrades()
         {
-
-
             var response = await _client.GetAsync("api/grade/allgrade?id=1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+        [Fact]
+        public async Task AllGrades_ReturnsNotFound()
+        {
+            var response = await _client.GetAsync("api/grade/allgrade?id=");
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }
