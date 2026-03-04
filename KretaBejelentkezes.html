@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bejelentkezés</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#E0C097;
+    font-family: Arial, sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+}
+
+.login-box{
+    background:#B85C38;
+    padding:40px;
+    border-radius:15px;
+    width:420px;
+    border:3px solid #5C3D2E;  
+    box-shadow:0 8px 20px rgba(0,0,0,0.25); 
+}
+
+label{
+    font-size:26px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    height:55px;
+    border:none;
+    border-radius:10px;
+    margin-top:10px;
+    margin-bottom:20px;
+    padding-left:15px;
+    font-size:18px;
+    border:3px solid #5C3D2E;  
+    box-shadow:0 8px 20px rgba(0,0,0,0.25); 
+}
+
+.buttons{
+    display:flex;
+    justify-content:space-between;
+    margin-top:40px;
+}
+
+button{
+    background:white;
+    border:none;
+    border-radius:10px;
+    padding:12px 25px;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+    border:3px solid #5C3D2E;  
+    box-shadow:0 8px 20px rgba(0,0,0,0.25); 
+}
+
+
+.footer{
+    margin-top:30px;
+    background:#B85C38;
+    color:black;
+    text-align:center;
+    padding:15px;
+    width:100%;
+    font-size:14px;
+    border:3px solid #5C3D2E;  
+    box-shadow:0 8px 20px rgba(0,0,0,0.25); 
+}
+
+.footer a{
+    color:black;
+    text-decoration:underline;
+}
+
+
+/* INVERT TÉMA */
+.theme-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:10px 16px;
+    font-size:14px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#ffffff;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    z-index:1000;
+}
+.dark-theme .theme-btn{
+    background:#255F38;
+    color:white;
+    box-shadow:0 4px 10px rgba(39,57,28,0.9);
+}
+.dark-theme{
+    background:#18230F;
+}
+
+.dark-theme .login-box{
+    background:#255F38;
+    border:3px solid #27391C;
+    box-shadow:0 10px 25px rgba(39,57,28,0.9);
+}
+
+.dark-theme input{
+border:3px solid #27391C;
+box-shadow:0 4px 10px rgba(39,57,28,0.8);
+}
+
+.dark-theme button{
+    border:3px solid #27391C;
+    box-shadow:0 4px 10px rgba(39,57,28,0.9);
+}
+
+.dark-theme .footer{
+    background:#255F38;
+    border-top:2px solid #27391C;
+    border:3px solid #27391C;
+}
+
+</style>
+</head>
+
+<button onclick="toggleTheme()" class="theme-btn">Téma váltás</button>
+
+<div class="login-box">
+
+<label>Név:</label>
+<input type="text">
+
+<label>Jelszó:</label>
+<input type="password">
+
+<div class="buttons">
+<button>Bejelentkezés</button>
+<button>Regisztráció</button>
+</div>
+
+</div>
+
+
+<div class="footer">
+<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Adatkezelési tájékoztató</a><br>
+Verzió: 1.0.0 - (2026.03.04.)<br>
+<br>
+Támogatott böngészők:<br>
+Google Chrome, Mozilla Firefox, Opera, Microsoft Edge<br>
+<br>
+Készitette:Seres Dániel és Bagó Norman
+</div>
+
+<script src="KretaBejelentkezes.js"></script>
+</body>
+</html>
