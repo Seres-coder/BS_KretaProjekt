@@ -40,6 +40,8 @@ namespace BS_KretaProjekt.Model
             await trx.CommitAsync();
         }
 
+
+
         #endregion
         #region -Grade Modify
         public async Task GradeModify(GradeModify dto)

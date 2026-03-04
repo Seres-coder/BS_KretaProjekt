@@ -36,6 +36,24 @@ namespace KretaTest
             var response = await _client.PostAsync("/api/message/messageadd", content);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
+        [Fact]
+        public async Task AddNewMessage_ReturnsBadRequest()
+        {
+            var data = new
+            {
+                cim = "", // <-- trigger
+                tartalom = "Ez egy teszt tartalom.",
+                fogado_id = 1,
+                user_id = 1
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("/api/message/messageadd", content);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
         [Fact]
         public async Task GetMessage()
         {
@@ -43,16 +61,45 @@ namespace KretaTest
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
+        public async Task GetMessage_ReturnsNotFound()
+        {
+            var nonExistingUserId = 999999;
+
+            var response = await _client.GetAsync($"/api/message/messageklistazasa?user_id={nonExistingUserId}");
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
         public async Task GetOneMessage()
         {
             var response = await _client.GetAsync("/api/message/egymessagelistazasa?user_id=1&uzenet_id=1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
+        public async Task GetOneMessage_ReturnsNotFound()
+        {
+            var nonExistingUserId = 999999;
+
+            var response = await _client.GetAsync($"/api/message/egymessagelistazasa?user_id={nonExistingUserId}&uzenet_id=1");
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
         public async Task DeleteMessage()
         {
             var response = await _client.DeleteAsync("/api/message/deletemessage?id=1&message_id=1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+        [Fact]
+        public async Task DeleteMessage_ReturnsNotFound()
+        {
+            var nonExistingMessageId = 999999;
+
+            var response = await _client.DeleteAsync($"/api/message/deletemessage?id={nonExistingMessageId}&message_id=1");
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
     }
 }
