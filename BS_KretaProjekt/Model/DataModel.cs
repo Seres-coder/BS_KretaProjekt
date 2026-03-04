@@ -12,6 +12,30 @@ namespace BS_KretaProjekt.Model
         {
             _context = context;
         }
+
+        public async Task<StudentDto> GetMyData(int user_id) 
+        {
+           var items= await _context.Diakok.Where(x => x.user_id == user_id).Select(x => new StudentDto
+            {
+                diak_nev = x.diak_nev,
+                diak_id = x.diak_id,
+                user_id = x.user_id,
+                emailcim = x.emailcim,
+                lakcim = x.lakcim,
+                szuletesi_datum = (DateTime)x.szuletesi_datum,
+                szuloneve = x.szuloneve,
+                osztaly_id = (int)x.osztaly_id
+            }).FirstAsync();
+            return items;
+
+        }
+
+        public async Task<TeacherDto> GetMyTeacherData(int user_id)
+        {
+            var items= await _context.Tanarok.Where(x=>x.user_id==user_id).Select(x=> new TeacherDto { tanar_id = x.tanar_id,szak=x.szak,tanar_nev=x.tanar_nev}).FirstAsync();
+            return items;
+        }
+
         public async Task<IEnumerable<StudentDto>> GetDiak()
         {
 
