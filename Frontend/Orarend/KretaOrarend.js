@@ -1,6 +1,4 @@
-function toggleTheme(){
-    document.body.classList.toggle("dark-theme");
-}
+
 function toggleSidebar(){
 
 	const sidebar = document.getElementById("sidebar");
