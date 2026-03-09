@@ -53,3 +53,24 @@ const uzenetek = [
             document.getElementById(id).classList.add("active");
         });
     });
+
+
+const adatok = {
+    nev: "Teszt Elek",
+    osztaly: "10.A",
+    szuletesiDatum: "2008.05.12",
+    lakcim: "1234 Budapest, Példa utca 5.",
+    szuloNeve: "Tesztné Minta Anna",
+    emailCim: "teszt.elek@email.com"
+};
+
+function adatokBetoltese(adat) {
+    document.getElementById("nev").textContent = adat.nev;
+    document.getElementById("osztaly").textContent = adat.osztaly;
+    document.getElementById("szuletesiDatum").textContent = adat.szuletesiDatum;
+    document.getElementById("lakcim").textContent = adat.lakcim;
+    document.getElementById("szuloNeve").textContent = adat.szuloNeve;
+    document.getElementById("emailCim").textContent = adat.emailCim;
+}
+
+adatokBetoltese(adatok);

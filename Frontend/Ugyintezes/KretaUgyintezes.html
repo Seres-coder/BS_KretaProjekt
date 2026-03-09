@@ -13,7 +13,7 @@
         <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
         <nav class="nav flex-column">
             <a class="nav-link" onclick="window.location.href='../Menu/KretaMenu.html'">Menü</a>
-            <a class="nav-link" href="#">Jegyek</a>
+            <a class="nav-link" onclick="window.location.href='../Jegyek/KretaJegyek.html'">Jegyek</a>
             <a class="nav-link" onclick="window.location.href='../Orarend/KretaOrarend.html'">Órarend</a>
             <br>Üzenetek:	
             <nav>
@@ -95,7 +95,15 @@
         <section id="adatok-panel" class="panel">
             <div class="container mt-4">
                 <h2>Adataim</h2>
-                <p>Itt lesznek majd az adatok.</p>
+
+                <div class="card shadow-sm p-3 mt-3">
+                    <p><b>Név:</b> <span id="nev">-</span></p>
+                    <p><b>Osztály:</b> <span id="osztaly">-</span></p>
+                    <p><b>Születési dátum:</b> <span id="szuletesiDatum">-</span></p>
+                    <p><b>Lakcím:</b> <span id="lakcim">-</span></p>
+                    <p><b>Szülő neve:</b> <span id="szuloNeve">-</span></p>
+                    <p><b>Email cím:</b> <span id="emailCim">-</span></p>
+                </div>
             </div>
         </section>
 
