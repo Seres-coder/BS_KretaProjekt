@@ -74,3 +74,27 @@ function adatokBetoltese(adat) {
 }
 
 adatokBetoltese(adatok);
+
+function kuldes(){
+
+let cimzett = document.getElementById("cimzett").value;
+let tema = document.getElementById("tema").value;
+let szoveg = document.getElementById("szoveg").value;
+
+if(cimzett === "" || tema === "" || szoveg === ""){
+
+document.getElementById("uzenetStatus").innerHTML =
+"<span style='color:red'>Minden mezőt ki kell tölteni!</span>";
+
+return;
+
+}
+
+document.getElementById("uzenetStatus").innerHTML =
+"<span style='color:green'>Üzenet elküldve!</span>";
+
+document.getElementById("cimzett").value = "";
+document.getElementById("tema").value = "";
+document.getElementById("szoveg").value = "";
+
+}
