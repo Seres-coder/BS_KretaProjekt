@@ -55,25 +55,7 @@ const uzenetek = [
     });
 
 
-const adatok = {
-    nev: "Teszt Elek",
-    osztaly: "10.A",
-    szuletesiDatum: "2008.05.12",
-    lakcim: "1234 Budapest, Példa utca 5.",
-    szuloNeve: "Tesztné Minta Anna",
-    emailCim: "teszt.elek@email.com"
-};
 
-function adatokBetoltese(adat) {
-    document.getElementById("nev").textContent = adat.nev;
-    document.getElementById("osztaly").textContent = adat.osztaly;
-    document.getElementById("szuletesiDatum").textContent = adat.szuletesiDatum;
-    document.getElementById("lakcim").textContent = adat.lakcim;
-    document.getElementById("szuloNeve").textContent = adat.szuloNeve;
-    document.getElementById("emailCim").textContent = adat.emailCim;
-}
-
-adatokBetoltese(adatok);
 
 function kuldes(){
 
@@ -97,4 +79,19 @@ document.getElementById("cimzett").value = "";
 document.getElementById("tema").value = "";
 document.getElementById("szoveg").value = "";
 
+}
+
+
+function modositas() {
+    document.querySelectorAll("#lakcim, #email")
+        .forEach(input => input.disabled = false);
+
+    document.getElementById("mentesGomb").style.display = "inline-block";
+}
+
+function mentes() {
+    document.querySelectorAll("#lakcim, #email")
+        .forEach(input => input.disabled = true);
+
+    document.getElementById("mentesGomb").style.display = "none";
 }
