@@ -71,49 +71,13 @@ body{
 .panel.active {
     display: block;
 }
-.uzenet-rendszer{
-	display:flex;
-	gap:20px;
+
+
+#orarendContainer table td,
+#orarendContainer table th {
+    vertical-align: middle;
 }
 
-#lista{
-	width:300px;
-	height:500px;     
-	overflow-y:auto;  
-	border:1px solid gray;
-	background:white;
-	padding:5px;
-	
-}
-
-#lista div{
-	border:1px solid gray;
-	padding:10px;
-	margin-bottom:10px;
-	cursor:pointer;
-	border-radius:6px;
-}
-
-#lista div:hover{
-	background:#f0f0f0;
-}
-
-#uzenet{
-	flex:1;
-	border:1px solid gray;
-	padding:15px;
-	background:white;
-	
-}
-.panel {
-    display: none;
-}
-
-.panel.active {
-    display: block;
-}
-
-#adatok-panel .card p{
-    font-size:18px;
-    margin-bottom:12px;
+#orarendContainer h4 {
+    font-weight: bold;
 }
