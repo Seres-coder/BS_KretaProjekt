@@ -3,15 +3,9 @@ using BS_KretaProjekt.Persistence;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace KretaTest
 {
@@ -19,6 +13,7 @@ namespace KretaTest
     {
         private readonly HttpClient _client;
         private readonly CustomApplicationFactory _factory;
+
         public DataControllerTest(CustomApplicationFactory factory)
         {
             _factory = factory;
@@ -28,8 +23,8 @@ namespace KretaTest
                     AllowAutoRedirect = false,
                     HandleCookies = true
                 });
-
         }
+
         [Fact]
         public async Task GetDiakok()
         {
@@ -51,14 +46,24 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
         [Fact]
         public async Task GetDiakok_ReturnsBadRequest()
         {
-            var responseTanar = await _client.PostAsync(
-             "api/user/login?username=tanar1&password=tanar123",
-             null);
-            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
-            responseTanar.EnsureSuccessStatusCode();
+            var responseAdmin = await _client.PostAsync(
+                "api/user/login?username=admin&password=admin123",
+                null);
+
+            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
+            responseAdmin.EnsureSuccessStatusCode();
+
+            var content = await responseAdmin.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(
+                content,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal("Admin", loginResult._Role);
 
             var response = await _client.GetAsync("api/data/diaklistazasa");
             Assert.True(response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.BadRequest);
@@ -130,15 +135,25 @@ namespace KretaTest
         [Fact]
         public async Task ModifyStudentData_ReturnsBadRequest_baddiak()
         {
-            var login = await _client.PostAsync(
-                "api/user/login?username=tanar1&password=tanar123",
+            var responseAdmin = await _client.PostAsync(
+                "api/user/login?username=admin&password=admin123",
                 null);
-            login.EnsureSuccessStatusCode();
+
+            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
+            responseAdmin.EnsureSuccessStatusCode();
+
+            var contentAdmin = await responseAdmin.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(
+                contentAdmin,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal("Admin", loginResult._Role);
 
             var data = new
             {
                 diak_id = 1,
-                diak_nev = "", // <-- trigger
+                diak_nev = "",
                 user_id = 1,
                 osztaly_id = 1,
                 lakcim = "Pécs - Király utca 11.",
@@ -148,25 +163,40 @@ namespace KretaTest
                 szuletesi_datum = DateTime.Parse("2006-01-01")
             };
 
-            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var content = new StringContent(
+                JsonSerializer.Serialize(data),
+                Encoding.UTF8,
+                "application/json");
+
             var response = await _client.PutAsync("/api/data/modifystudentdata", content);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+
         [Fact]
         public async Task ModifyStudentData_ReturnsNotFound_badosztaly()
         {
-            var login = await _client.PostAsync(
-                "api/user/login?username=tanar1&password=tanar123",
+            var responseAdmin = await _client.PostAsync(
+                "api/user/login?username=admin&password=admin123",
                 null);
-            login.EnsureSuccessStatusCode();
+
+            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
+            responseAdmin.EnsureSuccessStatusCode();
+
+            var contentAdmin = await responseAdmin.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(
+                contentAdmin,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal("Admin", loginResult._Role);
 
             var data = new
             {
                 diak_id = 1,
                 diak_nev = "Teszt Elek",
                 user_id = 1,
-                osztaly_id = 999999, // <-- trigger (nincs ilyen osztály)
+                osztaly_id = 999999,
                 lakcim = "Pécs - Király utca 11.",
                 szuloneve = "Teszt Anyu",
                 emailcim = "teszt@pelda.hu",
@@ -174,22 +204,37 @@ namespace KretaTest
                 szuletesi_datum = DateTime.Parse("2006-01-01")
             };
 
-            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var content = new StringContent(
+                JsonSerializer.Serialize(data),
+                Encoding.UTF8,
+                "application/json");
+
             var response = await _client.PutAsync("/api/data/modifystudentdata", content);
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
+
         [Fact]
         public async Task ModifyStudentData_ReturnsBadRequest_badiddiak()
         {
-            var login = await _client.PostAsync(
-                "api/user/login?username=tanar1&password=tanar123",
+            var responseAdmin = await _client.PostAsync(
+                "api/user/login?username=admin&password=admin123",
                 null);
-            login.EnsureSuccessStatusCode();
+
+            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
+            responseAdmin.EnsureSuccessStatusCode();
+
+            var contentAdmin = await responseAdmin.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(
+                contentAdmin,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal("Admin", loginResult._Role);
 
             var data = new
             {
-                diak_id = 999999, // <-- trigger (nincs ilyen diák)
+                diak_id = 999999,
                 diak_nev = "Teszt Elek",
                 user_id = 1,
                 osztaly_id = 1,
@@ -200,11 +245,16 @@ namespace KretaTest
                 szuletesi_datum = DateTime.Parse("2006-01-01")
             };
 
-            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var content = new StringContent(
+                JsonSerializer.Serialize(data),
+                Encoding.UTF8,
+                "application/json");
+
             var response = await _client.PutAsync("/api/data/modifystudentdata", content);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+
         [Fact]
         public async Task ModifyTeacherData()
         {
@@ -336,6 +386,5 @@ namespace KretaTest
             var response = await _client.DeleteAsync("/api/data/deleteteacherdata?id=9999999");
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
-
     }
 }

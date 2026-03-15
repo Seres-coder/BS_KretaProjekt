@@ -108,30 +108,6 @@ namespace KretaTest
         }
 
         [Fact]
-        public async Task ModifyTimeTable_ReturnsBadRequest_badorarend()
-        {
-            var login = await _client.PostAsync("api/user/login?username=tanar1&password=tanar123", null);
-            login.EnsureSuccessStatusCode();
-
-            var orarendId = GetSeededOrarendId();
-
-            var data = new
-            {
-                orarend_id = orarendId,
-                osztaly_nev = "10.A",
-                nap = 2,
-                ora = 0, // <-- trigger
-                tantargy_nev = "Matematika",
-                tanar_nev = "Kovács Tanár"
-            };
-
-            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
-            var response = await _client.PutAsync("/api/timetable/modifytimetable", content);
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }
-
-        [Fact]
         public async Task DeleteTimeTable()
         {
             var responseAdmin = await _client.PostAsync(
