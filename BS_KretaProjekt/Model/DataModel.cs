@@ -94,8 +94,6 @@ namespace BS_KretaProjekt.Model
             await trx.CommitAsync();
         }
 
-
-
         public async Task ModifyTeacherData(TeacherDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.tanar_nev) || string.IsNullOrWhiteSpace(dto.szak))

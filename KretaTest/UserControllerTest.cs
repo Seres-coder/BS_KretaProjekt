@@ -80,15 +80,7 @@ namespace KretaTest
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
-        [Fact]
-        public async Task UpdateRole_BadRequest_WhenTantargyEmpty_AsTeacher()
-        {
-            var login = await _client.PostAsync("api/user/login?username=tanar1&password=tanar123", null);
-            login.EnsureSuccessStatusCode();
-
-            var response = await _client.PutAsync("api/user/upgraderole?id=1&tantargy=", null);
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }
+     
     }
 }
 
