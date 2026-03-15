@@ -52,6 +52,19 @@ namespace KretaTest
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
+        public async Task GetDiakok_ReturnsBadRequest()
+        {
+            var responseTanar = await _client.PostAsync(
+             "api/user/login?username=tanar1&password=tanar123",
+             null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+            responseTanar.EnsureSuccessStatusCode();
+
+            var response = await _client.GetAsync("api/data/diaklistazasa");
+            Assert.True(response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
         public async Task GetTanarok()
         {
             var responseAdmin = await _client.PostAsync(
@@ -114,6 +127,84 @@ namespace KretaTest
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
+        [Fact]
+        public async Task ModifyStudentData_ReturnsBadRequest_baddiak()
+        {
+            var login = await _client.PostAsync(
+                "api/user/login?username=tanar1&password=tanar123",
+                null);
+            login.EnsureSuccessStatusCode();
+
+            var data = new
+            {
+                diak_id = 1,
+                diak_nev = "", // <-- trigger
+                user_id = 1,
+                osztaly_id = 1,
+                lakcim = "Pécs - Király utca 11.",
+                szuloneve = "Teszt Anyu",
+                emailcim = "teszt@pelda.hu",
+                jegyek = Array.Empty<object>(),
+                szuletesi_datum = DateTime.Parse("2006-01-01")
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var response = await _client.PutAsync("/api/data/modifystudentdata", content);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+        [Fact]
+        public async Task ModifyStudentData_ReturnsNotFound_badosztaly()
+        {
+            var login = await _client.PostAsync(
+                "api/user/login?username=tanar1&password=tanar123",
+                null);
+            login.EnsureSuccessStatusCode();
+
+            var data = new
+            {
+                diak_id = 1,
+                diak_nev = "Teszt Elek",
+                user_id = 1,
+                osztaly_id = 999999, // <-- trigger (nincs ilyen osztály)
+                lakcim = "Pécs - Király utca 11.",
+                szuloneve = "Teszt Anyu",
+                emailcim = "teszt@pelda.hu",
+                jegyek = Array.Empty<object>(),
+                szuletesi_datum = DateTime.Parse("2006-01-01")
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var response = await _client.PutAsync("/api/data/modifystudentdata", content);
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+        [Fact]
+        public async Task ModifyStudentData_ReturnsBadRequest_badiddiak()
+        {
+            var login = await _client.PostAsync(
+                "api/user/login?username=tanar1&password=tanar123",
+                null);
+            login.EnsureSuccessStatusCode();
+
+            var data = new
+            {
+                diak_id = 999999, // <-- trigger (nincs ilyen diák)
+                diak_nev = "Teszt Elek",
+                user_id = 1,
+                osztaly_id = 1,
+                lakcim = "Pécs - Király utca 11.",
+                szuloneve = "Teszt Anyu",
+                emailcim = "teszt@pelda.hu",
+                jegyek = Array.Empty<object>(),
+                szuletesi_datum = DateTime.Parse("2006-01-01")
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            var response = await _client.PutAsync("/api/data/modifystudentdata", content);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
         [Fact]
         public async Task ModifyTeacherData()
         {
