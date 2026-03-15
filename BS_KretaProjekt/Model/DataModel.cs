@@ -14,11 +14,11 @@ namespace BS_KretaProjekt.Model
         }
         public async Task<IEnumerable<StudentDto>> GetDiak()
         {
-           
-            var items= await _context.Diakok
+
+            var items = await _context.Diakok
                 .Select(x => new StudentDto
                 {
-                   
+
                     diak_nev = x.diak_nev ?? "",
                     user_id = x.user_id,
                     osztaly_id = x.osztaly_id ?? 0,
@@ -28,37 +28,37 @@ namespace BS_KretaProjekt.Model
                     szuletesi_datum = x.szuletesi_datum ?? DateTime.MinValue
                 })
                 .ToListAsync();
-            if(items.Count == 0)
+            if (items.Count == 0)
                 throw new InvalidOperationException("nincs diak");
             return items;
         }
-        public async Task< IEnumerable<TeacherDto>> GetTeacher()
+        public async Task<IEnumerable<TeacherDto>> GetTeacher()
         {
-            var items=await _context.Tanarok.Select(x => new TeacherDto
+            var items = await _context.Tanarok.Select(x => new TeacherDto
             {
                 tanar_id = x.tanar_id,
                 tanar_nev = x.tanar_nev,
                 szak = x.szak,
             }).ToListAsync();
-            if(items.Count == 0)
+            if (items.Count == 0)
                 throw new InvalidOperationException("nincs tanar");
             return items;
 
         }
-        
-           public async Task ModifyStudentData(StudentDto dto)
+
+        public async Task ModifyStudentData(StudentDto dto)
         {
             var diak = await _context.Diakok.SingleOrDefaultAsync(x => x.diak_id == dto.diak_id);
             if (diak is null)
-                throw new InvalidOperationException(); 
-            if(string.IsNullOrWhiteSpace(dto.diak_nev) || string.IsNullOrWhiteSpace(dto.lakcim) || string.IsNullOrWhiteSpace(dto.szuloneve) || string.IsNullOrWhiteSpace(dto.emailcim) || dto.szuletesi_datum == DateTime.MinValue)
+                throw new InvalidOperationException();
+            if (string.IsNullOrWhiteSpace(dto.diak_nev) || string.IsNullOrWhiteSpace(dto.lakcim) || string.IsNullOrWhiteSpace(dto.szuloneve) || string.IsNullOrWhiteSpace(dto.emailcim) || dto.szuletesi_datum == DateTime.MinValue)
                 throw new InvalidOperationException("Nincs minden adat megadva");
-            if(!_context.Osztalyok.Any(x => x.osztaly_id == dto.osztaly_id))
+            if (!_context.Osztalyok.Any(x => x.osztaly_id == dto.osztaly_id))
                 throw new KeyNotFoundException("Nincs ilyen diak");
-          
+
 
             await using var trx = await _context.Database.BeginTransactionAsync();
-            diak.diak_id=dto.diak_id;   
+            diak.diak_id = dto.diak_id;
             diak.diak_nev = dto.diak_nev;
             diak.osztaly_id = dto.osztaly_id;
             diak.lakcim = dto.lakcim;
@@ -69,12 +69,12 @@ namespace BS_KretaProjekt.Model
             await _context.SaveChangesAsync();
             await trx.CommitAsync();
         }
-        
-        public async Task ModifyTeacherData( TeacherDto dto)
+
+        public async Task ModifyTeacherData(TeacherDto dto)
         {
-            if(string.IsNullOrWhiteSpace(dto.tanar_nev) || string.IsNullOrWhiteSpace(dto.szak))
+            if (string.IsNullOrWhiteSpace(dto.tanar_nev) || string.IsNullOrWhiteSpace(dto.szak))
                 throw new InvalidOperationException("Nincs minden adat megadva");
-             if(!_context.Tanarok.Any(x => x.tanar_id == dto.tanar_id))
+            if (!_context.Tanarok.Any(x => x.tanar_id == dto.tanar_id))
                 throw new KeyNotFoundException("Nincs ilyen tanar");
 
             using (var trx = _context.Database.BeginTransaction())

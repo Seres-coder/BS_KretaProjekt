@@ -15,7 +15,7 @@ namespace BS_KretaProjekt.Controllers
         {
             _model = model;
         }
-        [Authorize(Roles ="Tanar")]
+        [Authorize(Roles ="Admin")]
         [HttpGet("diaklistazasa")]
         public async Task <ActionResult<IEnumerable<StudentDto>>> GetDiak()
         {
@@ -34,7 +34,7 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
-        [Authorize(Roles = "Tanar")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("tanarlistazasa")]
         public async Task <ActionResult<IEnumerable<StudentDto>>> GetTeacher()
         {
@@ -52,7 +52,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-        [Authorize(Roles = "Tanar")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("modifystudentdata")]
         public async Task<ActionResult> ModifyStudetData([FromBody] StudentDto dto)
         {
@@ -75,7 +75,7 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
-        [Authorize(Roles = "Tanar")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("modifyteacherdata")]
         public async Task<ActionResult> ModifyTeacherData([FromBody] TeacherDto dto)
         {
@@ -98,7 +98,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
 
-        [Authorize(Roles = "Tanar")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("deletestudentdata")]
         public   async Task<ActionResult> DeleteStudentData([FromQuery] int id)
         {
@@ -117,7 +117,7 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
-        [Authorize(Roles = "Tanar")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("deleteteacherdata")]
         public async Task<ActionResult> DeleteTeacherData([FromQuery] int id)
         {

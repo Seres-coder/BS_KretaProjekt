@@ -93,7 +93,7 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region Role update
-        [Authorize(Roles = "Tanar")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("upgraderole")]
         public async Task<IActionResult> UpdateRole([FromQuery] int id, [FromQuery] string tantargy)
         {
