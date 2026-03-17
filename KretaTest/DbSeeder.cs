@@ -104,22 +104,22 @@ namespace BS_KretaProjekt.Persistence
                 new Orarend
                 {
                     osztaly_id = osztaly1Id,
-                    osztaly = osztalyok[0],
+                    Osztaly = osztalyok[0],
                     nap = DayOfWeek.Monday,
                     ora = 1,
                     tantargy_id = matekId,
-                    tantargy = tantargyok[0],
+                    Tantargy = tantargyok[0],
                     tanar_id = tanar1Id,
                     Tanar = tanarok[0]
                 },
                 new Orarend
                 {
                     osztaly_id = osztaly1Id,
-                    osztaly = osztalyok[0],
+                    Osztaly = osztalyok[0],
                     nap = DayOfWeek.Monday,
                     ora = 2,
                     tantargy_id = magyarId,
-                    tantargy = tantargyok[1],
+                    Tantargy = tantargyok[1],
                     tanar_id = tanar1Id,
                     Tanar = tanarok[0]
                 }
@@ -153,7 +153,7 @@ namespace BS_KretaProjekt.Persistence
                     updatedatum = DateTimeOffset.Now.AddDays(-5),
                     ertek = 4,
                     tantargy_id = matekId,
-                    tantargy = tantargyok[0],
+                    Tantargy = tantargyok[0],
                     tanar_id = tanar1Id,
                     Tanar = tanarok[0],
                     diak_id = diak1Id,
@@ -165,7 +165,7 @@ namespace BS_KretaProjekt.Persistence
                     updatedatum = DateTimeOffset.Now,
                     ertek = 5,
                     tantargy_id = angolId,
-                    tantargy = tantargyok[2],
+                    Tantargy = tantargyok[2],
                     tanar_id = tanar1Id,
                     Tanar = tanarok[0],
                     diak_id = diak1Id,

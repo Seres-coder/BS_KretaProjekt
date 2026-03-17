@@ -72,28 +72,25 @@ namespace BS_KretaProjekt.Migrations
                 {
                     diak_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    diak_nev = table.Column<string>(type: "text", nullable: false),
+                    diak_nev = table.Column<string>(type: "text", nullable: true),
                     user_id = table.Column<int>(type: "integer", nullable: false),
-                    user_id1 = table.Column<int>(type: "integer", nullable: false),
-                    osztaly_id = table.Column<int>(type: "integer", nullable: false),
-                    osztaly_id1 = table.Column<int>(type: "integer", nullable: false),
-                    szuletesi_datum = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    lakcim = table.Column<string>(type: "text", nullable: false),
-                    szuloneve = table.Column<string>(type: "text", nullable: false),
-                    emailcim = table.Column<string>(type: "text", nullable: false)
+                    osztaly_id = table.Column<int>(type: "integer", nullable: true),
+                    szuletesi_datum = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    lakcim = table.Column<string>(type: "text", nullable: true),
+                    szuloneve = table.Column<string>(type: "text", nullable: true),
+                    emailcim = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Diakok", x => x.diak_id);
                     table.ForeignKey(
-                        name: "FK_Diakok_Osztalyok_osztaly_id1",
-                        column: x => x.osztaly_id1,
+                        name: "FK_Diakok_Osztalyok_osztaly_id",
+                        column: x => x.osztaly_id,
                         principalTable: "Osztalyok",
-                        principalColumn: "osztaly_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "osztaly_id");
                     table.ForeignKey(
-                        name: "FK_Diakok_Users_user_id1",
-                        column: x => x.user_id1,
+                        name: "FK_Diakok_Users_user_id",
+                        column: x => x.user_id,
                         principalTable: "Users",
                         principalColumn: "user_id",
                         onDelete: ReferentialAction.Cascade);
@@ -105,25 +102,22 @@ namespace BS_KretaProjekt.Migrations
                 {
                     tanar_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    tanar_nev = table.Column<string>(type: "text", nullable: false),
-                    szak = table.Column<string>(type: "text", nullable: false),
-                    tantargy_id = table.Column<int>(type: "integer", nullable: false),
-                    tantargy_id1 = table.Column<int>(type: "integer", nullable: false),
-                    user_id = table.Column<int>(type: "integer", nullable: false),
-                    user_id1 = table.Column<int>(type: "integer", nullable: false)
+                    tanar_nev = table.Column<string>(type: "text", nullable: true),
+                    szak = table.Column<string>(type: "text", nullable: true),
+                    tantargy_id = table.Column<int>(type: "integer", nullable: true),
+                    user_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tanarok", x => x.tanar_id);
                     table.ForeignKey(
-                        name: "FK_Tanarok_Tantargyok_tantargy_id1",
-                        column: x => x.tantargy_id1,
+                        name: "FK_Tanarok_Tantargyok_tantargy_id",
+                        column: x => x.tantargy_id,
                         principalTable: "Tantargyok",
-                        principalColumn: "tantargy_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "tantargy_id");
                     table.ForeignKey(
-                        name: "FK_Tanarok_Users_user_id1",
-                        column: x => x.user_id1,
+                        name: "FK_Tanarok_Users_user_id",
+                        column: x => x.user_id,
                         principalTable: "Users",
                         principalColumn: "user_id",
                         onDelete: ReferentialAction.Cascade);
@@ -138,23 +132,21 @@ namespace BS_KretaProjekt.Migrations
                     tartalom = table.Column<string>(type: "text", nullable: false),
                     cim = table.Column<string>(type: "text", nullable: false),
                     fogado_id = table.Column<int>(type: "integer", nullable: false),
-                    Fogadodiak_id = table.Column<int>(type: "integer", nullable: false),
                     user_id = table.Column<int>(type: "integer", nullable: false),
-                    user_id1 = table.Column<int>(type: "integer", nullable: false),
                     kuldesidopontja = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Uzenetek", x => x.uzenet_id);
                     table.ForeignKey(
-                        name: "FK_Uzenetek_Diakok_Fogadodiak_id",
-                        column: x => x.Fogadodiak_id,
+                        name: "FK_Uzenetek_Diakok_fogado_id",
+                        column: x => x.fogado_id,
                         principalTable: "Diakok",
                         principalColumn: "diak_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Uzenetek_Users_user_id1",
-                        column: x => x.user_id1,
+                        name: "FK_Uzenetek_Users_user_id",
+                        column: x => x.user_id,
                         principalTable: "Users",
                         principalColumn: "user_id",
                         onDelete: ReferentialAction.Cascade);
@@ -170,30 +162,27 @@ namespace BS_KretaProjekt.Migrations
                     updatedatum = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ertek = table.Column<int>(type: "integer", nullable: false),
                     tantargy_id = table.Column<int>(type: "integer", nullable: false),
-                    tantargy_id1 = table.Column<int>(type: "integer", nullable: false),
                     tanar_id = table.Column<int>(type: "integer", nullable: false),
-                    tanar_id1 = table.Column<int>(type: "integer", nullable: false),
-                    diak_id = table.Column<int>(type: "integer", nullable: false),
-                    diak_id1 = table.Column<int>(type: "integer", nullable: false)
+                    diak_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Jegyek", x => x.jegy_id);
                     table.ForeignKey(
-                        name: "FK_Jegyek_Diakok_diak_id1",
-                        column: x => x.diak_id1,
+                        name: "FK_Jegyek_Diakok_diak_id",
+                        column: x => x.diak_id,
                         principalTable: "Diakok",
                         principalColumn: "diak_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Jegyek_Tanarok_tanar_id1",
-                        column: x => x.tanar_id1,
+                        name: "FK_Jegyek_Tanarok_tanar_id",
+                        column: x => x.tanar_id,
                         principalTable: "Tanarok",
                         principalColumn: "tanar_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Jegyek_Tantargyok_tantargy_id1",
-                        column: x => x.tantargy_id1,
+                        name: "FK_Jegyek_Tantargyok_tantargy_id",
+                        column: x => x.tantargy_id,
                         principalTable: "Tantargyok",
                         principalColumn: "tantargy_id",
                         onDelete: ReferentialAction.Cascade);
@@ -206,32 +195,29 @@ namespace BS_KretaProjekt.Migrations
                     orarend_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     osztaly_id = table.Column<int>(type: "integer", nullable: false),
-                    osztaly_id1 = table.Column<int>(type: "integer", nullable: false),
                     nap = table.Column<int>(type: "integer", nullable: false),
                     ora = table.Column<int>(type: "integer", nullable: false),
                     tantargy_id = table.Column<int>(type: "integer", nullable: false),
-                    tantargy_id1 = table.Column<int>(type: "integer", nullable: false),
-                    tanar_id = table.Column<int>(type: "integer", nullable: false),
-                    tanar_id1 = table.Column<int>(type: "integer", nullable: false)
+                    tanar_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orarendek", x => x.orarend_id);
                     table.ForeignKey(
-                        name: "FK_Orarendek_Osztalyok_osztaly_id1",
-                        column: x => x.osztaly_id1,
+                        name: "FK_Orarendek_Osztalyok_osztaly_id",
+                        column: x => x.osztaly_id,
                         principalTable: "Osztalyok",
                         principalColumn: "osztaly_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orarendek_Tanarok_tanar_id1",
-                        column: x => x.tanar_id1,
+                        name: "FK_Orarendek_Tanarok_tanar_id",
+                        column: x => x.tanar_id,
                         principalTable: "Tanarok",
                         principalColumn: "tanar_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orarendek_Tantargyok_tantargy_id1",
-                        column: x => x.tantargy_id1,
+                        name: "FK_Orarendek_Tantargyok_tantargy_id",
+                        column: x => x.tantargy_id,
                         principalTable: "Tantargyok",
                         principalColumn: "tantargy_id",
                         onDelete: ReferentialAction.Cascade);
@@ -244,44 +230,44 @@ namespace BS_KretaProjekt.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Diakok_osztaly_id1",
+                name: "IX_Diakok_osztaly_id",
                 table: "Diakok",
-                column: "osztaly_id1");
+                column: "osztaly_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Diakok_user_id1",
+                name: "IX_Diakok_user_id",
                 table: "Diakok",
-                column: "user_id1");
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Jegyek_diak_id1",
+                name: "IX_Jegyek_diak_id",
                 table: "Jegyek",
-                column: "diak_id1");
+                column: "diak_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Jegyek_tanar_id1",
+                name: "IX_Jegyek_tanar_id",
                 table: "Jegyek",
-                column: "tanar_id1");
+                column: "tanar_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Jegyek_tantargy_id1",
+                name: "IX_Jegyek_tantargy_id",
                 table: "Jegyek",
-                column: "tantargy_id1");
+                column: "tantargy_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orarendek_osztaly_id1",
+                name: "IX_Orarendek_osztaly_id",
                 table: "Orarendek",
-                column: "osztaly_id1");
+                column: "osztaly_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orarendek_tanar_id1",
+                name: "IX_Orarendek_tanar_id",
                 table: "Orarendek",
-                column: "tanar_id1");
+                column: "tanar_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orarendek_tantargy_id1",
+                name: "IX_Orarendek_tantargy_id",
                 table: "Orarendek",
-                column: "tantargy_id1");
+                column: "tantargy_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Osztalyok_osztaly_nev",
@@ -290,14 +276,20 @@ namespace BS_KretaProjekt.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tanarok_tantargy_id1",
+                name: "IX_Tanarok_tantargy_id",
                 table: "Tanarok",
-                column: "tantargy_id1");
+                column: "tantargy_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tanarok_user_id1",
+                name: "IX_Tanarok_user_id",
                 table: "Tanarok",
-                column: "user_id1");
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tantargyok_tantargy_nev",
+                table: "Tantargyok",
+                column: "tantargy_nev",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_belepesnev",
@@ -306,14 +298,14 @@ namespace BS_KretaProjekt.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Uzenetek_Fogadodiak_id",
+                name: "IX_Uzenetek_fogado_id",
                 table: "Uzenetek",
-                column: "Fogadodiak_id");
+                column: "fogado_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Uzenetek_user_id1",
+                name: "IX_Uzenetek_user_id",
                 table: "Uzenetek",
-                column: "user_id1");
+                column: "user_id");
         }
 
         /// <inheritdoc />
