@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BS_KretaProjekt.Migrations
 {
     [DbContext(typeof(KretaDbContext))]
-    [Migration("20260224100534_InitialCreate")]
+    [Migration("20260317175738_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -34,34 +34,24 @@ namespace BS_KretaProjekt.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("diak_id"));
 
                     b.Property<string>("diak_nev")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("emailcim")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("lakcim")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("osztaly_id")
+                    b.Property<int?>("osztaly_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("osztaly_id1")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("szuletesi_datum")
+                    b.Property<DateTime?>("szuletesi_datum")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("szuloneve")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("user_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("user_id1")
                         .HasColumnType("integer");
 
                     b.HasKey("diak_id");
@@ -69,9 +59,9 @@ namespace BS_KretaProjekt.Migrations
                     b.HasIndex("emailcim")
                         .IsUnique();
 
-                    b.HasIndex("osztaly_id1");
+                    b.HasIndex("osztaly_id");
 
-                    b.HasIndex("user_id1");
+                    b.HasIndex("user_id");
 
                     b.ToTable("Diakok");
                 });
@@ -106,22 +96,13 @@ namespace BS_KretaProjekt.Migrations
                     b.Property<int>("diak_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("diak_id1")
-                        .HasColumnType("integer");
-
                     b.Property<int>("ertek")
                         .HasColumnType("integer");
 
                     b.Property<int>("tanar_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("tanar_id1")
-                        .HasColumnType("integer");
-
                     b.Property<int>("tantargy_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("tantargy_id1")
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("updatedatum")
@@ -129,11 +110,11 @@ namespace BS_KretaProjekt.Migrations
 
                     b.HasKey("jegy_id");
 
-                    b.HasIndex("diak_id1");
+                    b.HasIndex("diak_id");
 
-                    b.HasIndex("tanar_id1");
+                    b.HasIndex("tanar_id");
 
-                    b.HasIndex("tantargy_id1");
+                    b.HasIndex("tantargy_id");
 
                     b.ToTable("Jegyek");
                 });
@@ -155,28 +136,19 @@ namespace BS_KretaProjekt.Migrations
                     b.Property<int>("osztaly_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("osztaly_id1")
-                        .HasColumnType("integer");
-
                     b.Property<int>("tanar_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("tanar_id1")
                         .HasColumnType("integer");
 
                     b.Property<int>("tantargy_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("tantargy_id1")
-                        .HasColumnType("integer");
-
                     b.HasKey("orarend_id");
 
-                    b.HasIndex("osztaly_id1");
+                    b.HasIndex("osztaly_id");
 
-                    b.HasIndex("tanar_id1");
+                    b.HasIndex("tanar_id");
 
-                    b.HasIndex("tantargy_id1");
+                    b.HasIndex("tantargy_id");
 
                     b.ToTable("Orarendek");
                 });
@@ -210,30 +182,22 @@ namespace BS_KretaProjekt.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("tanar_id"));
 
                     b.Property<string>("szak")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("tanar_nev")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("tantargy_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("tantargy_id1")
+                    b.Property<int?>("tantargy_id")
                         .HasColumnType("integer");
 
                     b.Property<int>("user_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("user_id1")
-                        .HasColumnType("integer");
-
                     b.HasKey("tanar_id");
 
-                    b.HasIndex("tantargy_id1");
+                    b.HasIndex("tantargy_id");
 
-                    b.HasIndex("user_id1");
+                    b.HasIndex("user_id");
 
                     b.ToTable("Tanarok");
                 });
@@ -251,6 +215,9 @@ namespace BS_KretaProjekt.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("tantargy_id");
+
+                    b.HasIndex("tantargy_nev")
+                        .IsUnique();
 
                     b.ToTable("Tantargyok");
                 });
@@ -291,9 +258,6 @@ namespace BS_KretaProjekt.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("uzenet_id"));
 
-                    b.Property<int>("Fogadodiak_id")
-                        .HasColumnType("integer");
-
                     b.Property<string>("cim")
                         .IsRequired()
                         .HasColumnType("text");
@@ -311,14 +275,11 @@ namespace BS_KretaProjekt.Migrations
                     b.Property<int>("user_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("user_id1")
-                        .HasColumnType("integer");
-
                     b.HasKey("uzenet_id");
 
-                    b.HasIndex("Fogadodiak_id");
+                    b.HasIndex("fogado_id");
 
-                    b.HasIndex("user_id1");
+                    b.HasIndex("user_id");
 
                     b.ToTable("Uzenetek");
                 });
@@ -327,13 +288,11 @@ namespace BS_KretaProjekt.Migrations
                 {
                     b.HasOne("BS_KretaProjekt.Persistence.Osztaly", "Osztaly")
                         .WithMany()
-                        .HasForeignKey("osztaly_id1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("osztaly_id");
 
                     b.HasOne("BS_KretaProjekt.Persistence.User", "User")
                         .WithMany()
-                        .HasForeignKey("user_id1")
+                        .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -346,19 +305,19 @@ namespace BS_KretaProjekt.Migrations
                 {
                     b.HasOne("BS_KretaProjekt.Persistence.Diak", "Diak")
                         .WithMany("jegyek")
-                        .HasForeignKey("diak_id1")
+                        .HasForeignKey("diak_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BS_KretaProjekt.Persistence.Tanar", "Tanar")
-                        .WithMany()
-                        .HasForeignKey("tanar_id1")
+                        .WithMany("jegyek")
+                        .HasForeignKey("tanar_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BS_KretaProjekt.Persistence.Tantargy", "tantargy")
+                    b.HasOne("BS_KretaProjekt.Persistence.Tantargy", "Tantargy")
                         .WithMany()
-                        .HasForeignKey("tantargy_id1")
+                        .HasForeignKey("tantargy_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -366,47 +325,45 @@ namespace BS_KretaProjekt.Migrations
 
                     b.Navigation("Tanar");
 
-                    b.Navigation("tantargy");
+                    b.Navigation("Tantargy");
                 });
 
             modelBuilder.Entity("BS_KretaProjekt.Persistence.Orarend", b =>
                 {
-                    b.HasOne("BS_KretaProjekt.Persistence.Osztaly", "osztaly")
-                        .WithMany()
-                        .HasForeignKey("osztaly_id1")
+                    b.HasOne("BS_KretaProjekt.Persistence.Osztaly", "Osztaly")
+                        .WithMany("Orarend")
+                        .HasForeignKey("osztaly_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BS_KretaProjekt.Persistence.Tanar", "Tanar")
-                        .WithMany()
-                        .HasForeignKey("tanar_id1")
+                        .WithMany("Orarend")
+                        .HasForeignKey("tanar_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BS_KretaProjekt.Persistence.Tantargy", "tantargy")
-                        .WithMany()
-                        .HasForeignKey("tantargy_id1")
+                    b.HasOne("BS_KretaProjekt.Persistence.Tantargy", "Tantargy")
+                        .WithMany("Orarend")
+                        .HasForeignKey("tantargy_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Osztaly");
 
                     b.Navigation("Tanar");
 
-                    b.Navigation("osztaly");
-
-                    b.Navigation("tantargy");
+                    b.Navigation("Tantargy");
                 });
 
             modelBuilder.Entity("BS_KretaProjekt.Persistence.Tanar", b =>
                 {
                     b.HasOne("BS_KretaProjekt.Persistence.Tantargy", "Tantargy")
                         .WithMany()
-                        .HasForeignKey("tantargy_id1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("tantargy_id");
 
                     b.HasOne("BS_KretaProjekt.Persistence.User", "User")
                         .WithMany()
-                        .HasForeignKey("user_id1")
+                        .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -419,13 +376,13 @@ namespace BS_KretaProjekt.Migrations
                 {
                     b.HasOne("BS_KretaProjekt.Persistence.Diak", "Fogado")
                         .WithMany()
-                        .HasForeignKey("Fogadodiak_id")
+                        .HasForeignKey("fogado_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BS_KretaProjekt.Persistence.User", "User")
                         .WithMany()
-                        .HasForeignKey("user_id1")
+                        .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -437,6 +394,23 @@ namespace BS_KretaProjekt.Migrations
             modelBuilder.Entity("BS_KretaProjekt.Persistence.Diak", b =>
                 {
                     b.Navigation("jegyek");
+                });
+
+            modelBuilder.Entity("BS_KretaProjekt.Persistence.Osztaly", b =>
+                {
+                    b.Navigation("Orarend");
+                });
+
+            modelBuilder.Entity("BS_KretaProjekt.Persistence.Tanar", b =>
+                {
+                    b.Navigation("Orarend");
+
+                    b.Navigation("jegyek");
+                });
+
+            modelBuilder.Entity("BS_KretaProjekt.Persistence.Tantargy", b =>
+                {
+                    b.Navigation("Orarend");
                 });
 #pragma warning restore 612, 618
         }

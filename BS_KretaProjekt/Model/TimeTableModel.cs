@@ -100,14 +100,14 @@ namespace BS_KretaProjekt.Model
 
             var result = 
             _context.Orarendek
-                .Include(x => x.tantargy)
+                .Include(x => x.Tantargy)
                 .Include(x => x.Tanar)
                 .Where(x => x.osztaly_id == osztaly_id)
                 .Select(x => new
                 {
                     x.nap,
                     x.ora,
-                    tantargyNev = x.tantargy.tantargy_nev,
+                    tantargyNev = x.Tantargy.tantargy_nev,
                     tanarNev = x.Tanar.tanar_nev
                 })
                 .GroupBy(x => x.nap)

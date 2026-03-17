@@ -79,7 +79,7 @@ namespace BS_KretaProjekt.Model
 
             if (tanar_id != 0)
             {
-                return _context.Jegyek.Include(x => x.Tanar).Include(x => x.tantargy).Where(x => x.tanar_id == x.tanar_id).Select(x => new GradeListDto
+                return _context.Jegyek.Include(x => x.Tanar).Include(x => x.Tantargy).Where(x => x.tanar_id == x.tanar_id).Select(x => new GradeListDto
                 {
                     jegy_id = x.jegy_id,
                     datum = x.datum,
@@ -93,7 +93,7 @@ namespace BS_KretaProjekt.Model
             {
 
 
-                return _context.Jegyek.Include(x => x.Tanar).Include(x => x.tantargy).Where(x => x.diak_id == id).Select(x => new GradeListDto
+                return _context.Jegyek.Include(x => x.Tanar).Include(x => x.Tantargy).Where(x => x.diak_id == id).Select(x => new GradeListDto
                 {
                     jegy_id = x.jegy_id,
                     datum = x.datum,

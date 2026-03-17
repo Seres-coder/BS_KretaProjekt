@@ -41,13 +41,13 @@ namespace KretaTest
                 .Where(j => j.ertek == dto.ertek)
                 .Include(j => j.Diak)
                 .Include(j => j.Tanar)
-                .Include(j => j.tantargy)
+                .Include(j => j.Tantargy)
                 .FirstOrDefault();
 
             Assert.NotNull(ujJegy);
             Assert.Equal(dto.diak_nev, ujJegy.Diak.diak_nev);
             Assert.Equal(dto.tanar_nev, ujJegy.Tanar.tanar_nev);
-            Assert.Equal(dto.tantargy_nev, ujJegy.tantargy.tantargy_nev);
+            Assert.Equal(dto.tantargy_nev, ujJegy.Tantargy.tantargy_nev);
         }
 
         [Fact]
