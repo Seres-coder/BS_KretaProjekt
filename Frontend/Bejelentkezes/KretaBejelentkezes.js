@@ -1,42 +1,75 @@
-const API_BASE= 'https://localhost:7651/api';
+const API_BASE_URL = "https://localhost:7273/api/User";
 
-async function apiFetch(url,options={}){
-    const response=await fetch(url,{
-        headers:{
-            'Content-Type':'application/json'
-            ...(options.headers || {})
-        },
-        credentials :'include'
-        ...options
-    });
-    if(!response.ok){
-        switch(response.status){
-            case 401:
-                throw new Error('Hibas felhasználónév vagy jelszó');
-            case 403:
-                throw new Error('Nincs jogosultságod');
-            case 404:
-                throw new Error('Nem található a felhasználó');
-            default:
-                throw new Error(`Hiba történt (${response.stasus}).`)
-        }
-    }
-    const contentType = response.headers.get('Content-Type') || '';
-    if(contentType.includes('application/json')){
-        return await response.json();
-    }
-    return await response.text();
+const loginForm = document.getElementById("login-form");
+const loginMessage = document.getElementById("login-message");
+
+function showMessage(element, message, isSuccess = false) {
+    element.textContent = message;
+    element.className = isSuccess
+        ? "mt-3 alert alert-success"
+        : "mt-3 alert alert-danger";
 }
-document.getElementById('login-form').addEventListener('submit',async e =>{
-    e.preventDefault();
-    const form=e.target;
-    const data = Object.fromEntries(new FormData(form));
-    const log=document.getElementById('login-log')
-    log.textContent='';
 
-    try{
-       await apiFetch(
-        `${API_BASE}/`
-       )
+function clearMessage(element) {
+    element.textContent = "";
+    element.className = "mt-3";
+}
+
+function redirectByRole(user) {
+    const role = (user.role || user.Role || "").toString().trim().toLowerCase();
+    console.log("Kapott role:", role);
+    console.log("Teljes user objektum:", user);
+
+    if (role === "diak") {
+        window.location.href = "../KretaDiakFelulet/Diak.html";
     }
-})
+    else if (role === "tanar") {
+        window.location.href = "../KretaTanarFelulet/Tanar.html";
+    }
+    else if (role === "admin") {
+        window.location.href = "../KretaAdminFelulet/Admin.html";
+    }
+    else {
+        showMessage(loginMessage, "Sikertelen");
+        console.error("Ismeretlen role:", user);
+    }
+}
+
+if (loginForm) {
+    loginForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        clearMessage(loginMessage);
+        const username = loginForm.username.value.trim();
+        const password = loginForm.password.value.trim();
+        if (!username || !password) {
+            showMessage(loginMessage, "Kérlek tölts ki minden mezőt.");
+            return;
+        }
+        try {
+            const url = `${API_BASE_URL}/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+            const response = await fetch(url, {
+                method: "POST",
+                credentials: "include"
+            });
+            if (response.ok) {
+                const user = await response.json();
+                console.log("Bejelentkezett user:", user);
+                localStorage.setItem("kretaUser", JSON.stringify(user));
+                showMessage(loginMessage, "Sikeres bejelentkezés.", true);
+                setTimeout(() => {
+                    redirectByRole(user);
+                }, 500);
+                return;
+            }
+            if (response.status === 401) {
+                showMessage(loginMessage, "Hibás felhasználónév vagy jelszó.");
+                return;
+            }
+            const errorText = await response.text();
+            showMessage(loginMessage, errorText || "Sikertelen bejelentkezés.");
+        } catch (error) {
+            console.error("Login hiba:", error);
+            showMessage(loginMessage, "Nem sikerült kapcsolódni a szerverhez.");
+        }
+    });
+}
