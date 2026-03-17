@@ -7,6 +7,18 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("allowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://127.0.0.1:5500")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 // Add services to the container.
 builder.Services.AddDbContextPool<KretaDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("KreateDb")));
 builder.Services.AddTransient<DataModel>();
@@ -60,6 +72,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("allowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
