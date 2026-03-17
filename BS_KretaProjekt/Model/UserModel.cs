@@ -65,7 +65,7 @@ namespace BS_KretaProjekt.Model
         #endregion
         #region Login checker
 
-        public UserDto? ValidateUser(string name, string password, string role = "Diak")
+        public UserDto? ValidateUser(string name, string password)
         {
             string hashpass = HashPassword(password);
             var user = _context.Users.Where(x => x.belepesnev == name);
