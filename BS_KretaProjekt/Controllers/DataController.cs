@@ -3,6 +3,7 @@ using BS_KretaProjekt.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BS_KretaProjekt.Controllers
 {
@@ -14,6 +15,46 @@ namespace BS_KretaProjekt.Controllers
         public DataController(DataModel model)
         {
             _model = model;
+        }
+
+        [HttpGet("mydata")]
+        public async Task<ActionResult<StudentDto>> GetMyData([FromQuery] int userId)
+        {
+            try
+            {
+                var response = await _model.GetMyData(userId);
+
+                if (response == null)
+                {
+                    return NotFound("Nincs ilyen diákadat.");
+                }
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Szerverhiba: {ex.Message}");
+            }
+        }
+
+        [HttpGet("myteacherdata")]
+        public async Task<ActionResult<StudentDto>> GetMyTeacherData([FromQuery] int userId)
+        {
+            try
+            {
+                var response = await _model.GetMyTeacherData(userId);
+
+                if (response == null)
+                {
+                    return NotFound("Nincs ilyen tanáradat.");
+                }
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Szerverhiba: {ex.Message}");
+            }
         }
         [Authorize(Roles ="Admin")]
         [HttpGet("diaklistazasa")]
