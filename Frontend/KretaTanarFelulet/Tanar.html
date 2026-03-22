@@ -8,28 +8,28 @@
     <link rel="stylesheet" href="Tanar.css">
 </head>
 <body>
-     <div class="sidebar" id="sidebar">
-        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar" id="sidebar">
+        <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
         <nav class="nav flex-column">
-            <br>Üzenetek:	
+            <br>Üzenetek:
             <nav>
-                <button class="nav-link" data-view="bejovo-uzenetek-panel">Bejövő Üzenetek</button>
-                <button class="nav-link" data-view="uzenet-iras-panel">Üzenet Írása</button>
+                <button class="nav-link" data-panel-target="bejovo-uzenetek-panel">Bejövő Üzenetek</button>
+                <button class="nav-link" data-panel-target="uzenet-iras-panel">Üzenet Írása</button>
             </nav>
+
             <br>Adatok:
             <nav>
-                <button class="nav-link" data-view="adatok-panel">Adataim</button>
+                <button class="nav-link" data-panel-target="adatok-panel">Adataim</button>
             </nav>
-             <br>Órarend:
+
+            <br>Órarend:
             <nav>
-                <button class="nav-link" data-view="orarend-panel">Órarendem</button>
+                <button class="nav-link" data-panel-target="orarend-panel">Órarendem</button>
             </nav>
-            <br>Jegyek:
+
+            <br>Jegyeim:
             <nav>
-                <button class="nav-link" data-view="jegyek-panel">Jegyek irása</button>
-                <button class="nav-link" onclick="osztalyBetolt(0, '9.A')">9.A</button>
-                <button class="nav-link" onclick="osztalyBetolt(1, '10.A')">10.A</button>
-                <button class="nav-link" onclick="osztalyBetolt(2, '11.A')">11.A</button>
+                <button class="nav-link" data-panel-target="jegyek-panel">Jegyeim</button>
             </nav>
         </nav>
     </div>
@@ -112,32 +112,37 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label"><b>Név:</b></label>
-                            <input type="text" class="form-control" id="tanar_nev" value="Kovács Anna" disabled>
+                            <input type="text" class="form-control" id="nev"  disabled>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label"><b>Szak:</b></label>
-                            <input type="text" class="form-control" id="tanar_szak" value="Matematika - Fizika" disabled>
+                            <label class="form-label"><b>Osztály:</b></label>
+                            <input type="text" class="form-control" id="osztaly"  disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Születési dátum:</b></label>
-                            <input type="date" class="form-control" id="tanar_szuletes" value="1985-04-15" disabled>
+                            <input type="date" class="form-control" id="szuletes"  disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Lakcím:</b></label>
-                            <input type="text" class="form-control" id="tanar_lakcim" value="1111 Budapest, Tanár utca 12." disabled>
+                            <input type="text" class="form-control" id="lakcim"  disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Email:</b></label>
-                            <input type="email" class="form-control" id="tanar_email" value="kovacs.anna@iskola.hu" disabled>
+                            <input type="email" class="form-control" id="email"  disabled>
+                        </div>
+                         <div class="mb-3">
+                            <label class="form-label"><b>Szülő neve:</b></label>
+                            <input type="text" class="form-control" id="szulo"  disabled>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
         <section id="orarend-panel" class="panel">
                     <div class="container mt-4">
                         <h2>Tanári órarend</h2>
