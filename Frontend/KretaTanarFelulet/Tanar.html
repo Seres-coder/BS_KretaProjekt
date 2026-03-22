@@ -114,29 +114,9 @@
                             <label class="form-label"><b>Név:</b></label>
                             <input type="text" class="form-control" id="nev"  disabled>
                         </div>
-
-                        <div class="mb-3">
-                            <label class="form-label"><b>Osztály:</b></label>
-                            <input type="text" class="form-control" id="osztaly"  disabled>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label"><b>Születési dátum:</b></label>
-                            <input type="date" class="form-control" id="szuletes"  disabled>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label"><b>Lakcím:</b></label>
-                            <input type="text" class="form-control" id="lakcim"  disabled>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label"><b>Email:</b></label>
-                            <input type="email" class="form-control" id="email"  disabled>
-                        </div>
                          <div class="mb-3">
-                            <label class="form-label"><b>Szülő neve:</b></label>
-                            <input type="text" class="form-control" id="szulo"  disabled>
+                            <label class="form-label"><b>Szak:</b></label>
+                            <input type="text" class="form-control" id="szak"  disabled>
                         </div>
                     </div>
                 </div>
@@ -144,17 +124,16 @@
         </section>
 
         <section id="orarend-panel" class="panel">
-                    <div class="container mt-4">
-                        <h2>Tanári órarend</h2>
-                        <div class="card shadow-sm mt-3">
-                            <div class="card-body">
-                                <div id="tanarInfo" class="mb-4"></div>
-                                <div id="orarendContainer"></div>
-                            </div>
-                        </div>
+            <div class="container mt-4">
+                <h2>Órarendem</h2>
+                <div class="card shadow-sm mt-3">
+                    <div class="card-body">
+                        <div id="tanarOrarendContainer">Betöltés...</div>
                     </div>
-                </section>
-                <section id="jegyek-panel" class="panel">
+                </div>
+            </div>
+        </section>
+        <section id="jegyek-panel" class="panel">
             <div class="content">
                 <div class="container mt-4">
                     <h2>Tanári jegyek</h2>
