@@ -11,5 +11,8 @@ namespace BS_KretaProjekt.Dto
         public int ertek { get; set; }
         public int tantargy_id { get; set; }
         public int tanar_id { get; set; }
+
+        public string tantargyNev { get; set; }
+        public string tanarNev { get; set; }
     }
 }

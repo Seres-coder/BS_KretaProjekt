@@ -25,7 +25,7 @@ namespace BS_KretaProjekt.Model
                 szuletesi_datum = (DateTime)x.szuletesi_datum,
                 szuloneve = x.szuloneve,
                 osztaly_id = (int)x.osztaly_id
-            }).FirstAsync();
+            }).FirstOrDefaultAsync();
             return items;
 
         }
