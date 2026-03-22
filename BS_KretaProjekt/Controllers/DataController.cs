@@ -38,7 +38,7 @@ namespace BS_KretaProjekt.Controllers
         }
 
         [HttpGet("myteacherdata")]
-        public async Task<ActionResult<StudentDto>> GetMyTeacherData([FromQuery] int userId)
+        public async Task<ActionResult<TeacherDto>> GetMyTeacherData([FromQuery] int userId)
         {
             try
             {
