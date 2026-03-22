@@ -96,8 +96,7 @@ namespace BS_KretaProjekt.Model
         #region TimeTable Listing
         public Dictionary<DayOfWeek, List<TimeTableItemDto>> GetTimeTable(int osztaly_id)
         {
-           
-
+          
             var result = 
             _context.Orarendek
                 .Include(x => x.Tantargy)
@@ -123,6 +122,34 @@ namespace BS_KretaProjekt.Model
                           .ToList()
                 );
 
+
+            return result;
+        }
+
+        public Dictionary<DayOfWeek, List<TeacherTimeTabelDto>> GetTeacherTimeTable(int tanar_id)
+        {
+            var result = _context.Orarendek
+                .Include(x => x.Tantargy)
+                .Include(x => x.Osztaly)
+                .Where(x => x.tanar_id == tanar_id)
+                .Select(x => new
+                {
+                    x.nap,
+                    x.ora,
+                    tantargyNev = x.Tantargy.tantargy_nev,
+                    osztalyNev = x.Osztaly.osztaly_nev
+                })
+                .GroupBy(x => x.nap)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.OrderBy(x => x.ora)
+                          .Select(x => new TeacherTimeTabelDto
+                          {
+                              ora = x.ora,
+                              tantargyNev = x.tantargyNev,
+                              osztalyNev = x.osztalyNev
+                          }).ToList()
+                );
 
             return result;
         }
