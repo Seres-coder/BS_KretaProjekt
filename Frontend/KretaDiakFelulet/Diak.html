@@ -9,28 +9,30 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
-        <nav class="nav flex-column">
-            <br>Üzenetek:	
-            <nav>
-                <button class="nav-link" data-view="bejovo-uzenetek-panel">Bejövő Üzenetek</button>
-                <button class="nav-link" data-view="uzenet-iras-panel">Üzenet Írása</button>
-            </nav>
-
-            <br>Adatok:
-            <nav>
-                <button class="nav-link" data-view="adatok-panel">Adataim</button>
-            </nav>
-             <br>Órarend:
-            <nav>
-                <button class="nav-link" data-view="orarend-panel">Órarendem</button>
-            </nav>
-             <br>Jegyeim:
-            <nav>
-                <button class="nav-link" data-view="jegyek-panel">Jegyeim</button>
-            </nav>
+    <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+    <nav class="nav flex-column">
+        <br>Üzenetek:
+        <nav>
+            <button class="nav-link" data-panel-target="bejovo-uzenetek-panel">Bejövő Üzenetek</button>
+            <button class="nav-link" data-panel-target="uzenet-iras-panel">Üzenet Írása</button>
         </nav>
-    </div>
+
+        <br>Adatok:
+        <nav>
+            <button class="nav-link" data-panel-target="adatok-panel">Adataim</button>
+        </nav>
+
+        <br>Órarend:
+        <nav>
+            <button class="nav-link" data-panel-target="orarend-panel">Órarendem</button>
+        </nav>
+
+        <br>Jegyeim:
+        <nav>
+            <button class="nav-link" data-panel-target="jegyek-panel">Jegyeim</button>
+        </nav>
+    </nav>
+</div>
      <div class="content" id="content">
         <section id="bejovo-uzenetek-panel" class="panel active">
             <div class="container-fluid mt-4">
@@ -110,31 +112,31 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label"><b>Név:</b></label>
-                            <input type="text" class="form-control" id="nev" value="Seres Dániel" disabled>
+                            <input type="text" class="form-control" id="nev"  disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Osztály:</b></label>
-                            <input type="text" class="form-control" id="osztaly" value="13.K" disabled>
+                            <input type="text" class="form-control" id="osztaly"  disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Születési dátum:</b></label>
-                            <input type="date" class="form-control" id="szuletes" value="2025-10-16" disabled>
+                            <input type="date" class="form-control" id="szuletes"  disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Lakcím:</b></label>
-                            <input type="text" class="form-control" id="lakcim" value="titok" disabled>
+                            <input type="text" class="form-control" id="lakcim"  disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Email:</b></label>
-                            <input type="email" class="form-control" id="email" value="seres@iskola.hu" disabled>
+                            <input type="email" class="form-control" id="email"  disabled>
                         </div>
                          <div class="mb-3">
                             <label class="form-label"><b>Szülő neve:</b></label>
-                            <input type="text" class="form-control" id="szulo" value="anya" disabled>
+                            <input type="text" class="form-control" id="szulo"  disabled>
                         </div>
                     </div>
                 </div>
@@ -144,7 +146,6 @@
         <section id="orarend-panel" class="panel">
             <div class="container mt-4">
                 <h2>Órarendem</h2>
-
                 <div class="card shadow-sm mt-3">
                     <div class="card-body">
                         <div id="diakOrarendContainer"></div>
@@ -173,7 +174,6 @@
                                     <thead>
                                         <tr>
                                             <th>Tantárgy</th>
-                                            <th>Típus</th>
                                             <th>Jegy</th>
                                             <th>Dátum</th>
                                         </tr>
@@ -187,12 +187,6 @@
                 </div>
             </div>
         </section>
-
-
-
-
-
-
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Diak.js"></script>
 </body>

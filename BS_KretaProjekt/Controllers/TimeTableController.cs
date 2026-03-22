@@ -93,8 +93,20 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-   
 
+        [HttpGet("teachertimetabel")]
+        public ActionResult<Dictionary<DayOfWeek, List<TeacherTimeTabelDto>>> GetTeacherTimeTable([FromQuery] int tanarId)
+        {
+            try
+            {
+                var response = _model.GetTeacherTimeTable(tanarId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Szerverhiba: {ex.Message}");
+            }
+        }
 
     }
 }

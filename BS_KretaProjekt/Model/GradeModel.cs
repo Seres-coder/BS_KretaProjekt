@@ -74,34 +74,48 @@ namespace BS_KretaProjekt.Model
         #region -Grade Listing
         public IEnumerable<GradeListDto> AllGrades(int id = 0, int tanar_id = 0)
         {
-            if(id != 0 && tanar_id != 0)
+            if (id != 0 && tanar_id != 0)
                 throw new InvalidOperationException("Nem lehet egyszerre diák és tanár id alapján keresni");
 
             if (tanar_id != 0)
             {
-                return _context.Jegyek.Include(x => x.Tanar).Include(x => x.tantargy).Where(x => x.tanar_id == x.tanar_id).Select(x => new GradeListDto
-                {
-                    jegy_id = x.jegy_id,
-                    datum = x.datum,
-                    ertek = x.ertek,
-                    updatedatum = x.updatedatum,
-                    tanar_id = x.tanar_id,
-                    tantargy_id = x.tantargy_id
-                }).ToList();
+                return _context.Jegyek
+                    .Include(x => x.Tanar)
+                    .Include(x => x.Tantargy)
+                    .Where(x => x.tanar_id == tanar_id)
+                    .Select(x => new GradeListDto
+                    {
+                        jegy_id = x.jegy_id,
+                        diak_id = x.diak_id,
+                        datum = x.datum,
+                        ertek = x.ertek,
+                        updatedatum = x.updatedatum,
+                        tanar_id = x.tanar_id,
+                        tantargy_id = x.tantargy_id,
+                        tantargyNev = x.Tantargy.tantargy_nev,
+                        tanarNev = x.Tanar.tanar_nev
+                    })
+                    .ToList();
             }
             else if (id != 0)
             {
-
-
-                return _context.Jegyek.Include(x => x.Tanar).Include(x => x.tantargy).Where(x => x.diak_id == id).Select(x => new GradeListDto
-                {
-                    jegy_id = x.jegy_id,
-                    datum = x.datum,
-                    ertek = x.ertek,
-                    updatedatum = x.updatedatum,
-                    tanar_id = x.tanar_id,
-                    tantargy_id = x.tantargy_id
-                }).ToList();
+                return _context.Jegyek
+                    .Include(x => x.Tanar)
+                    .Include(x => x.Tantargy)
+                    .Where(x => x.diak_id == id)
+                    .Select(x => new GradeListDto
+                    {
+                        jegy_id = x.jegy_id,
+                        diak_id = x.diak_id,
+                        datum = x.datum,
+                        ertek = x.ertek,
+                        updatedatum = x.updatedatum,
+                        tanar_id = x.tanar_id,
+                        tantargy_id = x.tantargy_id,
+                        tantargyNev = x.Tantargy.tantargy_nev,
+                        tanarNev = x.Tanar.tanar_nev
+                    })
+                    .ToList();
             }
             else
             {

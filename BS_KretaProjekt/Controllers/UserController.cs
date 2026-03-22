@@ -82,7 +82,12 @@ namespace BS_KretaProjekt.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                return Ok(user);
+                return Ok(new
+                {
+                    id = user._user_id,
+                    name = user._belepesnev,
+                    role = user._Role
+                });
             }
             catch (ArgumentException ex)
             {

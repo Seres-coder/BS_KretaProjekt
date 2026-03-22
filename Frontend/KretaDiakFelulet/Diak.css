@@ -82,4 +82,20 @@ body{
 #diakOrarendContainer table th {
     vertical-align: middle;
     text-align: center;
+	
 }
+#diakOrarendContainer {
+    background-color: #B85C38;
+    padding: 10px;
+    border-radius: 10px;
+}
+#diakOrarendContainer td {
+    min-width: 140px;
+	
+}
+
+#diakOrarendContainer td div:first-child {
+    font-weight: bold;
+	
+}
+
