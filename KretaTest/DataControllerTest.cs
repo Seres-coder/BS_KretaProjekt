@@ -30,10 +30,19 @@ namespace KretaTest
         {
             var responseTanar = await _client.PostAsync(
             "api/user/login?username=tanar1&password=tanar123",
-            null);
+                null);
             Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
            responseTanar.EnsureSuccessStatusCode();
 
+            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
+
+            var content = await responseAdmin.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(
+                content,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal("Admin", loginResult._Role);
 
             var response = await _client.GetAsync("api/data/diaklistazasa");
 
@@ -89,10 +98,11 @@ namespace KretaTest
         {
             var responseTanar = await _client.PostAsync(
             "api/user/login?username=tanar1&password=tanar123",
-            null);
+                null);
             Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
             responseTanar.EnsureSuccessStatusCode();
 
+            Assert.Equal("Admin", loginResult._Role);
 
             var data = new
             {
