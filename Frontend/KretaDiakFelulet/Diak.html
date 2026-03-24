@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diak Felulet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Diak.css">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+    <nav class="nav flex-column">
+        <br>Üzenetek:
+        <nav>
+            <button class="nav-link" data-panel-target="bejovo-uzenetek-panel">Bejövő Üzenetek</button>
+            <button class="nav-link" data-panel-target="uzenet-iras-panel">Üzenet Írása</button>
+        </nav>
+
+        <br>Adatok:
+        <nav>
+            <button class="nav-link" data-panel-target="adatok-panel">Adataim</button>
+        </nav>
+
+        <br>Órarend:
+        <nav>
+            <button class="nav-link" data-panel-target="orarend-panel">Órarendem</button>
+        </nav>
+
+        <br>Jegyeim:
+        <nav>
+            <button class="nav-link" data-panel-target="jegyek-panel">Jegyeim</button>
+        </nav>
+    </nav>
+</div>
+     <div class="content" id="content">
+        <section id="bejovo-uzenetek-panel" class="panel active">
+            <div class="container-fluid mt-4">
+                <h2 class="mb-4"><br>Bejövő üzenetek</h2>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="list-group" id="lista">
+                            <button class="list-group-item list-group-item-action" onclick="mutat(0)">
+                                <b>Osztályfőnök</b><br>
+                                Szülői értekezlet<br>
+                                <small>2026.03.05</small>
+                            </button>
+
+                            <button class="list-group-item list-group-item-action" onclick="mutat(1)">
+                                <b>Igazgatóság</b><br>
+                                Tanév rendje<br>
+                                <small>2026.03.04</small>
+                            </button>
+
+                            <button class="list-group-item list-group-item-action" onclick="mutat(2)">
+                                <b>Matektanár</b><br>
+                                Dolgozat<br>
+                                <small>2026.03.03</small>
+                            </button>
+							
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card shadow-sm">
+                            <div class="card-body" id="uzenet">
+                                Kattints egy üzenetre
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section id="uzenet-iras-panel" class="panel">
+            <div class="container mt-4">
+
+                <h2>Üzenet írása</h2>
+
+                <div class="card shadow-sm mt-3">
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <label class="form-label">Címzett</label>
+                            <input type="text" class="form-control" id="cimzett" placeholder="pl. Osztályfőnök">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Téma</label>
+                            <input type="text" class="form-control" id="tema">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Üzenet</label>
+                            <textarea class="form-control" id="szoveg" rows="5"></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="kuldes()">Üzenet küldése</button>
+
+                        <p id="uzenetStatus" class="mt-3"></p>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="adatok-panel" class="panel">
+            <div class="container mt-4">
+                <h2>Adataim</h2>
+
+                <div class="card shadow-sm mt-3">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label"><b>Név:</b></label>
+                            <input type="text" class="form-control" id="nev"  disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><b>Osztály:</b></label>
+                            <input type="text" class="form-control" id="osztaly"  disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><b>Születési dátum:</b></label>
+                            <input type="date" class="form-control" id="szuletes"  disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><b>Lakcím:</b></label>
+                            <input type="text" class="form-control" id="lakcim"  disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><b>Email:</b></label>
+                            <input type="email" class="form-control" id="email"  disabled>
+                        </div>
+                         <div class="mb-3">
+                            <label class="form-label"><b>Szülő neve:</b></label>
+                            <input type="text" class="form-control" id="szulo"  disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="orarend-panel" class="panel">
+            <div class="container mt-4">
+                <h2>Órarendem</h2>
+                <div class="card shadow-sm mt-3">
+                    <div class="card-body">
+                        <div id="diakOrarendContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="jegyek-panel" class="panel">
+            <div class="container mt-4">
+                <h2>Jegyek</h2>
+
+                <div class="card shadow-sm mt-3">
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <label class="form-label"><b>Tantárgy átlagok:</b></label>
+                            <ul class="list-group" id="atlagLista"></ul>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><b>Összes jegy:</b></label>
+
+                            <div class="table-responsive">
+                                <table class="table table-striped align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Tantárgy</th>
+                                            <th>Jegy</th>
+                                            <th>Dátum</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="jegyekTabla"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="Diak.js"></script>
+</body>
+</html>
