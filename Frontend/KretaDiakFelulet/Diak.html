@@ -33,43 +33,31 @@
         </nav>
     </nav>
 </div>
-     <div class="content" id="content">
-        <section id="bejovo-uzenetek-panel" class="panel active">
-            <div class="container-fluid mt-4">
-                <h2 class="mb-4"><br>Bejövő üzenetek</h2>
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="list-group" id="lista">
-                            <button class="list-group-item list-group-item-action" onclick="mutat(0)">
-                                <b>Osztályfőnök</b><br>
-                                Szülői értekezlet<br>
-                                <small>2026.03.05</small>
-                            </button>
+        <div class="content" id="content">
+            <section id="bejovo-uzenetek-panel" class="panel active">
+                <div class="container-fluid mt-4">
+                    <h2 class="mb-4"><br>Bejövő üzenetek</h2>
 
-                            <button class="list-group-item list-group-item-action" onclick="mutat(1)">
-                                <b>Igazgatóság</b><br>
-                                Tanév rendje<br>
-                                <small>2026.03.04</small>
-                            </button>
-
-                            <button class="list-group-item list-group-item-action" onclick="mutat(2)">
-                                <b>Matektanár</b><br>
-                                Dolgozat<br>
-                                <small>2026.03.03</small>
-                            </button>
-							
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="list-group" id="lista">
+                                
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card shadow-sm">
+
+                        <div class="col-md-8">
                             <div class="card-body" id="uzenet">
-                                Kattints egy üzenetre
+                                <h5 id="uzenet-kuldo">Kattints egy üzenetre</h5>
+                                <p class="mb-1"><strong>Tárgy:</strong> <span id="uzenet-targy">-</span></p>
+                                <p class="mb-3"><strong>Dátum:</strong> <span id="uzenet-datum">-</span></p>
+                                <hr>
+                                <p id="uzenet-tartalom">Válassz ki egy üzenetet a bal oldali listából.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
        <section id="uzenet-iras-panel" class="panel">
             <div class="container mt-4">

@@ -1,12 +1,60 @@
 const API_BASE = "https://localhost:7273/api/Data";
 const TIMETABLE_API = "https://localhost:7273/api/TimeTable";
 const GRADE_API = "https://localhost:7273/api/Grade";
+const MESSAGE_API="https://localhost:7273/api/Message";
 
 document.addEventListener("DOMContentLoaded", async function () {
     sidebarGomb();
     panelValtas();
     await diakAdatokBetoltese();
+    
 });
+//#region  uzenetek lekérése
+const lista = document.querySelector("#lista");
+const kuldoElem = document.querySelector("#uzenet-kuldo");
+const targyElem = document.querySelector("#uzenet-targy");
+const datumElem = document.querySelector("#uzenet-datum");
+const tartalomElem = document.querySelector("#uzenet-tartalom");
+
+async function getMessages(diakId) {
+    const res = await fetch(`${MESSAGE_API}/messageklistazasa?fogado_id=${diakId}`);
+    const uzenetek = await res.json();
+    kiir(uzenetek);
+}
+
+function kiir(uzenetek) {
+    lista.innerHTML = "";
+    uzenetek.forEach(u => {
+        const gomb = document.createElement("button");
+        gomb.className = "list-group-item list-group-item-action text-start";
+
+        gomb.innerHTML = `
+            <b>${u.kuldoname}</b><br>
+            ${u.cim}<br>
+            <small>${datum(u.kuldesidopontja)}</small>
+        `;
+
+        gomb.onclick = () => megjelenit(u);
+
+        lista.appendChild(gomb);
+    });
+}
+
+function megjelenit(u) {
+    kuldoElem.textContent = u.kuldoname;
+    targyElem.textContent = u.cim;
+    datumElem.textContent = datum(u.kuldesidopontja);
+    tartalomElem.textContent = u.tartalom;
+}
+
+function datum(d) {
+    return new Date(d).toLocaleDateString("hu-HU");
+}
+
+
+//#endregion
+
+
 //#region  sidebar mukodese es a panel valtas
 
 
@@ -47,6 +95,7 @@ function panelMutatas(panelId) {
         aktivPanel.style.display = "block";
     }
 }
+
 //#endregion
 
 //#region ezzel toltjuk be a sajat adatait egy diaknak 
@@ -73,9 +122,12 @@ async function diakAdatokBetoltese() {
         }
         adatokKiirasa(studentData);
         await jegyekBetoltese(userId);
+
         if (studentData.osztaly_id) {
             await orarendBetoltese(studentData.osztaly_id);
         }
+
+        await getMessages(studentData.diak_id);
     } catch (error) {
         alert("Nem sikerült kapcsolódni a szerverhez.");
     }
