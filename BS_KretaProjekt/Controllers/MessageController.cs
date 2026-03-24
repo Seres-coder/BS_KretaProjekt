@@ -35,11 +35,11 @@ namespace BS_KretaProjekt.Controllers
         }
 
         [HttpGet("messageklistazasa")]
-        public ActionResult<IEnumerable<MessageDto>> GetMessage([FromQuery] int user_id)
+        public ActionResult<IEnumerable<MessageDto>> GetMessage([FromQuery] int fogado_id)
         {
             try
             {
-                return Ok(_model.GetMessages(user_id));
+                return Ok(_model.GetMessages(fogado_id));
             }
             catch (KeyNotFoundException)
             {
@@ -49,7 +49,6 @@ namespace BS_KretaProjekt.Controllers
             {
                 return BadRequest();
             }
-
         }
 
         [HttpGet("egymessagelistazasa")]
