@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     sidebarGomb();
     panelValtas();
     await diakAdatokBetoltese();
+    await tanarokBetoltese();
     
 });
 //#region  uzenetek lekérése
@@ -52,7 +53,88 @@ function datum(d) {
 }
 
 
+
 //#endregion
+
+//#region  uzenetek elkuldese
+
+async function kuldes() {
+    const tema = document.getElementById("tema").value.trim();
+    const szoveg = document.getElementById("szoveg").value.trim();
+    const select = document.getElementById("cimzett");
+    const fogadoId = parseInt(select.value);
+    const status = document.getElementById("uzenetStatus");
+
+    // Bejelentkezés ellenőrzése
+    const mentettFelhasznalo = localStorage.getItem("kretaUser");
+    if (!mentettFelhasznalo) {
+        status.innerText = "Nincs bejelentkezve.";
+        return;
+    }
+    const user = JSON.parse(mentettFelhasznalo);
+    const userId = parseInt(user.id || user.Id);
+
+    // Mezők ellenőrzése
+    if (!tema || !szoveg || !fogadoId || isNaN(fogadoId) || isNaN(userId)) {
+        status.innerText = "Tölts ki minden mezőt, és válassz fogadót!";
+        console.warn("Hiányzó vagy hibás mezők:", { tema, szoveg, fogadoId, userId });
+        return;
+    }
+
+    const dto = {
+        tartalom: szoveg,
+        cim: tema,
+        fogado_id: fogadoId,
+        user_id: userId
+    };
+
+    console.log("Küldés DTO:", dto); // DEBUG: ellenőrizd a Network fülön
+
+    status.innerText = "Küldés...";
+
+    try {
+        const res = await fetch(`${MESSAGE_API}/messageadd`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(dto)
+        });
+
+        if (res.ok) {
+            status.innerText = "Üzenet elküldve!";
+            document.getElementById("tema").value = "";
+            document.getElementById("szoveg").value = "";
+
+            // Frissítjük a bejövő üzeneteket
+            await getMessages(fogadoId);
+        } else {
+            const errorText = await res.text();
+            console.error("Backend hiba:", errorText);
+            status.innerText = "Hiba történt a küldés során.";
+        }
+    } catch (err) {
+        console.error("Hálózati hiba:", err);
+        status.innerText = "Nem sikerült kapcsolódni a szerverhez.";
+    }
+}
+
+async function tanarokBetoltese() {
+    const select = document.getElementById("cimzett");
+    select.innerHTML = '<option value="">-- Válassz tanárt --</option>';
+
+    const res = await fetch(`${API_BASE}/tanarlistazasa`, { credentials: "include" });
+    if (!res.ok) return;
+
+    const tanarok = await res.json();
+    tanarok.forEach(tanar => {
+        const option = document.createElement("option");
+        option.value = tanar.tanar_id;
+        option.textContent = tanar.tanar_nev;
+        select.appendChild(option);
+    });
+}
+//#endregion 
+
 
 
 //#region  sidebar mukodese es a panel valtas

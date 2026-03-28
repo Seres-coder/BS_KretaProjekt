@@ -1,11 +1,81 @@
 const API_BASE = "https://localhost:7273/api/Data";
 const TIMETABLE_API = "https://localhost:7273/api/TimeTable";
+const MESSAGE_API = "https://localhost:7273/api/Message";
 
 document.addEventListener("DOMContentLoaded", async function () {
     sidebarGomb();
     panelValtas();
+    getTeacherMessages();
     await tanarAdatokBetoltese();
 });
+
+//#region  uzenetek lekérése tanárnak
+const listaUzenetek = document.querySelector("#lista");
+const kuldoElem = document.querySelector("#uzenet-kuldo");
+const targyElem = document.querySelector("#uzenet-targy");
+const datumElem = document.querySelector("#uzenet-datum");
+const tartalomElem = document.querySelector("#uzenet-tartalom");
+
+async function getTeacherMessages() {
+    const mentettFelhasznalo = localStorage.getItem("kretaUser");
+    if (!mentettFelhasznalo) return;
+
+    const user = JSON.parse(mentettFelhasznalo);
+    const userId = user.id || user.Id;
+
+    try {
+       const res = await fetch(`${MESSAGE_API}/messageklistazasa?fogado_id=${userId}`, {
+            method: "GET",
+            credentials: "include"
+        });
+
+
+        if (!res.ok) {
+            listaUzenetek.innerHTML = "<p>Nem sikerült lekérni az üzeneteket.</p>";
+            return;
+        }
+
+        const uzenetek = await res.json();
+        kiirUzenetek(uzenetek);
+    } catch (error) {
+        listaUzenetek.innerHTML = "<p>Hiba történt az üzenetek lekérése közben.</p>";
+        console.error(error);
+    }
+}
+
+function kiirUzenetek(uzenetek) {
+    listaUzenetek.innerHTML = "";
+    if (!uzenetek.length) {
+        listaUzenetek.innerHTML = "<p>Nincsenek üzenetek.</p>";
+        return;
+    }
+
+    uzenetek.forEach(u => {
+        const gomb = document.createElement("button");
+        gomb.className = "list-group-item list-group-item-action text-start";
+        gomb.innerHTML = `
+            <b>${u.kuldoname}</b><br>
+            ${u.cim}<br>
+            <small>${datum(u.kuldesidopontja)}</small>
+        `;
+        gomb.onclick = () => megjelenitUzenet(u);
+        listaUzenetek.appendChild(gomb);
+    });
+}
+
+function megjelenitUzenet(u) {
+    kuldoElem.textContent = u.kuldoname;
+    targyElem.textContent = u.cim;
+    datumElem.textContent = datum(u.kuldesidopontja);
+    tartalomElem.textContent = u.tartalom;
+}
+
+function datum(d) {
+    return new Date(d).toLocaleDateString("hu-HU");
+}
+
+//#endregion
+
 
 //#region sidebar működése és panel váltás
 
