@@ -60,7 +60,7 @@ namespace BS_KretaProjekt.Persistence
         public List<Orarend>? Orarend { get; set; }
     }
 
-    [Index(nameof(emailcim), IsUnique = true)]
+  
     public class Diak
     {
         [Key]

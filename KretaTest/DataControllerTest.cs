@@ -34,9 +34,9 @@ namespace KretaTest
             Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
            responseTanar.EnsureSuccessStatusCode();
 
-            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
 
-            var content = await responseAdmin.Content.ReadAsStringAsync();
+            var content = await responseTanar.Content.ReadAsStringAsync();
 
             var loginResult = JsonSerializer.Deserialize<UserDto>(
                 content,
@@ -96,11 +96,18 @@ namespace KretaTest
         [Fact]
         public async Task ModifyStudentData()
         {
-            var responseTanar = await _client.PostAsync(
-            "api/user/login?username=tanar1&password=tanar123",
-                null);
-            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
-            responseTanar.EnsureSuccessStatusCode();
+            var responseAdmin = await _client.PostAsync(
+                 "api/user/login?username=admin&password=admin123",
+                 null);
+
+            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
+            responseAdmin.EnsureSuccessStatusCode();
+
+            var contentAdmin = await responseAdmin.Content.ReadAsStringAsync();
+
+            var loginResult = JsonSerializer.Deserialize<UserDto>(
+                contentAdmin,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             Assert.Equal("Admin", loginResult._Role);
 

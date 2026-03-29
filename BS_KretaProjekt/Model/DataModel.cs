@@ -45,6 +45,7 @@ namespace BS_KretaProjekt.Model
 
                     diak_nev = x.diak_nev ?? "",
                     user_id = x.user_id,
+                    diak_id = x.diak_id,
                     osztaly_id = x.osztaly_id ?? 0,
                     lakcim = x.lakcim ?? "",
                     szuloneve = x.szuloneve ?? "",

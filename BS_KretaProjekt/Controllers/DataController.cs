@@ -29,7 +29,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-        [Authorize(Roles = "Tanar")]
+    
         [HttpGet("getmyteacherdata")]
         public async Task<ActionResult<StudentDto>> GetMyTeacherData(int user_id)
         {
@@ -45,7 +45,7 @@ namespace BS_KretaProjekt.Controllers
         }
 
 
-        [Authorize(Roles ="Tanar")]
+        
         [HttpGet("diaklistazasa")]
         public async Task <ActionResult<IEnumerable<StudentDto>>> GetDiak()
         {
@@ -64,14 +64,14 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
-        [Authorize(Roles = "Admin")]
+ 
         [HttpGet("tanarlistazasa")]
         public async Task <ActionResult<IEnumerable<StudentDto>>> GetTeacher()
         {
             try
             {
-                await _model.GetTeacher();
-                return Ok();
+                var response = await _model.GetTeacher();
+                return Ok(response);
             }
             catch (InvalidOperationException)
             {

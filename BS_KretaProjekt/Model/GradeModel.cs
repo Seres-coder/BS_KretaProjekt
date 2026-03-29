@@ -15,25 +15,25 @@ namespace BS_KretaProjekt.Model
         #region Grade Add
         public async Task AddNewGrade(GradeAdd dto)
         {
-            if(string.IsNullOrWhiteSpace(dto.tanar_nev) || string.IsNullOrWhiteSpace(dto.tantargy_nev) || string.IsNullOrWhiteSpace(dto.diak_nev) || dto.ertek == 0 )
+            if (string.IsNullOrWhiteSpace(dto.tanar_nev) || string.IsNullOrWhiteSpace(dto.diak_nev) || dto.ertek == 0)
                 throw new InvalidOperationException("Nincs minden adat megadva");
 
             using var trx = await _context.Database.BeginTransactionAsync();
             var tanarId = await _context.Tanarok.Where(x => x.tanar_nev == dto.tanar_nev).Select(x => x.tanar_id).FirstAsync();
-            var tantargyId = await _context.Tantargyok.Where(x => x.tantargy_nev == dto.tantargy_nev).Select(x => x.tantargy_id).FirstAsync();
+            var tantargyId = await _context.Tanarok.Where(x => x.tanar_nev == dto.tanar_nev).Select(x => x.tantargy_id).FirstOrDefaultAsync();
             var diakId = await _context.Diakok.Where(x => x.diak_nev == dto.diak_nev).Select(x => x.diak_id).FirstAsync();
 
-
+            if (tantargyId == null)
+                throw new InvalidOperationException("Nem található tantárgy ehhez a tanárhoz.");
 
             _context.Jegyek.Add(new Jegy
             {
-                datum = DateTimeOffset.Now,
-                updatedatum = DateTimeOffset.Now,
+                datum = DateTimeOffset.UtcNow,      // ← .Now helyett .UtcNow
+                updatedatum = DateTimeOffset.UtcNow, // ← .Now helyett .UtcNow
                 ertek = dto.ertek,
-                tantargy_id = tantargyId, 
+                tantargy_id = tantargyId.Value,
                 diak_id = diakId,
-                tanar_id = tanarId 
-                                   
+                tanar_id = tanarId
             });
 
             await _context.SaveChangesAsync();
