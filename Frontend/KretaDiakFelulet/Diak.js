@@ -190,7 +190,7 @@ async function diakAdatokBetoltese() {
     const user = JSON.parse(mentettFelhasznalo);
     const userId = user.id || user.Id;
     try {
-        const response = await fetch(`${API_BASE}/mydata?userId=${userId}`, {
+        const response = await fetch(`${API_BASE}/getmydata?user_id=${userId}`, {
             method: "GET",
             credentials: "include"
         });
@@ -203,7 +203,7 @@ async function diakAdatokBetoltese() {
             await orarendBetoltese(studentData.osztaly_id);
         }
         adatokKiirasa(studentData);
-        await jegyekBetoltese(userId);
+        await jegyekBetoltese(studentData.diak_id);
 
         if (studentData.osztaly_id) {
             await orarendBetoltese(studentData.osztaly_id);
@@ -289,9 +289,12 @@ function maggyara(nap) {
 //#endregion
 
 //#region  jegyek betoltese
-async function jegyekBetoltese(userId) {
+async function jegyekBetoltese(diakId) {
     try {
-        const res = await fetch(`${GRADE_API}/allgrade?id=${userId}`);
+        const res = await fetch(`${GRADE_API}/allgrade?id=${diakId}`, {
+            method: "GET",
+            credentials: "include" // <-- sends the auth cookie automatically
+        });
 
         if (!res.ok) {
             document.getElementById("jegyekTabla").innerHTML = "<tr><td colspan='3'>Nincs jegy.</td></tr>";
@@ -302,13 +305,11 @@ async function jegyekBetoltese(userId) {
         const jegyek = await res.json();
         jegyekKiirasa(jegyek);
         atlagokKiirasa(jegyek);
-
     } catch {
         document.getElementById("jegyekTabla").innerHTML = "<tr><td colspan='3'>Hiba történt.</td></tr>";
         document.getElementById("atlagLista").innerHTML = "<li class='list-group-item'>Hiba történt</li>";
     }
 }
-
 function jegyekKiirasa(jegyek) {
     const tabla = document.getElementById("jegyekTabla");
     let html = "";
@@ -356,4 +357,3 @@ function jegyDatum(datum) {
 }
 
 //#endregion
-

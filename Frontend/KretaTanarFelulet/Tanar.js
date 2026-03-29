@@ -1,6 +1,8 @@
 const API_BASE = "https://localhost:7273/api/Data";
 const TIMETABLE_API = "https://localhost:7273/api/TimeTable";
 const MESSAGE_API = "https://localhost:7273/api/Message";
+const GRADE_API = "https://localhost:7273/api/Grade";
+let tanarAdat = null;
 
 document.addEventListener("DOMContentLoaded", async function () {
     sidebarGomb();
@@ -133,7 +135,7 @@ async function tanarAdatokBetoltese() {
     const userId = user.id || user.Id;
 
     try {
-        const response = await fetch(`${API_BASE}/myteacherdata?userId=${userId}`, {
+        const response = await fetch(`${API_BASE}/getmyteacherdata?user_id=${userId}`, {
             method: "GET",
             credentials: "include"
         });
@@ -144,12 +146,15 @@ async function tanarAdatokBetoltese() {
         }
 
         const teacherData = await response.json();
+        tanarAdat = teacherData;          // ← HIÁNYZOTT
 
         tanarAdatokKiirasa(teacherData);
 
         if (teacherData.tanar_id) {
             await tanarOrarendBetoltese(teacherData.tanar_id);
         }
+
+        await diakokBetoltese();          // ← HIÁNYZOTT
 
     } catch (error) {
         alert("Nem sikerült kapcsolódni a szerverhez.");
@@ -238,6 +243,150 @@ function magyarNap(nap) {
     if (nap == "Saturday" || nap == 6) return "Szombat";
     if (nap == "Sunday" || nap == 0) return "Vasárnap";
     return nap;
+}
+
+//#endregion
+ 
+//#region jegyek kezelése
+
+async function diakokBetoltese() {
+	try {
+		const res = await fetch(`${API_BASE}/diaklistazasa`, { credentials: "include" });
+		if (!res.ok) return;
+		const diakok = await res.json();
+		const select = document.getElementById("diakValaszto");
+		select.innerHTML = '<option value="">-- Válassz diákot --</option>';
+		diakok.forEach(d => {
+			const o = document.createElement("option");
+			o.value = d.diak_id;
+			o.textContent = d.diak_nev;
+			select.appendChild(o);
+		});
+	} catch (e) {
+		console.log(e);
+	}
+}
+
+async function diakValasztva() {
+	const select = document.getElementById("diakValaszto");
+	const id = parseInt(select.value);
+	const tabla = document.getElementById("jegyekTabla");
+	tabla.innerHTML = "";
+	if (!id) return;
+
+	try {
+		const res = await fetch(
+			`${GRADE_API}/allgrade?tanar_id=${tanarAdat.tanar_id}`,
+			{ credentials: "include" }
+		);
+		if (!res.ok) {
+			tabla.innerHTML = "<tr><td colspan=4>Nincs jegy</td></tr>";
+			return;
+		}
+		const jegyek = await res.json();
+		const szurt = jegyek.filter(j => j.diak_id === id);
+		if (!szurt.length) {
+			tabla.innerHTML = "<tr><td colspan=4>Nincs jegy ehhez a diákhoz</td></tr>";
+			return;
+		}
+
+		szurt.forEach(j => {
+			tabla.innerHTML +=
+				`<tr id="sor-${j.jegy_id}">\n` +
+				`\t<td>${j.tantargyNev}</td>\n` +
+				`\t<td>${j.ertek}</td>\n` +
+				`\t<td>${jegyDatum(j.datum)}</td>\n` +
+				`\t<td>\n` +
+				`\t\t<button onclick="jegyModositas(${j.jegy_id}, ${j.ertek})">Módosít</button>\n` +
+				`\t\t<button onclick="jegyTorles(${j.jegy_id})">Töröl</button>\n` +
+				`\t</td>\n` +
+				`</tr>\n`;
+		});
+	} catch (e) {
+		console.log(e);
+	}
+}
+
+async function jegyHozzaadas() {
+	const select = document.getElementById("diakValaszto");
+	const nev = select.options[select.selectedIndex]?.text;
+	const ertek = parseInt(document.getElementById("ujJegy").value);
+	const status = document.getElementById("jegyStatus");
+
+	if (!nev || nev == "-- Válassz diákot --") {
+		status.textContent = "Válassz diákot!";
+		return;
+	}
+	if (!ertek || ertek < 1 || ertek > 5) {
+		status.textContent = "Jegy 1-5";
+		return;
+	}
+
+	const dto = {
+		tanar_nev: tanarAdat.tanar_nev,
+		tantargy_nev: "",
+		diak_nev: nev,
+		ertek: ertek
+	};
+
+	try {
+		const res = await fetch(`${GRADE_API}/gradeadd`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			credentials: "include",
+			body: JSON.stringify(dto)
+		});
+
+		if (res.ok) {
+			status.textContent = "Felvéve!";
+			document.getElementById("ujJegy").value = "";
+			await diakValasztva();
+		} else {
+			const e = await res.text();
+			status.textContent = "Hiba: " + e;
+		}
+	} catch {
+		status.textContent = "Hiba a szerverrel";
+	}
+}
+
+async function jegyModositas(id, regi) {
+	const uj = parseInt(prompt(`Új jegy 1-5, most: ${regi}`));
+	if (isNaN(uj) || uj < 1 || uj > 5) return;
+
+	const dto = {
+		jegy_id: id,
+		ertek: uj,
+		updatedatum: new Date().toISOString()
+	};
+
+	try {
+		const res = await fetch(`${GRADE_API}/grademodify`, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			credentials: "include",
+			body: JSON.stringify(dto)
+		});
+		if (res.ok) await diakValasztva();
+	} catch {}
+}
+
+async function jegyTorles(id) {
+	if (!confirm("Biztos?")) return;
+	try {
+		const res = await fetch(`${GRADE_API}/gradedelete?id=${id}`, {
+			method: "DELETE",
+			credentials: "include"
+		});
+		if (res.ok) await diakValasztva();
+	} catch {}
+}
+
+function jegyDatum(d) {
+	const dd = new Date(d);
+	return `${dd.getFullYear()}.${String(dd.getMonth() + 1).padStart(2, "0")}.${String(
+		dd.getDate()
+	).padStart(2, "0")}`;
 }
 
 //#endregion
