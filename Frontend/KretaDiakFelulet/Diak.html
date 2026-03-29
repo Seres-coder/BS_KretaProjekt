@@ -9,59 +9,57 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-    <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
-    <nav class="nav flex-column">
-        <br>Üzenetek:
-        <nav>
-            <button class="nav-link" data-panel-target="bejovo-uzenetek-panel">Bejövő Üzenetek</button>
-            <button class="nav-link" data-panel-target="uzenet-iras-panel">Üzenet Írása</button>
+        <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+        <nav class="nav flex-column">
+            <br>Üzenetek:
+            <nav>
+                <button class="nav-link" data-panel-target="bejovo-uzenetek-panel">Bejövő Üzenetek</button>
+                <button class="nav-link" data-panel-target="uzenet-iras-panel">Üzenet Írása</button>
+            </nav>
+
+            <br>Adatok:
+            <nav>
+                <button class="nav-link" data-panel-target="adatok-panel">Adataim</button>
+            </nav>
+
+            <br>Órarend:
+            <nav>
+                <button class="nav-link" data-panel-target="orarend-panel">Órarendem</button>
+            </nav>
+
+            <br>Jegyeim:
+            <nav>
+                <button class="nav-link" data-panel-target="jegyek-panel">Jegyeim</button>
+            </nav>
         </nav>
+    </div>
 
-        <br>Adatok:
-        <nav>
-            <button class="nav-link" data-panel-target="adatok-panel">Adataim</button>
-        </nav>
+    <div class="content" id="content">
 
-        <br>Órarend:
-        <nav>
-            <button class="nav-link" data-panel-target="orarend-panel">Órarendem</button>
-        </nav>
+        <section id="bejovo-uzenetek-panel" class="panel active">
+            <div class="container-fluid mt-4">
+                <h2 class="mb-4"><br>Bejövő üzenetek</h2>
 
-        <br>Jegyeim:
-        <nav>
-            <button class="nav-link" data-panel-target="jegyek-panel">Jegyeim</button>
-        </nav>
-    </nav>
-</div>
-        <div class="content" id="content">
-            <section id="bejovo-uzenetek-panel" class="panel active">
-                <div class="container-fluid mt-4">
-                    <h2 class="mb-4"><br>Bejövő üzenetek</h2>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="list-group" id="lista"></div>
+                    </div>
 
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="list-group" id="lista">
-                                
-                            </div>
-                        </div>
-
-                        <div class="col-md-8">
-                            <div class="card-body" id="uzenet">
-                                <h5 id="uzenet-kuldo">Kattints egy üzenetre</h5>
-                                <p class="mb-1"><strong>Tárgy:</strong> <span id="uzenet-targy">-</span></p>
-                                <p class="mb-3"><strong>Dátum:</strong> <span id="uzenet-datum">-</span></p>
-                                <hr>
-                                <p id="uzenet-tartalom">Válassz ki egy üzenetet a bal oldali listából.</p>
-                            </div>
+                    <div class="col-md-8">
+                        <div class="card-body" id="uzenet">
+                            <h5 id="uzenet-kuldo">Kattints egy üzenetre</h5>
+                            <p class="mb-1"><strong>Tárgy:</strong> <span id="uzenet-targy">-</span></p>
+                            <p class="mb-3"><strong>Dátum:</strong> <span id="uzenet-datum">-</span></p>
+                            <hr>
+                            <p id="uzenet-tartalom">Válassz ki egy üzenetet a bal oldali listából.</p>
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
 
-       <section id="uzenet-iras-panel" class="panel">
+        <section id="uzenet-iras-panel" class="panel">
             <div class="container mt-4">
-
                 <h2>Üzenet írása</h2>
 
                 <div class="card shadow-sm mt-3">
@@ -69,7 +67,9 @@
 
                         <div class="mb-3">
                             <label class="form-label">Címzett</label>
-                            <input type="text" class="form-control" id="cimzett" placeholder="pl. Osztályfőnök">
+                            <select id="cimzett" class="form-control">
+                                <option value="">-- Válassz tanárt --</option>
+                            </select>
                         </div>
 
                         <div class="mb-3">
@@ -88,7 +88,6 @@
 
                     </div>
                 </div>
-
             </div>
         </section>
 
@@ -100,31 +99,32 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label"><b>Név:</b></label>
-                            <input type="text" class="form-control" id="nev"  disabled>
+                            <input type="text" class="form-control" id="nev" disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Osztály:</b></label>
-                            <input type="text" class="form-control" id="osztaly"  disabled>
+                            <input type="text" class="form-control" id="osztaly" disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Születési dátum:</b></label>
-                            <input type="date" class="form-control" id="szuletes"  disabled>
+                            <input type="date" class="form-control" id="szuletes" disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Lakcím:</b></label>
-                            <input type="text" class="form-control" id="lakcim"  disabled>
+                            <input type="text" class="form-control" id="lakcim" disabled>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label"><b>Email:</b></label>
-                            <input type="email" class="form-control" id="email"  disabled>
+                            <input type="email" class="form-control" id="email" disabled>
                         </div>
-                         <div class="mb-3">
+
+                        <div class="mb-3">
                             <label class="form-label"><b>Szülő neve:</b></label>
-                            <input type="text" class="form-control" id="szulo"  disabled>
+                            <input type="text" class="form-control" id="szulo" disabled>
                         </div>
                     </div>
                 </div>
@@ -175,7 +175,10 @@
                 </div>
             </div>
         </section>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    </div><!-- /.content -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Diak.js"></script>
 </body>
 </html>
