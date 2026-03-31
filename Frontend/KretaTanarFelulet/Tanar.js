@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     panelValtas();
     getTeacherMessages();
     await tanarAdatokBetoltese();
+    await diakokBetolteseUzenethez();
 });
 
 //#region  uzenetek lekérése tanárnak
@@ -78,6 +79,68 @@ function datum(d) {
 
 //#endregion
 
+
+//#region uzenet kuldese
+
+async function diakokBetolteseUzenethez() {
+    const select = document.getElementById("cimzett");
+    select.innerHTML = '<option value="">-- Válassz diákot --</option>';
+
+    const res = await fetch(`${API_BASE}/diaklistazasa`, { credentials: "include" });
+    if (!res.ok) return;
+
+    const diakok = await res.json();
+    diakok.forEach(d => {
+        const option = document.createElement("option");
+        option.value = d.user_id; 
+        option.textContent = d.diak_nev;
+        select.appendChild(option);
+    });
+}
+
+async function kuldes() {
+    const tema = document.getElementById("tema").value.trim();
+    const szoveg = document.getElementById("szoveg").value.trim();
+    const select = document.getElementById("cimzett");
+    const fogadoId = parseInt(select.value);
+    const status = document.getElementById("uzenetStatus");
+
+    const mentettFelhasznalo = localStorage.getItem("kretaUser");
+    if (!mentettFelhasznalo) { status.innerText = "Nincs bejelentkezve."; return; }
+    
+    const user = JSON.parse(mentettFelhasznalo);
+    const userId = parseInt(user.id || user.Id);
+
+    if (!tema || !szoveg || !fogadoId || isNaN(fogadoId)) {
+        status.innerText = "Tölts ki minden mezőt, és válassz diákot!";
+        return;
+    }
+
+    const dto = { cim: tema, tartalom: szoveg, fogado_id: fogadoId, user_id: userId };
+    status.innerText = "Küldés...";
+
+    try {
+        const res = await fetch(`${MESSAGE_API}/messageadd`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(dto)
+        });
+
+        if (res.ok) {
+            status.innerText = "Üzenet elküldve!";
+            document.getElementById("tema").value = "";
+            document.getElementById("szoveg").value = "";
+            await getTeacherMessages(); // ✅ paraméter nélkül
+        } else {
+            status.innerText = "Hiba történt a küldés során.";
+        }
+    } catch (err) {
+        status.innerText = "Nem sikerült kapcsolódni a szerverhez.";
+        console.error(err);
+    }
+}
+//#endregion
 
 //#region sidebar működése és panel váltás
 
