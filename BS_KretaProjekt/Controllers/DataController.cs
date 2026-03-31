@@ -66,7 +66,7 @@ namespace BS_KretaProjekt.Controllers
         }
  
         [HttpGet("tanarlistazasa")]
-        public async Task <ActionResult<IEnumerable<StudentDto>>> GetTeacher()
+        public async Task <ActionResult<IEnumerable<TeacherDto>>> GetTeacher()
         {
             try
             {

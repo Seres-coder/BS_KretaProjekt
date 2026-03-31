@@ -135,7 +135,7 @@ namespace BS_KretaProjekt.Persistence
                     tartalom = "Üdvözlöm a diákot!",
                     cim = "Üzenet diák1-nek",
                     fogado_id = diak1Id,
-                    Fogado = diakok[0],
+                    //Fogado = diakok[0],
                     user_id = tanarUserId,
                     User = users[1],
                     kuldesidopontja = DateTimeOffset.Now.AddDays(-1)
