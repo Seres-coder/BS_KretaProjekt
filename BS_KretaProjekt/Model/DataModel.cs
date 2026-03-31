@@ -64,6 +64,7 @@ namespace BS_KretaProjekt.Model
                 tanar_id = x.tanar_id,
                 tanar_nev = x.tanar_nev,
                 szak = x.szak,
+                user_id = x.user_id
             }).ToListAsync();
             if (items.Count == 0)
                 throw new InvalidOperationException("nincs tanar");

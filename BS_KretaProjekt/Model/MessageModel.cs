@@ -40,8 +40,8 @@ namespace BS_KretaProjekt.Model
         #region Send Message
         public IEnumerable<MessageDto> GetMessages(int fogado_id)
         {
-            if (!_context.Diakok.Any(x => x.diak_id == fogado_id))
-                throw new KeyNotFoundException("nincs ilyen diák");
+            if (!_context.Users.Any(x => x.user_id == fogado_id))
+                throw new KeyNotFoundException("nincs ilyen user");
 
             return _context.Uzenetek
                 .Include(x => x.User)
