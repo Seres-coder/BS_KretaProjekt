@@ -17,7 +17,7 @@ namespace BS_KretaProjekt.Controllers
         }
 
         #region Grade Add
-        [Authorize(Roles = "Tanar")]
+
         [HttpPost("gradeadd")]
         public async Task<ActionResult> AddNewGrade([FromBody] GradeAdd dto)
         {
@@ -26,19 +26,20 @@ namespace BS_KretaProjekt.Controllers
                 await _model.AddNewGrade(dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message); 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                Console.WriteLine(ex.ToString()); // ← teljes stack trace
+                return BadRequest(ex.Message + " | Inner: " + ex.InnerException?.Message);
             }
         }
         #endregion
 
         #region -Grade Modify
-        [Authorize(Roles = "Tanar")]
+
         [HttpPut("grademodify")]
         public async Task<ActionResult> ModifyGrade([FromBody] GradeModify dto)
         {
@@ -60,7 +61,7 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region -Grade Delete
-        [Authorize(Roles = "Tanar")]
+       
         [HttpDelete("gradedelete")]
         public async Task<ActionResult> DeleteGrade([FromQuery] int id)
         {
@@ -84,11 +85,11 @@ namespace BS_KretaProjekt.Controllers
         #region -Grade Listing
 
         [HttpGet("allgrade")]
-        public ActionResult<IEnumerable<GradeListDto>> GetAllGrades([FromQuery] int id)
+        public ActionResult<IEnumerable<GradeListDto>> GetAllGrades([FromQuery] int id = 0, [FromQuery] int tanar_id = 0)
         {
             try
             {
-                return Ok(_model.AllGrades(id));
+                return Ok(_model.AllGrades(id, tanar_id));
             }
             catch (InvalidOperationException)
             {

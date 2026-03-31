@@ -45,6 +45,7 @@ namespace BS_KretaProjekt.Model
 
                     diak_nev = x.diak_nev ?? "",
                     user_id = x.user_id,
+                    diak_id = x.diak_id,
                     osztaly_id = x.osztaly_id ?? 0,
                     lakcim = x.lakcim ?? "",
                     szuloneve = x.szuloneve ?? "",
@@ -94,6 +95,8 @@ namespace BS_KretaProjekt.Model
             await trx.CommitAsync();
         }
 
+
+
         public async Task ModifyTeacherData(TeacherDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.tanar_nev) || string.IsNullOrWhiteSpace(dto.szak))
@@ -129,23 +132,13 @@ namespace BS_KretaProjekt.Model
         }
         public async Task DeleteTeacherData(int id)
         {
-            var tanar = await _context.Tanarok
-                .SingleOrDefaultAsync(x => x.tanar_id == id);
-            if (tanar is null)
-                throw new InvalidOperationException("nincs ilyen tanar");
-            var user = await _context.Users
-                .SingleOrDefaultAsync(x => x.user_id == tanar.user_id);
-            var uzenetek = _context.Uzenetek.Where(x => x.fogado_id == id);
-            await using var trx = await _context.Database.BeginTransactionAsync();
-            _context.Jegyek.RemoveRange(_context.Jegyek.Where(x => x.tanar_id == id));
-            _context.Orarendek.RemoveRange(_context.Orarendek.Where(x => x.tanar_id == id));
-            _context.Uzenetek.RemoveRange(uzenetek);
-            _context.Tanarok.Remove(tanar);
-            if (user != null)
-                _context.Users.Remove(user);
-
-            await _context.SaveChangesAsync();
-            await trx.CommitAsync();
+            using (var trx = _context.Database.BeginTransaction())
+            {
+                _context.Tanarok.Remove(_context.Tanarok.Where(x => x.tanar_id == id).First());
+                await _context.SaveChangesAsync();
+                await trx.CommitAsync();
+            }
+            await Task.CompletedTask;
         }
     }
 }

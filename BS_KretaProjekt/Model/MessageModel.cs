@@ -27,7 +27,7 @@ namespace BS_KretaProjekt.Model
                     tartalom = dto.tartalom,
                     fogado_id = dto.fogado_id,
                     user_id = dto.user_id,
-                    kuldesidopontja=DateTimeOffset.Now,
+                    kuldesidopontja=DateTimeOffset.UtcNow,
                 });
                 await _context.SaveChangesAsync();
                 await trx.CommitAsync();

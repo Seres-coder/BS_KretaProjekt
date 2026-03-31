@@ -28,13 +28,15 @@ namespace KretaTest
         [Fact]
         public async Task GetDiakok()
         {
-            var responseAdmin = await _client.PostAsync(
-                "api/user/login?username=admin&password=admin123",
+            var responseTanar = await _client.PostAsync(
+            "api/user/login?username=tanar1&password=tanar123",
                 null);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
+           responseTanar.EnsureSuccessStatusCode();
 
-            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, responseTanar.StatusCode);
 
-            var content = await responseAdmin.Content.ReadAsStringAsync();
+            var content = await responseTanar.Content.ReadAsStringAsync();
 
             var loginResult = JsonSerializer.Deserialize<UserDto>(
                 content,
@@ -95,16 +97,16 @@ namespace KretaTest
         public async Task ModifyStudentData()
         {
             var responseAdmin = await _client.PostAsync(
-                "api/user/login?username=admin&password=admin123",
-                null);
+                 "api/user/login?username=admin&password=admin123",
+                 null);
 
             Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
             responseAdmin.EnsureSuccessStatusCode();
 
-            var content = await responseAdmin.Content.ReadAsStringAsync();
+            var contentAdmin = await responseAdmin.Content.ReadAsStringAsync();
 
             var loginResult = JsonSerializer.Deserialize<UserDto>(
-                content,
+                contentAdmin,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             Assert.Equal("Admin", loginResult._Role);

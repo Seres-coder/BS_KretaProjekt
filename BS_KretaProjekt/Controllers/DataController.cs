@@ -16,47 +16,36 @@ namespace BS_KretaProjekt.Controllers
         {
             _model = model;
         }
-
-        [HttpGet("mydata")]
-        public async Task<ActionResult<StudentDto>> GetMyData([FromQuery] int userId)
+        [HttpGet("getmydata")]
+        public async Task<ActionResult<StudentDto>> GetMyData(int user_id)
         {
             try
             {
-                var response = await _model.GetMyData(userId);
-
-                if (response == null)
-                {
-                    return NotFound("Nincs ilyen diákadat.");
-                }
-
+                var response = await _model.GetMyData(user_id);
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, $"Szerverhiba: {ex.Message}");
+                return BadRequest();
             }
         }
-
-        [HttpGet("myteacherdata")]
-        public async Task<ActionResult<TeacherDto>> GetMyTeacherData([FromQuery] int userId)
+    
+        [HttpGet("getmyteacherdata")]
+        public async Task<ActionResult<StudentDto>> GetMyTeacherData(int user_id)
         {
             try
             {
-                var response = await _model.GetMyTeacherData(userId);
-
-                if (response == null)
-                {
-                    return NotFound("Nincs ilyen tanáradat.");
-                }
-
+                var response = await _model.GetMyTeacherData(user_id);
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, $"Szerverhiba: {ex.Message}");
+                return BadRequest();
             }
         }
-        [Authorize(Roles ="Admin")]
+
+
+        
         [HttpGet("diaklistazasa")]
         public async Task <ActionResult<IEnumerable<StudentDto>>> GetDiak()
         {
@@ -75,14 +64,14 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
-        [Authorize(Roles = "Admin")]
+ 
         [HttpGet("tanarlistazasa")]
         public async Task <ActionResult<IEnumerable<StudentDto>>> GetTeacher()
         {
             try
             {
-                await _model.GetTeacher();
-                return Ok();
+                var response = await _model.GetTeacher();
+                return Ok(response);
             }
             catch (InvalidOperationException)
             {
