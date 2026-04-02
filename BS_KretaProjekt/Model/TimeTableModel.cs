@@ -96,14 +96,15 @@ namespace BS_KretaProjekt.Model
         #region TimeTable Listing
         public Dictionary<DayOfWeek, List<TimeTableItemDto>> GetTimeTable(int osztaly_id)
         {
-          
-            var result = 
+
+            var result =
             _context.Orarendek
                 .Include(x => x.Tantargy)
                 .Include(x => x.Tanar)
                 .Where(x => x.osztaly_id == osztaly_id)
                 .Select(x => new
                 {
+                    x.orarend_id,
                     x.nap,
                     x.ora,
                     tantargyNev = x.Tantargy.tantargy_nev,
@@ -115,6 +116,7 @@ namespace BS_KretaProjekt.Model
                     g => g.OrderBy(x => x.ora)
                           .Select(x => new TimeTableItemDto
                           {
+                              orarend_id = x.orarend_id,
                               ora = x.ora,
                               tantargyNev = x.tantargyNev,
                               tanarNev = x.tanarNev
