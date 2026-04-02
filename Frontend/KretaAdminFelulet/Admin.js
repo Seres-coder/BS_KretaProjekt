@@ -1,344 +1,327 @@
-function toggleSidebar(){
+const API_BASE = "https://localhost:7273/api/Data";
+const MESSAGE_API = "https://localhost:7273/api/Message";
 
-	const sidebar = document.getElementById("sidebar");
-	const content = document.querySelector(".content");
-
-	sidebar.classList.toggle("closed");
-	content.classList.toggle("full");
-
-}
-
-document.querySelectorAll(".nav-link").forEach(button => {
-    button.addEventListener("click", function () {
-        const targetId = this.getAttribute("data-view");
-
-        document.querySelectorAll("section").forEach(section => {
-            section.classList.remove("panel-active");
-            section.classList.add("panel");
-        });
-
-        const targetPanel = document.getElementById(targetId);
-        if (targetPanel) {
-            targetPanel.classList.remove("panel");
-            targetPanel.classList.add("panel-active");
-        }
-    });
+document.addEventListener("DOMContentLoaded", async function () {
+    sidebarGomb();
+    panelValtas();
+    cimzettekBetoltese();
+    diakokListaBetoltese(); 
+    osztalyokBetoltese()
 });
 
-function kuldes(){
+//#region  side bar mukodese
+function sidebarGomb() {
+    const sidebar = document.getElementById("sidebar");
+    const gomb = document.getElementById("sidebar-toggle");
 
-let cimzett = document.getElementById("cimzett").value;
-let tema = document.getElementById("tema").value;
-let szoveg = document.getElementById("szoveg").value;
-
-if(cimzett === "" || tema === "" || szoveg === ""){
-
-document.getElementById("uzenetStatus").innerHTML =
-"<span style='color:red'>Minden mezőt ki kell tölteni!</span>";
-
-return;
-
-}
-
-document.getElementById("uzenetStatus").innerHTML =
-"<span style='color:green'>Üzenet elküldve!</span>";
-
-document.getElementById("cimzett").value = "";
-document.getElementById("tema").value = "";
-document.getElementById("szoveg").value = "";
-
-}
-
-
-function tanarmodositas() {
-    document.querySelectorAll("#nev,#szak,#szuletes,#lakcim,#email")
-        .forEach(input => input.disabled = false);
-
-    document.getElementById("mentesGomb").style.display = "inline-block";
-}
-
-function tanarmentes() {
-    document.querySelectorAll("#nev,#szak,#szuletes,#lakcim,#email")
-        .forEach(input => input.disabled = true);
-
-    document.getElementById("mentesGomb").style.display = "none";
-}
-
-function diakmodositas() {
-    document.querySelectorAll("#nev,#osztaly,#szuletes,#lakcim,#email,#szulo")
-        .forEach(input => input.disabled = false);
-
-    document.getElementById("mentesGomb").style.display = "inline-block";
-}
-
-function diakmentes() {
-    document.querySelectorAll("#nev,#osztaly,#szuletes,#lakcim,#email,#szulo")
-        .forEach(input => input.disabled = true);
-
-    document.getElementById("mentesGomb").style.display = "none";
-}
-
-
-const orarendAdatok = {
-    "9.A": {
-        hetfo:    ["Matek", "Magyar", "Angol", "Töri", "Info", "Tesnevelés", ""],
-        kedd:     ["Fizika", "Matek", "Angol", "Biológia", "Irodalom", "", ""],
-        szerda:   ["Kémia", "Matek", "Info", "Töri", "Angol", "Osztályfőnöki", ""],
-        csutortok:["Magyar", "Fizika", "Matek", "Földrajz", "Tesnevelés", "", ""],
-        pentek:   ["Angol", "Irodalom", "Matek", "Info", "Biológia", "", ""]
-    },
-    "10.A": {
-        hetfo:    ["Matek", "Töri", "Angol", "Info", "Fizika", "", ""],
-        kedd:     ["Magyar", "Matek", "Biológia", "Tesnevelés", "Angol", "", ""],
-        szerda:   ["Kémia", "Info", "Matek", "Töri", "Irodalom", "", ""],
-        csutortok:["Fizika", "Matek", "Angol", "Földrajz", "Magyar", "", ""],
-        pentek:   ["Info", "Matek", "Biológia", "Osztályfőnöki", "Tesnevelés", "", ""]
-    },
-    "11.B": {
-        hetfo:    ["Irodalom", "Matek", "Angol", "Töri", "Info", "", ""],
-        kedd:     ["Fizika", "Kémia", "Matek", "Magyar", "Angol", "", ""],
-        szerda:   ["Biológia", "Matek", "Töri", "Info", "Tesnevelés", "", ""],
-        csutortok:["Angol", "Matek", "Fizika", "Irodalom", "Földrajz", "", ""],
-        pentek:   ["Magyar", "Info", "Matek", "Osztályfőnöki", "Tesnevelés", "", ""]
+    if (sidebar && gomb) {
+        gomb.addEventListener("click", function () {
+            sidebar.classList.toggle("closed");
+        });
     }
-};
+}
 
-document.addEventListener("DOMContentLoaded", function () {
-    const navButtons = document.querySelectorAll(".nav-link");
+function panelValtas() {
+    const gombok = document.querySelectorAll("[data-panel-target]");
 
-    navButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            const targetId = this.getAttribute("data-view");
+    gombok.forEach(gomb => {
+        gomb.addEventListener("click", function () {
+            const panelId = this.getAttribute("data-panel-target");
+            panelMutatas(panelId);
 
-            document.querySelectorAll("section").forEach(section => {
-                section.classList.remove("panel-active");
-                section.classList.add("panel");
+            gombok.forEach(x => x.classList.remove("active"));
+            this.classList.add("active");
+        });
+    });
+}
+
+function panelMutatas(panelId) {
+    const panelek = document.querySelectorAll(".panel");
+
+    panelek.forEach(panel => {
+        panel.style.display = "none";
+    });
+
+    const aktivPanel = document.getElementById(panelId);
+    if (aktivPanel) {
+        aktivPanel.style.display = "block";
+    }
+}
+//#endregion
+
+//#region uzenet irasa
+
+async function cimzettekBetoltese() {
+    const select = document.getElementById("cimzett");
+    select.innerHTML = '<option value="">-- Válassz címzettet --</option>';
+
+    try {
+        // Tanárok betöltése
+        const tanarRes = await fetch(`${API_BASE}/tanarlistazasa`, { credentials: "include" });
+        if (tanarRes.ok) {
+            const tanarok = await tanarRes.json();
+            
+            const tanarGroup = document.createElement("optgroup");
+            tanarGroup.label = "── Tanárok ──";
+            
+            tanarok.forEach(t => {
+                const option = document.createElement("option");
+                option.value = t.user_id; 
+                option.textContent = t.tanar_nev;
+                tanarGroup.appendChild(option);
             });
-
-            const targetPanel = document.getElementById(targetId);
-            if (targetPanel) {
-                targetPanel.classList.remove("panel");
-                targetPanel.classList.add("panel-active");
-            }
-        });
-    });
-
-    osztalyokBetoltese();
-});
-
-function osztalyokBetoltese() {
-    const select = document.getElementById("osztalySelect");
-    if (!select) return;
-
-    select.innerHTML = '<option value="">Válassz osztályt</option>';
-
-    Object.keys(orarendAdatok).forEach(osztaly => {
-        const option = document.createElement("option");
-        option.value = osztaly;
-        option.textContent = osztaly;
-        select.appendChild(option);
-    });
-}
-
-
-function orarendBetoltes() {
-    const select = document.getElementById("osztalySelect");
-    const container = document.getElementById("orarendContainer");
-    const osztaly = select.value;
-
-    if (!osztaly) {
-        container.innerHTML = '<p class="text-danger">Kérlek válassz egy osztályt.</p>';
-        return;
-    }
-
-    const adat = orarendAdatok[osztaly];
-
-    if (!adat) {
-        container.innerHTML = '<p class="text-danger">Ehhez az osztályhoz nincs órarend.</p>';
-        return;
-    }
-
-    const oraSzamok = [1, 2, 3, 4, 5, 6, 7];
-    const napok = [
-        { key: "hetfo", label: "Hétfő" },
-        { key: "kedd", label: "Kedd" },
-        { key: "szerda", label: "Szerda" },
-        { key: "csutortok", label: "Csütörtök" },
-        { key: "pentek", label: "Péntek" }
-    ];
-
-    let html = `
-        <h4 class="mb-3">${osztaly} osztály órarendje</h4>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped text-center align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Óra</th>
-    `;
-
-    napok.forEach(nap => {
-        html += `<th>${nap.label}</th>`;
-    });
-
-    html += `
-                    </tr>
-                </thead>
-                <tbody>
-    `;
-
-    oraSzamok.forEach((ora, index) => {
-        html += `<tr><td><b>${ora}.</b></td>`;
-
-        napok.forEach(nap => {
-            const tantargy = adat[nap.key][index] || "-";
-            html += `<td>${tantargy === "" ? "-" : tantargy}</td>`;
-        });
-
-        html += `</tr>`;
-    });
-
-    html += `
-                </tbody>
-            </table>
-        </div>
-    `;
-
-    container.innerHTML = html;
-}
-
-
-function osztalyokBetoltese() {
-    const select1 = document.getElementById("osztalySelect");
-    const select2 = document.getElementById("modOsztalySelect");
-
-    if (select1) {
-        select1.innerHTML = '<option value="">Válassz osztályt</option>';
-    }
-
-    if (select2) {
-        select2.innerHTML = '<option value="">Válassz osztályt</option>';
-    }
-
-    Object.keys(orarendAdatok).forEach(osztaly => {
-        if (select1) {
-            const option1 = document.createElement("option");
-            option1.value = osztaly;
-            option1.textContent = osztaly;
-            select1.appendChild(option1);
+            select.appendChild(tanarGroup);
         }
 
-        if (select2) {
-            const option2 = document.createElement("option");
-            option2.value = osztaly;
-            option2.textContent = osztaly;
-            select2.appendChild(option2);
+        // Diákok betöltése
+        const diakRes = await fetch(`${API_BASE}/diaklistazasa`, { credentials: "include" });
+        if (diakRes.ok) {
+            const diakok = await diakRes.json();
+            
+            const diakGroup = document.createElement("optgroup");
+            diakGroup.label = "── Diákok ──";
+            
+            diakok.forEach(d => {
+                const option = document.createElement("option");
+                option.value = d.user_id; 
+                option.textContent = d.diak_nev;
+                diakGroup.appendChild(option);
+            });
+            select.appendChild(diakGroup);
         }
-    });
+
+    } catch (e) {
+        console.error("Cimzett betöltési hiba:", e);
+    }
 }
 
-function szerkeszthetoOrarendBetoltes() {
-    const select = document.getElementById("modOsztalySelect");
-    const container = document.getElementById("orarendModContainer");
-    const osztaly = select.value;
+async function kuldes() {
+    const tema = document.getElementById("tema").value.trim();
+    const szoveg = document.getElementById("szoveg").value.trim();
+    const select = document.getElementById("cimzett");
+    const fogadoId = parseInt(select.value);
+    const status = document.getElementById("uzenetStatus");
 
-    if (!osztaly) {
-        container.innerHTML = '<p class="text-danger">Kérlek válassz egy osztályt.</p>';
+    const mentettFelhasznalo = localStorage.getItem("kretaUser");
+    if (!mentettFelhasznalo) { status.innerText = "Nincs bejelentkezve."; return; }
+
+    const user = JSON.parse(mentettFelhasznalo);
+    const userId = parseInt(user.id || user.Id);
+
+    if (!tema || !szoveg || !fogadoId || isNaN(fogadoId)) {
+        status.innerHTML = "<span style='color:red'>Minden mezőt ki kell tölteni!</span>";
         return;
     }
 
-    const adat = orarendAdatok[osztaly];
-
-    if (!adat) {
-        container.innerHTML = '<p class="text-danger">Ehhez az osztályhoz nincs órarend.</p>';
-        return;
-    }
-
-    const oraSzamok = [1, 2, 3, 4, 5, 6, 7];
-    const napok = [
-        { key: "hetfo", label: "Hétfő" },
-        { key: "kedd", label: "Kedd" },
-        { key: "szerda", label: "Szerda" },
-        { key: "csutortok", label: "Csütörtök" },
-        { key: "pentek", label: "Péntek" }
-    ];
-
-    let html = `
-        <h4 class="mb-3">${osztaly} osztály órarendjének módosítása</h4>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped text-center align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Óra</th>
-    `;
-
-    napok.forEach(nap => {
-        html += `<th>${nap.label}</th>`;
-    });
-
-    html += `</tr></thead><tbody>`;
-
-    oraSzamok.forEach((ora, index) => {
-        html += `<tr><td><b>${ora}.</b></td>`;
-
-        napok.forEach(nap => {
-            const tantargy = adat[nap.key][index] || "";
-            html += `
-                <td>
-                    <input 
-                        type="text" 
-                        class="form-control"
-                        value="${tantargy}"
-                        data-nap="${nap.key}"
-                        data-oraindex="${index}"
-                    >
-                </td>
-            `;
-        });
-
-        html += `</tr>`;
-    });
-
-    html += `
-                </tbody>
-            </table>
-        </div>
-
-        <button class="btn btn-success mt-3" onclick="orarendModositasMentese()">
-            Mentés
-        </button>
-
-        <p id="orarendMentesStatus" class="mt-3"></p>
-    `;
-
-    container.innerHTML = html;
-}
-
-function orarendModositasMentese() {
-    const osztaly = document.getElementById("modOsztalySelect").value;
-    const status = document.getElementById("orarendMentesStatus");
-
-    if (!osztaly || !orarendAdatok[osztaly]) {
-        status.innerHTML = '<span class="text-danger">Nincs kiválasztott osztály.</span>';
-        return;
-    }
-
-    const inputs = document.querySelectorAll("#orarendModContainer input[data-nap][data-oraindex]");
-
-    const ujAdat = {
-        hetfo: ["", "", "", "", "", "", ""],
-        kedd: ["", "", "", "", "", "", ""],
-        szerda: ["", "", "", "", "", "", ""],
-        csutortok: ["", "", "", "", "", "", ""],
-        pentek: ["", "", "", "", "", "", ""]
+    const dto = {
+        cim: tema,
+        tartalom: szoveg,
+        fogado_id: fogadoId, 
+        user_id: userId      
     };
 
-    inputs.forEach(input => {
-        const nap = input.getAttribute("data-nap");
-        const oraIndex = parseInt(input.getAttribute("data-oraindex"));
-        ujAdat[nap][oraIndex] = input.value.trim();
-    });
+    status.innerText = "Küldés...";
 
-    orarendAdatok[osztaly] = ujAdat;
+    try {
+        const res = await fetch(`${MESSAGE_API}/messageadd`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(dto)
+        });
 
-    status.innerHTML = '<span class="text-success">Az órarend sikeresen módosítva lett.</span>';
+        if (res.ok) {
+            status.innerHTML = "<span style='color:green'>Üzenet elküldve!</span>";
+            document.getElementById("tema").value = "";
+            document.getElementById("szoveg").value = "";
+            document.getElementById("cimzett").value = "";
+        } else {
+            status.innerHTML = "<span style='color:red'>Hiba történt a küldés során.</span>";
+        }
+    } catch (err) {
+        status.innerHTML = "<span style='color:red'>Nem sikerült kapcsolódni a szerverhez.</span>";
+        console.error(err);
+    }
 }
+
+//#endregion
+
+
+
+//#region  diak adat modositas
+let kivalasztottDiak = null;
+
+async function diakokListaBetoltese() {
+    const select = document.getElementById("diakValaszto");
+    select.innerHTML = '<option value="">-- Válassz diákot --</option>';
+
+    try {
+        const res = await fetch(`${API_BASE}/diaklistazasa`, { credentials: "include" });
+        if (!res.ok) return;
+
+        const diakok = await res.json();
+        diakok.forEach(d => {
+            const option = document.createElement("option");
+            option.value = JSON.stringify(d); 
+            option.textContent = d.diak_nev;
+            select.appendChild(option);
+        });
+    } catch (e) {
+        console.error("Diáklista hiba:", e);
+    }
+}
+
+function diakAdatokBetoltese() {
+    const select = document.getElementById("diakValaszto");
+    const form = document.getElementById("diakAdatokForm");
+
+    if (!select.value) {
+        form.style.display = "none";
+        return;
+    }
+
+    kivalasztottDiak = JSON.parse(select.value);
+    form.style.display = "block";
+
+    document.getElementById("diakNev").value = kivalasztottDiak.diak_nev || "";
+    document.getElementById("diakLakcim").value = kivalasztottDiak.lakcim || "";
+    document.getElementById("diakEmail").value = kivalasztottDiak.emailcim || "";
+    document.getElementById("diakSzulo").value = kivalasztottDiak.szuloneve || "";
+
+    // Mezők visszazárása ha másik diákot választ
+    document.querySelectorAll("#diakAdatokForm input").forEach(i => i.disabled = true);
+    document.getElementById("diakMentesGomb").style.display = "none";
+    document.getElementById("diakStatus").innerText = "";
+}
+
+function diakModositas() {
+    document.querySelectorAll("#diakAdatokForm input:not(#diakOsztaly):not(#diakSzuletes)").forEach(i => i.disabled = false);
+    document.getElementById("diakMentesGomb").style.display = "inline-block";
+}
+
+async function diakMentes() {
+    if (!kivalasztottDiak) return;
+
+
+    const dto = {
+        diak_id: kivalasztottDiak.diak_id,
+        user_id: kivalasztottDiak.user_id,
+        diak_nev: document.getElementById("diakNev").value.trim(),
+        lakcim: document.getElementById("diakLakcim").value.trim(),
+        emailcim: document.getElementById("diakEmail").value.trim(),
+        szuloneve: document.getElementById("diakSzulo").value.trim()
+    };
+
+    const status = document.getElementById("diakStatus");
+    status.innerText = "Mentés...";
+
+    try {
+        const res = await fetch(`${API_BASE}/modifystudentdata`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(dto)
+        });
+
+        if (res.ok) {
+            status.innerHTML = "<span style='color:green'>Sikeresen mentve!</span>";
+            document.querySelectorAll("#diakAdatokForm input").forEach(i => i.disabled = true);
+            document.getElementById("diakMentesGomb").style.display = "none";
+            await diakokListaBetoltese(); // ✅ frissíti a listát
+        } else {
+            status.innerHTML = "<span style='color:red'>Hiba történt a mentés során.</span>";
+        }
+    } catch (e) {
+        status.innerHTML = "<span style='color:red'>Nem sikerült kapcsolódni a szerverhez.</span>";
+    }
+}
+
+async function diakTorles() {
+    if (!kivalasztottDiak) return;
+    if (!confirm(`Biztosan törlöd ${kivalasztottDiak.diak_nev} diákot?`)) return;
+
+    const status = document.getElementById("diakStatus");
+
+    try {
+        const res = await fetch(`${API_BASE}/deletestudentdata?id=${kivalasztottDiak.diak_id}`, {
+            method: "DELETE",
+            credentials: "include"
+        });
+
+        if (res.ok) {
+            status.innerHTML = "<span style='color:green'>Diák törölve!</span>";
+            document.getElementById("diakAdatokForm").style.display = "none";
+            await diakokListaBetoltese(); // ✅ frissíti a listát
+        } else {
+            status.innerHTML = "<span style='color:red'>Hiba történt a törlés során.</span>";
+        }
+    } catch (e) {
+        status.innerHTML = "<span style='color:red'>Nem sikerült kapcsolódni a szerverhez.</span>";
+    }
+}
+
+//#endregion 
+
+//#region  orarend izek
+function osztalyokBetoltese() {
+    fetch("https://localhost:7273/api/Data/osztalylistazasa", { credentials: "include" })
+        .then(res => res.json())
+        .then(osztalyok => {
+            let select = document.getElementById("osztalySelect");
+            if (!select) return;
+            select.innerHTML = '<option value="">-- Válassz osztályt --</option>';
+            osztalyok.forEach(o => {
+                let option = document.createElement("option");
+                option.value = o.osztaly_id;
+                option.textContent = o.osztaly_nev;
+                select.appendChild(option);
+            });
+        });
+}
+
+function orarendBetoltes() {
+    let osztalyId = document.getElementById("osztalySelect").value;
+    let container = document.getElementById("orarendContainer");
+    if (!osztalyId) { container.innerHTML = "<p>Kérlek válassz egy osztályt.</p>"; return; }
+
+    fetch(`https://localhost:7273/api/TimeTable/gettimetable?osztaly_id=${osztalyId}`, { credentials: "include" })
+        .then(res => res.json())
+        .then(adat => {
+            let html = "";
+            Object.entries(adat).forEach(([nap, orak]) => {
+                html += `<table>
+                            <thead>
+                                <tr>
+                                    <th>Nap</th>
+                                    <th>Óra</th>
+                                    <th>Tantárgy</th>
+                                    <th>Tanár</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                orak.forEach(o => {
+                    html += `<tr>
+                        <td>${NAP_NEVEK[nap] ?? nap}</td>
+                        <td>${o.ora}</td>
+                        <td>${o.tantargyNev}</td>
+                        <td>${o.tanarNev}</td>
+                    </tr>`;
+                });
+                html += `</tbody></table>`;
+            });
+            container.innerHTML = html;
+        })
+        .catch(() => { container.innerHTML = "<p>Hiba történt.</p>"; });
+}
+
+const NAP_NEVEK = {
+    "Monday":    "Hétfő",
+    "Tuesday":   "Kedd",
+    "Wednesday": "Szerda",
+    "Thursday":  "Csütörtök",
+    "Friday":    "Péntek",
+    "Saturday":  "Szombat",
+    "Sunday":    "Vasárnap"
+};
+
+//#endregion

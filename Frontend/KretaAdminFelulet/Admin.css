@@ -71,13 +71,29 @@ body{
 .panel.active {
     display: block;
 }
+#orarendContainer {
+    background-color: #B85C38;
+    padding: 10px;
+    border-radius: 10px;
+}
 
+#orarendContainer table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
 
 #orarendContainer table td,
 #orarendContainer table th {
     vertical-align: middle;
+    text-align: center;
+    padding: 8px;
+    min-width: 140px;
 }
 
-#orarendContainer h4 {
-    font-weight: bold;
+#orarendContainer table tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
