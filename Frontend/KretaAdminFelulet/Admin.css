@@ -1,67 +1,69 @@
-body{
-    margin:0;
-    font-family:Arial;
-    background:#E0C097;
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #E0C097;
 }
 
-.sidebar{
-	position:fixed;
-	top:0;
-	left:0;
-	height:100vh;
-	width:240px;
-	background:#B85C38;
-	border-right:3px solid #5C3D2E;
-	box-shadow:4px 0 14px rgba(0,0,0,0.22);
-	padding:18px;
-	transition:0.3s;
-	z-index:1200;
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 240px;
+    background: #B85C38;
+    border-right: 3px solid #5C3D2E;
+    box-shadow: 4px 0 14px rgba(0,0,0,0.22);
+    padding: 18px;
+    transition: 0.3s;
+    z-index: 1200;
 }
 
-.sidebar.closed{
-	left:-240px;
+.sidebar.closed {
+    left: -240px;
 }
 
-.sidebar-title{
-	font-weight:900;
-	font-size:20px;
-	color:black;
-	margin-bottom:20px;
+.sidebar-title {
+    font-weight: 900;
+    font-size: 20px;
+    color: black;
+    margin-bottom: 20px;
 }
 
-.sidebar .nav-link{
-	color:black;
-	font-weight:bold;
-	font-size:18px;
-	padding:12px;
-	border-radius:10px;
-	text-decoration:none;
-	display:block;
+.sidebar .nav-link {
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: block;
 }
 
-.sidebar .nav-link:hover{
-	background:rgba(255,255,255,0.3);
-}
-.sidebar-toggle{
-	position:absolute;
-	top:15px;
-	right:-50px;
-	width:45px;
-	height:45px;
-	border-radius:10px;
-	border:3px solid #5C3D2E;
-	background:white;
-	font-size:22px;
-	cursor:pointer;
-	box-shadow:0 6px 14px rgba(0,0,0,0.25);
-}
-.content{
-	margin-left:240px;
-	transition:0.3s;
+.sidebar .nav-link:hover {
+    background: rgba(255,255,255,0.3);
 }
 
-.sidebar.closed ~ .content{
-	margin-left:0;
+.sidebar-toggle {
+    position: absolute;
+    top: 15px;
+    right: -50px;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    border: 3px solid #5C3D2E;
+    background: white;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+
+.content {
+    margin-left: 240px;
+    transition: 0.3s;
+}
+
+.sidebar.closed ~ .content {
+    margin-left: 0;
 }
 
 .panel {
@@ -71,13 +73,17 @@ body{
 .panel.active {
     display: block;
 }
-#orarendContainer {
+
+/* Órarend megtekintés és módosítás — azonos stílus */
+#orarendContainer,
+#modOrarendContainer {
     background-color: #B85C38;
     padding: 10px;
     border-radius: 10px;
 }
 
-#orarendContainer table {
+#orarendContainer table,
+#modOrarendContainer table {
     width: 100%;
     border-collapse: collapse;
     background: white;
@@ -87,13 +93,42 @@ body{
 }
 
 #orarendContainer table td,
-#orarendContainer table th {
+#orarendContainer table th,
+#modOrarendContainer table td,
+#modOrarendContainer table th {
     vertical-align: middle;
     text-align: center;
     padding: 8px;
     min-width: 140px;
 }
 
-#orarendContainer table tr:nth-child(even) {
+#orarendContainer table tr:nth-child(even),
+#modOrarendContainer table tr:nth-child(even) {
     background-color: #f2f2f2;
+}
+
+#orarendContainer table thead tr,
+#modOrarendContainer table thead tr {
+    background-color: #B85C38;
+    color: white;
+}
+
+#orarendContainer h4,
+#modOrarendContainer h4 {
+    font-weight: bold;
+}
+select {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+select:focus {
+    outline: none;
+    border-color: #B85C38;
 }

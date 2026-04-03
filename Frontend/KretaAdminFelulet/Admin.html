@@ -22,8 +22,8 @@
 
             <br>Órarend:
             <nav>
-                  <button class="nav-link" data-panel-target="orarend-panel">Órarendek</button>
-                
+                <button class="nav-link" data-panel-target="orarend-panel">Órarendek</button>
+                <button class="nav-link" data-panel-target="orarendModositas">Órarend Módosítása</button>
             </nav>
             <br>Regisztrácíó:
             <nav>
@@ -128,20 +128,22 @@
 
         <section id="orarendModositas" class="panel">
             <h2>Órarend módosítása</h2>
-            <div style="background:white; border-radius:10px; padding:20px;">
+            <div style="background:white; border-radius:10px; padding:20px; margin:20px;">
 
                 <label>Osztály kiválasztása:</label>
-                <select id="modOsztalySelect" style="width:100%; padding:8px; margin-bottom:10px; border-radius:6px;">
-                    <option value="">Válassz osztályt...</option>
+                <select id="modOsztalySelect"
+                    style="width:100%; padding:8px; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
+                    <option value="">-- Válassz osztályt --</option>
                 </select>
-                <button onclick="modOrarendBetoltes()" 
-                        style="background:#B85C38; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:bold; margin-bottom:15px;">
+                <button onclick="modOrarendBetoltes()"
+                    style="background:#B85C38; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:bold; margin-bottom:15px;">
                     Órarend betöltése
                 </button>
 
                 <div id="modOrarendContainer">
                     <p>Válassz egy osztályt az órarend módosításához.</p>
                 </div>
+                <p id="modOrarendStatus" style="margin-top:10px;"></p>
             </div>
         </section>
     </div>
