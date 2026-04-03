@@ -26,7 +26,7 @@ namespace KretaAv.Model
             return student.osztaly_id;
         }
 
-        // int kulcsot használunk DayOfWeek helyett - így biztosan deszializálódik
+     
         public async Task<Dictionary<int, List<TimeTableItemDto>>> GetOrarend(int osztaly_id)
         {
             var result = await _session.Client.GetFromJsonAsync<Dictionary<int, List<TimeTableItemDto>>>(

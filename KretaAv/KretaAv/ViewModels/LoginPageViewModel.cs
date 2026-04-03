@@ -53,7 +53,7 @@ namespace KretaAv.ViewModels
             }
             catch (Exception e)
             {
-                // Valódi hibaüzenet megjelenítése debughoz
+               
                 Message = $"Hiba: {e.Message}";
                 if (e.InnerException != null)
                     Message += $" | {e.InnerException.Message}";

@@ -62,7 +62,7 @@ namespace KretaAv.ViewModels
                 int osztalyId = await _model.GetOsztalyId();
                 var orarend = await _model.GetOrarend(osztalyId);
 
-                // DayOfWeek: Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5
+               
                 var napNevek = new Dictionary<int, string>
                 {
                     { 1, "Hétfő"     },
