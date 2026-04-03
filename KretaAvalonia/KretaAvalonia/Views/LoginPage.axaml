@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="700"
+             xmlns:vm="using:KretaAvalonia.ViewModels"
+             x:Class="KretaAvalonia.LoginPage"
+             x:DataType="vm:LoginPageViewModel">
+
+
+    <Grid>
+        
+        <Border BorderBrush="Black"
+                BorderThickness="4"
+                Width="700"
+                Padding="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Height="600">
+
+            <StackPanel Spacing="20">
+
+                
+                <StackPanel Spacing="5">
+                    <TextBlock Text="felhasznalo nev"
+                               Foreground="Black"/>
+                    <TextBox Height="40"
+                             BorderBrush="Black"
+                             BorderThickness="3"
+                             Text="{Binding UserName}"
+                             
+                             />
+                             
+                </StackPanel>
+
+                
+                <StackPanel Spacing="5">
+                    <TextBlock Text="jelszo"
+                               Foreground="Black"/>
+                    <TextBox Height="10"
+                             BorderBrush="Black"
+                             BorderThickness="3"
+                             PasswordChar="*"
+                             Text="{Binding Password}"
+                             />
+                </StackPanel>
+
+                
+                <Button Content="belepes"
+                        Width="120"
+                        Height="40"
+                        HorizontalAlignment="Center"
+                        Background="#E5B133"
+                        BorderBrush="Black"
+                        BorderThickness="3"
+                        Foreground="Black"
+                        IsEnabled="True"
+                        Command="{Binding BelepesCommand}"
+                        />
+                <Label Content="{Binding Message}"></Label>
+            </StackPanel>
+            
+        </Border>
+    </Grid>
+</UserControl>
