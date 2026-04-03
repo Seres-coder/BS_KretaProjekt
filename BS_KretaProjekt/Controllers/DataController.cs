@@ -82,7 +82,25 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-        [Authorize(Roles = "Admin")]
+
+        [HttpGet("osztalylistazasa")]
+        public async Task<ActionResult<List<ClassDto>>> GetOsztalyok()
+        {
+            try
+            {
+                var result = await _model.GetOsztalyok();
+                return Ok(result);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound("Nincs osztály az adatbázisban.");
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPut("modifystudentdata")]
         public async Task<ActionResult> ModifyStudetData([FromBody] StudentDto dto)
         {
@@ -105,7 +123,7 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
-        [Authorize(Roles = "Admin")]
+       
         [HttpPut("modifyteacherdata")]
         public async Task<ActionResult> ModifyTeacherData([FromBody] TeacherDto dto)
         {
@@ -128,7 +146,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+
         [HttpDelete("deletestudentdata")]
         public   async Task<ActionResult> DeleteStudentData([FromQuery] int id)
         {
@@ -147,7 +165,6 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
-        [Authorize(Roles = "Admin")]
         [HttpDelete("deleteteacherdata")]
         public async Task<ActionResult> DeleteTeacherData([FromQuery] int id)
         {
