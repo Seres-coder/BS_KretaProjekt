@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     panelValtas();
     cimzettekBetoltese();
     diakokListaBetoltese(); 
+    fetch("https://localhost:7273/api/Data/tanarlistazasa", { credentials: "include" }).then(r => r.json()).then(data => { tanarokLista = data; }).catch(() => {});
     osztalyokBetoltese()
 });
 
@@ -279,6 +280,8 @@ function osztalyokBetoltese() {
         });
 }
 
+
+
 function orarendBetoltes() {
     let osztalyId = document.getElementById("osztalySelect").value;
     let container = document.getElementById("orarendContainer");
@@ -323,5 +326,8 @@ const NAP_NEVEK = {
     "Saturday":  "Szombat",
     "Sunday":    "Vasárnap"
 };
+const NAP_ENUM  = { "Monday":1,"Tuesday":2,"Wednesday":3,"Thursday":4,"Friday":5 };
+
+
 
 //#endregion

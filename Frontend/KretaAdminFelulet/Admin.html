@@ -125,6 +125,25 @@
                 </div>
             </div>
         </section>
+
+        <section id="orarendModositas" class="panel">
+            <h2>Órarend módosítása</h2>
+            <div style="background:white; border-radius:10px; padding:20px;">
+
+                <label>Osztály kiválasztása:</label>
+                <select id="modOsztalySelect" style="width:100%; padding:8px; margin-bottom:10px; border-radius:6px;">
+                    <option value="">Válassz osztályt...</option>
+                </select>
+                <button onclick="modOrarendBetoltes()" 
+                        style="background:#B85C38; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:bold; margin-bottom:15px;">
+                    Órarend betöltése
+                </button>
+
+                <div id="modOrarendContainer">
+                    <p>Válassz egy osztályt az órarend módosításához.</p>
+                </div>
+            </div>
+        </section>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Admin.js"></script>
