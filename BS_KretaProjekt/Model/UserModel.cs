@@ -112,5 +112,91 @@ namespace BS_KretaProjekt.Model
             await trx.CommitAsync();
         }
         #endregion
+
+        #region Admin Registration
+
+        public async Task RegisterDiakByAdmin(RegisterStudentDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.belepesnev) || string.IsNullOrWhiteSpace(dto.jelszo) ||
+                string.IsNullOrWhiteSpace(dto.diak_nev) || string.IsNullOrWhiteSpace(dto.emailcim) ||
+                string.IsNullOrWhiteSpace(dto.lakcim) || string.IsNullOrWhiteSpace(dto.szuloneve) ||
+                dto.osztaly_id == 0)
+                throw new InvalidOperationException("Nincs minden adat megadva.");
+
+            if (await _context.Users.AnyAsync(x => x.belepesnev == dto.belepesnev))
+                throw new InvalidOperationException("Már létezik ilyen felhasználónév.");
+
+            if (!await _context.Osztalyok.AnyAsync(x => x.osztaly_id == dto.osztaly_id))
+                throw new KeyNotFoundException("Nem létező osztály.");
+
+            await using var trx = await _context.Database.BeginTransactionAsync();
+
+            var user = new User
+            {
+                belepesnev = dto.belepesnev,
+                jelszo = HashPassword(dto.jelszo),
+                Role = "Diak"
+            };
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            if (!DateTime.TryParse(dto.szuletesi_datum, out var szuletesiDatum))
+                throw new InvalidOperationException("Érvénytelen születési dátum formátum.");
+
+            _context.Diakok.Add(new Diak
+            {
+                user_id = user.user_id,
+                diak_nev = dto.diak_nev,
+                emailcim = dto.emailcim,
+                lakcim = dto.lakcim,
+                szuloneve = dto.szuloneve,
+                szuletesi_datum = szuletesiDatum,   
+                osztaly_id = dto.osztaly_id
+            });
+            await _context.SaveChangesAsync();
+            await trx.CommitAsync();
+        }
+
+        public async Task RegisterTanarByAdmin(RegisterTeacherDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.belepesnev) || string.IsNullOrWhiteSpace(dto.jelszo) ||
+                string.IsNullOrWhiteSpace(dto.tanar_nev) || string.IsNullOrWhiteSpace(dto.szak) ||
+                string.IsNullOrWhiteSpace(dto.tantargy_nev))
+                throw new InvalidOperationException("Nincs minden adat megadva.");
+
+            if (await _context.Users.AnyAsync(x => x.belepesnev == dto.belepesnev))
+                throw new InvalidOperationException("Már létezik ilyen felhasználónév.");
+
+            var tantargyId = await _context.Tantargyok
+                .Where(x => x.tantargy_nev == dto.tantargy_nev)
+                .Select(x => x.tantargy_id)
+                .FirstOrDefaultAsync();
+
+            if (tantargyId == 0)
+                throw new KeyNotFoundException("Nem létező tantárgy.");
+
+            await using var trx = await _context.Database.BeginTransactionAsync();
+
+            var user = new User
+            {
+                belepesnev = dto.belepesnev,
+                jelszo = HashPassword(dto.jelszo),
+                Role = "Tanar"
+            };
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            _context.Tanarok.Add(new Tanar
+            {
+                user_id = user.user_id,
+                tanar_nev = dto.tanar_nev,
+                szak = dto.szak,
+                tantargy_id = tantargyId
+            });
+            await _context.SaveChangesAsync();
+            await trx.CommitAsync();
+        }
+
+        #endregion
     }
 }
