@@ -75,7 +75,7 @@ namespace KretaTest
                 Assert.False(string.IsNullOrWhiteSpace(x.cim));
                 Assert.False(string.IsNullOrWhiteSpace(x.kuldoname));
                 Assert.False(string.IsNullOrWhiteSpace(x.tartalom));
-                Assert.True(x.kuldesidopontja <= DateTime.Now);
+                Assert.True(x.kuldesidopontja <= DateTimeOffset.UtcNow);
             });
         }
         [Fact]

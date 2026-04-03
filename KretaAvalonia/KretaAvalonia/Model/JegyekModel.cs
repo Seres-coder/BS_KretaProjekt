@@ -18,7 +18,7 @@ namespace KretaAvalonia.Model
         {
             _session = session;
             GetJegyek(_session.Userid);
-            grades.Clear
+            grades.Clear();
         }
         public async Task GetJegyek(int id)
         {
