@@ -131,7 +131,7 @@ async function kuldes() {
             status.innerText = "Üzenet elküldve!";
             document.getElementById("tema").value = "";
             document.getElementById("szoveg").value = "";
-            await getTeacherMessages(); // ✅ paraméter nélkül
+            await getTeacherMessages(); 
         } else {
             status.innerText = "Hiba történt a küldés során.";
         }
@@ -209,7 +209,7 @@ async function tanarAdatokBetoltese() {
         }
 
         const teacherData = await response.json();
-        tanarAdat = teacherData;          // ← HIÁNYZOTT
+        tanarAdat = teacherData;        
 
         tanarAdatokKiirasa(teacherData);
 
@@ -217,7 +217,7 @@ async function tanarAdatokBetoltese() {
             await tanarOrarendBetoltese(teacherData.tanar_id);
         }
 
-        await diakokBetoltese();          // ← HIÁNYZOTT
+        await diakokBetoltese();       
 
     } catch (error) {
         alert("Nem sikerült kapcsolódni a szerverhez.");
