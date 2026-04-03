@@ -6,6 +6,7 @@
         xmlns:views="using:KretaAv.Views"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="700"
         x:Class="KretaAv.Views.MainWindow"
+        Background="White"
         Icon="/Assets/avalonia-logo.ico"
         Title="KretaAv">
         <views:MainView />

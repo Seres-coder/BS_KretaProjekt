@@ -30,7 +30,7 @@
         <ScrollViewer Grid.Row="2">
             <ItemsControl ItemsSource="{Binding Napok}">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="vm:OrarendNapViewModel">
+                    <DataTemplate x:DataType="viewmodels:OrarendNapViewModel">
                         <StackPanel Margin="0,0,0,15">
 
                             <!-- Nap neve -->

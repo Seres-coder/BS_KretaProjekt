@@ -55,11 +55,10 @@ public partial class App : Application
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
-                DataContext = MainViewModel
-
+                DataContext = LoginPageViewModel,
+                Content = LoginPage
             };
-            desktop.MainWindow.Content = LoginPage;
-            desktop.MainWindow.DataContext = LoginPageViewModel;
+            
             LoginPageViewModel.SikeresBelepes += (s, e) =>
             {
                 desktop.MainWindow.Content = MenuPage;
