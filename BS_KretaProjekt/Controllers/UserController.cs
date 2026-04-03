@@ -97,7 +97,7 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region Role update
-        [Authorize(Roles = "Admin")]
+
         [HttpPut("upgraderole")]
         public async Task<IActionResult> UpdateRole([FromQuery] int id, [FromQuery] string tantargy)
         {
@@ -116,5 +116,50 @@ namespace BS_KretaProjekt.Controllers
             }
         }
         #endregion
+        [HttpPost("registerdiak")]
+        public async Task<ActionResult> RegisterDiak([FromBody] RegisterStudentDto dto)
+        {
+            try
+            {
+                await _model.RegisterDiakByAdmin(dto);
+                return Ok();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("registertanar")]
+        public async Task<ActionResult> RegisterTanar([FromBody] RegisterTeacherDto dto)
+        {
+            try
+            {
+                await _model.RegisterTanarByAdmin(dto);
+                return Ok();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
     }
 }

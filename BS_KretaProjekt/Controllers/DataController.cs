@@ -184,7 +184,12 @@ namespace BS_KretaProjekt.Controllers
 
         }
 
-
+        [HttpGet("tantargylistazasa")]
+        public async Task<ActionResult> TantargyListazasa()
+        {
+            var list = await _model.TantargyListazasa();
+            return Ok(list);
+        }
 
 
 
