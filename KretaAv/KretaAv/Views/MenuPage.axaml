@@ -2,7 +2,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:KretaAv.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="KretaAv.MenuPage">
-  Welcome to Avalonia!
+             x:Class="KretaAv.MenuPage"
+             x:DataType="viewmodels:MenuPageViewModel">
+  <Grid ColumnDefinitions="250,*">
+        
+        
+        <Border Background="#E6D8A8">
+            <StackPanel Margin="10" Spacing="15">
+
+                <Button Content="Órarend"
+                        Command="{Binding OrarendCommand}"
+                        Height="80"
+                        Background="Yellow"
+                        FontSize="24"/>
+
+                <Button Content="Üzenetek"
+                        Command="{Binding UzenetekCommand}"
+                        Height="80"
+                        Background="Yellow"
+                        FontSize="24"/>
+
+                <Button Content="Jegyek"
+                        Command="{Binding JegyekCommand}"
+                        Height="80"
+                        Background="Yellow"
+                        FontSize="24"/>
+
+                <Button Content="Kijelentkezés"
+                        Command="{Binding KijelentkezesCommand}"
+                        Background="Yellow"
+                        FontSize="18"/>
+
+                <TextBlock Text="{Binding FelhasznaloNev}"
+                           FontSize="26"
+                           Margin="0,20,0,0"/>
+                
+            </StackPanel>
+        </Border>
+
+        <ContentControl Grid.Column="1"
+                        Content="{Binding CurrentView}" />
+            
+    </Grid>
 </UserControl>
