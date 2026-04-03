@@ -27,8 +27,8 @@
             </nav>
             <br>Regisztrácíó:
             <nav>
-                <button class="nav-link" data-panel-target="diak-reg">Diák Regisztrácíó</button>
-                <button class="nav-link" data-panel-target="tan-reg">Tanár Regisztrácíó</button>
+                <button class="nav-link" data-panel-target="diakRegPanel">Diák Regisztrácíó</button>
+                <button class="nav-link" data-panel-target="tanarRegPanel">Tanár Regisztrácíó</button>
             </nav>
         </nav>
     </div>
@@ -126,26 +126,101 @@
             </div>
         </section>
 
-        <section id="orarendModositas" class="panel">
-            <h2>Órarend módosítása</h2>
-            <div style="background:white; border-radius:10px; padding:20px; margin:20px;">
-
-                <label>Osztály kiválasztása:</label>
-                <select id="modOsztalySelect"
-                    style="width:100%; padding:8px; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
-                    <option value="">-- Válassz osztályt --</option>
-                </select>
-                <button onclick="modOrarendBetoltes()"
-                    style="background:#B85C38; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:bold; margin-bottom:15px;">
-                    Órarend betöltése
-                </button>
-
-                <div id="modOrarendContainer">
-                    <p>Válassz egy osztályt az órarend módosításához.</p>
-                </div>
-                <p id="modOrarendStatus" style="margin-top:10px;"></p>
+       <section id="orarendModositas" class="panel" style="display:none;">
+        <h2>Órarend módosítása</h2>
+        <div class="mod-orarend-box">
+            <label>Osztály kiválasztása:</label>
+            <select id="modOsztalySelect" class="mod-osztaly-select">
+                <option value="">-- Válassz osztályt --</option>
+            </select>
+            <button onclick="modOrarendBetoltes()" class="mod-orarend-btn">
+                Órarend betöltése
+            </button>
+            <div id="modOrarendContainer">
+                <p>Válassz egy osztályt az órarend módosításához.</p>
             </div>
-        </section>
+            <p id="modOrarendStatus" class="mt-2"></p>
+        </div>
+    </section>
+
+    <!-- Diák regisztráció -->
+    <section class="panel" id="diakRegPanel" style="display:none;">
+        <div class="d-flex justify-content-center align-items-start pt-4">
+            <div class="card p-4 reg-card">
+                <h4 class="mb-3">Diák regisztrálása</h4>
+                <div class="mb-2">
+                    <label class="form-label">Belépési név</label>
+                    <input type="text" id="regDiakBelepes" class="form-control" autocomplete="off">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Jelszó</label>
+                    <input type="password" id="regDiakJelszo" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Teljes név</label>
+                    <input type="text" id="regDiakNev" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="regDiakEmail" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Lakcím</label>
+                    <input type="text" id="regDiakLakcim" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Szülő neve</label>
+                    <input type="text" id="regDiakSzulo" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Születési dátum</label>
+                    <input type="date" id="regDiakSzuletes" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Osztály</label>
+                    <select id="regDiakOsztaly" class="form-select">
+                        <option value="">-- Válassz osztályt --</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" onclick="diakRegisztracio()">Regisztrálás</button>
+                <p id="regDiakStatus" class="mt-2"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tanár regisztráció -->
+    <section class="panel" id="tanarRegPanel" style="display:none;">
+        <div class="d-flex justify-content-center align-items-start pt-4">
+            <div class="card p-4 reg-card">
+                <h4 class="mb-3">Tanár regisztrálása</h4>
+                <div class="mb-2">
+                    <label class="form-label">Belépési név</label>
+                    <input type="text" id="regTanarBelepes" class="form-control" autocomplete="off">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Jelszó</label>
+                    <input type="password" id="regTanarJelszo" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Teljes név</label>
+                    <input type="text" id="regTanarNev" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Szak</label>
+                    <input type="text" id="regTanarSzak" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tantárgy</label>
+                    <select id="regTanarTantargy" class="form-select">
+                        <option value="">-- Válassz tantárgyat --</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" onclick="tanarRegisztracio()">Regisztrálás</button>
+                <p id="regTanarStatus" class="mt-2"></p>
+            </div>
+        </div>
+    </section>
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Admin.js"></script>
