@@ -1,8 +1,48 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="using:KretaAv.Model"
+             xmlns:viewmodels="using:KretaAv.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="KretaAv.UzenetekPage">
-  Welcome to Avalonia!
+             x:Class="KretaAv.UzenetekPage"
+             x:DataType="viewmodels:UzenetekViewModel">
+ <DockPanel Margin="10">
+
+        <!-- Vissza gomb -->
+        <Button DockPanel.Dock="Top"
+                Content="Vissza"
+                Command="{Binding VissszaCommand}"
+                HorizontalAlignment="Left"
+                Margin="0,0,0,10"/>
+
+        <!-- �zenetek lista -->
+        <Border BorderBrush="Black"
+                BorderThickness="2"
+                Background="Yellow"
+                Padding="8">
+            <StackPanel>
+                <TextBlock Text="�zenetek" FontWeight="Bold" Margin="0,0,0,6"/>
+                <TextBlock Text="{Binding HibaUzenet}" Foreground="Red" Margin="0,0,0,6"
+                           IsVisible="{Binding HibaUzenet, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                <ItemsControl ItemsSource="{Binding Uzenetek}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Black"
+                                    BorderThickness="2"
+                                    Background="White"
+                                    Margin="0,0,0,4"
+                                    Padding="6">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding cim}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding tartalom}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+    </DockPanel>
 </UserControl>
