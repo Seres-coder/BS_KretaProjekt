@@ -1,8 +1,31 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:KretaAv"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:KretaAv.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="KretaAv.JegyekPage">
-  Welcome to Avalonia!
+             x:Class="KretaAv.JegyekPage"
+			 x:DataType="viewmodels:JegyekViewModel">
+ <StackPanel Margin="20" Spacing="10" Background="White">
+
+
+		<Button Content="vissza"
+				Width="100"
+				Command="{Binding VisszaCommand}"/>
+
+
+		<ScrollViewer>
+			<StackPanel>
+				<ItemsControl ItemsSource="{Binding Tantargyak}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<local:Tantargyatlag></local:Tantargyatlag>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</StackPanel>
+		</ScrollViewer>
+
+	</StackPanel>
 </UserControl>
