@@ -3,7 +3,7 @@ using BS_KretaProjekt.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +27,11 @@ builder.Services.AddTransient<MessageModel>();
 builder.Services.AddTransient<TimeTableModel>();
 builder.Services.AddTransient<UserModel>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(opt =>
+    {
+        opt.SuppressModelStateInvalidFilter = true;
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

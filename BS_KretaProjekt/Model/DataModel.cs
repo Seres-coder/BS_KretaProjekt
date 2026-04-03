@@ -57,19 +57,26 @@ namespace BS_KretaProjekt.Model
                 throw new InvalidOperationException("nincs diak");
             return items;
         }
-        public async Task<IEnumerable<TeacherDto>> GetTeacher()
+        public async Task<List<TeacherDto>> GetTeacher()
         {
-            var items = await _context.Tanarok.Select(x => new TeacherDto
-            {
-                tanar_id = x.tanar_id,
-                tanar_nev = x.tanar_nev,
-                szak = x.szak,
-                user_id = x.user_id
-            }).ToListAsync();
+            var items = await _context.Tanarok
+                .Include(x => x.Tantargy)  
+                .Select(x => new TeacherDto
+                {
+                    tanar_id = x.tanar_id,
+                    tanar_nev = x.tanar_nev,
+                    szak = x.szak,
+                    tantargy_nev = x.Tantargy.tantargy_nev,   
+                    user_id = x.user_id
+                }).ToListAsync();
             if (items.Count == 0)
                 throw new InvalidOperationException("nincs tanar");
             return items;
+        }
 
+        public async Task<List<Tantargy>> TantargyListazasa()
+        {
+            return await _context.Tantargyok.ToListAsync();
         }
 
         public async Task ModifyStudentData(StudentDto dto)
