@@ -2,7 +2,72 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:KretaAv.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="KretaAv.OrarendPage">
-  Welcome to Avalonia!
+             x:Class="KretaAv.OrarendPage"
+             x:DataType="viewmodels:OrarendViewModel"> 
+ <Grid RowDefinitions="Auto,Auto,*" Margin="10">
+
+        <!-- Vissza gomb -->
+        <Button Grid.Row="0" Content="vissza"
+                HorizontalAlignment="Left"
+                Width="100"
+                Margin="0,0,0,10"
+                Command="{Binding VisszaCommand}"/>
+
+        <!-- Cím -->
+        <TextBlock Grid.Row="1" Text="Órarend"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   Margin="0,0,0,10"/>
+
+        <!-- Hibaüzenet -->
+        <TextBlock Grid.Row="1" Text="{Binding HibaUzenet}"
+                   Foreground="Red"
+                   HorizontalAlignment="Right"/>
+
+        <!-- Napok listája -->
+        <ScrollViewer Grid.Row="2">
+            <ItemsControl ItemsSource="{Binding Napok}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:OrarendNapViewModel">
+                        <StackPanel Margin="0,0,0,15">
+
+                            <!-- Nap neve -->
+                            <TextBlock Text="{Binding NapNev}"
+                                       FontWeight="Bold"
+                                       FontSize="16"
+                                       Margin="0,0,0,5"/>
+
+                            <!-- Órák listája -->
+                            <ItemsControl ItemsSource="{Binding Orak}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="White"
+                                                BorderBrush="Black"
+                                                BorderThickness="2"
+                                                Padding="10"
+                                                Margin="0,0,0,5">
+                                            <Grid ColumnDefinitions="40,*,*">
+                                                <TextBlock Grid.Column="0"
+                                                           Text="{Binding ora, StringFormat='{}{0}.'}"
+                                                           FontWeight="Bold"/>
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding tantargyNev}"/>
+                                                <TextBlock Grid.Column="2"
+                                                           Text="{Binding tanarNev}"
+                                                           HorizontalAlignment="Right"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+    </Grid>
 </UserControl>
