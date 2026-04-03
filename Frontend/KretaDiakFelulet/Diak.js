@@ -65,7 +65,6 @@ async function kuldes() {
     const fogadoId = parseInt(select.value);
     const status = document.getElementById("uzenetStatus");
 
-    // Bejelentkezés ellenőrzése
     const mentettFelhasznalo = localStorage.getItem("kretaUser");
     if (!mentettFelhasznalo) {
         status.innerText = "Nincs bejelentkezve.";
@@ -74,7 +73,6 @@ async function kuldes() {
     const user = JSON.parse(mentettFelhasznalo);
     const userId = parseInt(user.id || user.Id);
 
-    // Mezők ellenőrzése
     if (!tema || !szoveg || !fogadoId || isNaN(fogadoId) || isNaN(userId)) {
         status.innerText = "Tölts ki minden mezőt, és válassz fogadót!";
         console.warn("Hiányzó vagy hibás mezők:", { tema, szoveg, fogadoId, userId });
@@ -87,9 +85,6 @@ async function kuldes() {
         fogado_id: fogadoId,
         user_id: userId
     };
-
-    console.log("Küldés DTO:", dto); // DEBUG: ellenőrizd a Network fülön
-
     status.innerText = "Küldés...";
 
     try {
@@ -105,8 +100,8 @@ async function kuldes() {
             document.getElementById("tema").value = "";
             document.getElementById("szoveg").value = "";
 
-            // Frissítjük a bejövő üzeneteket
-            await getMessages(fogadoId);
+            
+            await getMessages(userId);
         } else {
             const errorText = await res.text();
             console.error("Backend hiba:", errorText);
@@ -128,7 +123,7 @@ async function tanarokBetoltese() {
     const tanarok = await res.json();
     tanarok.forEach(tanar => {
         const option = document.createElement("option");
-        option.value = tanar.tanar_id;
+        option.value = tanar.user_id; 
         option.textContent = tanar.tanar_nev;
         select.appendChild(option);
     });
@@ -209,7 +204,7 @@ async function diakAdatokBetoltese() {
             await orarendBetoltese(studentData.osztaly_id);
         }
 
-        await getMessages(studentData.diak_id);
+        await getMessages(userId);
     } catch (error) {
         alert("Nem sikerült kapcsolódni a szerverhez.");
     }
