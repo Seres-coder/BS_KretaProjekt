@@ -255,7 +255,7 @@ function orarendKiirasa(orarend) {
 
     napok.forEach((nap, index) => {
         if (index > 0) {
-            html += `<tr><td colspan="4" style="height:12px; background:#B85C38; border:none;"></td></tr>`;
+            html += `<tr><td colspan="4" style="height:8px;  border:none;"></td></tr>`;
         }
 
         orarend[nap].forEach(ora => {
