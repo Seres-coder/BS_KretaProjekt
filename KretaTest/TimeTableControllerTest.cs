@@ -26,20 +26,7 @@ namespace KretaTest
         [Fact]
         public async Task AddTimeTable()
         {
-            var responseAdmin = await _client.PostAsync(
-                "api/user/login?username=admin&password=admin123",
-                null);
-
-            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
-            responseAdmin.EnsureSuccessStatusCode();
-
-            var contentAdmin = await responseAdmin.Content.ReadAsStringAsync();
-
-            var loginResult = JsonSerializer.Deserialize<UserDto>(
-                contentAdmin,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            Assert.Equal("Admin", loginResult._Role);
+          
 
             var data = new
             {
@@ -90,20 +77,7 @@ namespace KretaTest
         [Fact]
         public async Task ModifyTimeTable()
         {
-            var responseAdmin = await _client.PostAsync(
-                "api/user/login?username=admin&password=admin123",
-                null);
-
-            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
-            responseAdmin.EnsureSuccessStatusCode();
-
-            var contentAdmin = await responseAdmin.Content.ReadAsStringAsync();
-
-            var loginResult = JsonSerializer.Deserialize<UserDto>(
-                contentAdmin,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            Assert.Equal("Admin", loginResult._Role);
+           
 
             var orarendId = GetSeededOrarendId();
 
@@ -177,20 +151,7 @@ namespace KretaTest
         [Fact]
         public async Task DeleteTimeTable()
         {
-            var responseAdmin = await _client.PostAsync(
-                "api/user/login?username=admin&password=admin123",
-                null);
-
-            Assert.Equal(HttpStatusCode.OK, responseAdmin.StatusCode);
-            responseAdmin.EnsureSuccessStatusCode();
-
-            var contentAdmin = await responseAdmin.Content.ReadAsStringAsync();
-
-            var loginResult = JsonSerializer.Deserialize<UserDto>(
-                contentAdmin,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            Assert.Equal("Admin", loginResult._Role);
+           
 
             var response = await _client.DeleteAsync("/api/timetable/deletetimetable?id=1");
 

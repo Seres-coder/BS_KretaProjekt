@@ -132,32 +132,3 @@ select:focus {
     outline: none;
     border-color: #B85C38;
 }
-.mod-orarend-box {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px;
-}
-
-#modOsztalySelect {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-.mod-orarend-btn {
-    background: #B85C38;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-.reg-card {
-    max-width: 520px;
-    width: 100%;
-}
