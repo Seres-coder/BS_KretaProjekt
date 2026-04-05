@@ -17,6 +17,7 @@ body {
     height: 100vh;
     width: 240px;
     background: #1565C0;
+	border-right:3px solid black;
     box-shadow: 4px 0 16px rgba(0,0,0,0.25);
     padding: 18px 14px;
     transition: 0.3s;
