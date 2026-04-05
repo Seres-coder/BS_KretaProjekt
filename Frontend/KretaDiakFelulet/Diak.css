@@ -55,7 +55,7 @@ h2{
 
 .sidebar .nav-link {
     color: white;
-    font-size: 23px;
+    font-size: 14px;
     font-weight: 500;
     padding: 10px 12px;
     border-radius: 6px;
@@ -185,6 +185,7 @@ h2{
     transition: background 0.15s;
 }
 
+
 .list-group-item:hover,
 .list-group-item-action:hover {
     background: #E3F2FD;
@@ -205,6 +206,11 @@ h2{
     background: #1565C0;
     color: white;
 }
+#diakOrarendContainer td:first-child {
+
+    font-weight: bold;
+    color: #1565C0;
+}
 
 .table-primary th {
     background: #1565C0;
@@ -214,4 +220,36 @@ h2{
 
 .table-striped tbody tr:nth-of-type(odd) {
     background: #F0F7FF;
+}
+.card {
+    border-left: 4px solid #1565C0 !important;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+#atlagLista .list-group-item {
+    border-left: 4px solid #1565C0;
+    background: #F0F7FF;
+    font-weight: 500;
+}
+.list-group-item:hover {
+    border-left: 4px solid #1565C0;
+    background: #E3F2FD;
+}
+.table thead th {
+    background: #1565C0;
+    color: white;
+    border: none;
+}
+.ora-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background: transparent;
+    border: 2px solid #1565C0;
+    border-radius: 50%;
+    color: #1565C0;
+    font-weight: bold;
+    font-size: 14px;
 }

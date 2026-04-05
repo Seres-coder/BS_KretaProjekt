@@ -263,7 +263,7 @@ function orarendKiirasa(orarend) {
             html += `
                 <tr>
                     <td>${maggyara(nap)}</td>
-                    <td>${ora.ora}</td>
+                    <td><span class="ora-badge">${ora.ora}</td>
                     <td>${ora.tantargyNev}</td>
                     <td>${ora.tanarNev}</td>
                 </tr>
