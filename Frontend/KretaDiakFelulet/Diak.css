@@ -38,6 +38,11 @@ body {
     margin-bottom: 8px;
 }
 
+h2{
+	font-size: 20px;
+	font-weight: bold;
+}
+
 .sidebar-section {
     color: rgba(255,255,255,0.6);
     font-size: 11px;
@@ -49,7 +54,7 @@ body {
 
 .sidebar .nav-link {
     color: white;
-    font-size: 14px;
+    font-size: 23px;
     font-weight: 500;
     padding: 10px 12px;
     border-radius: 6px;
@@ -97,7 +102,7 @@ body {
 
 .panel-header {
     background: #1565C0;
-    padding: 14px 24px;
+    padding: 14px  24px;
     color: white;
 }
 

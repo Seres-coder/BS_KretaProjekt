@@ -246,6 +246,7 @@ async function orarendBetoltese(osztalyId) {
     }
 }
 
+
 function orarendKiirasa(orarend) {
     const container = document.getElementById("diakOrarendContainer");
 
