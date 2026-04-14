@@ -1,4 +1,4 @@
-﻿using System.Formats.Asn1;
+﻿
 using BS_KretaProjekt.Dto;
 using BS_KretaProjekt.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -57,18 +57,26 @@ namespace BS_KretaProjekt.Model
                 throw new InvalidOperationException("nincs diak");
             return items;
         }
-        public async Task<IEnumerable<TeacherDto>> GetTeacher()
+        public async Task<List<TeacherDto>> GetTeacher()
         {
-            var items = await _context.Tanarok.Select(x => new TeacherDto
-            {
-                tanar_id = x.tanar_id,
-                tanar_nev = x.tanar_nev,
-                szak = x.szak,
-            }).ToListAsync();
+            var items = await _context.Tanarok
+                .Include(x => x.Tantargy)  
+                .Select(x => new TeacherDto
+                {
+                    tanar_id = x.tanar_id,
+                    tanar_nev = x.tanar_nev,
+                    szak = x.szak,
+                    tantargy_nev = x.Tantargy.tantargy_nev,   
+                    user_id = x.user_id
+                }).ToListAsync();
             if (items.Count == 0)
                 throw new InvalidOperationException("nincs tanar");
             return items;
+        }
 
+        public async Task<List<Tantargy>> TantargyListazasa()
+        {
+            return await _context.Tantargyok.ToListAsync();
         }
 
         public async Task ModifyStudentData(StudentDto dto)
@@ -76,20 +84,16 @@ namespace BS_KretaProjekt.Model
             var diak = await _context.Diakok.SingleOrDefaultAsync(x => x.diak_id == dto.diak_id);
             if (diak is null)
                 throw new InvalidOperationException();
-            if (string.IsNullOrWhiteSpace(dto.diak_nev) || string.IsNullOrWhiteSpace(dto.lakcim) || string.IsNullOrWhiteSpace(dto.szuloneve) || string.IsNullOrWhiteSpace(dto.emailcim) || dto.szuletesi_datum == DateTime.MinValue)
+            if (string.IsNullOrWhiteSpace(dto.diak_nev) || string.IsNullOrWhiteSpace(dto.lakcim) || string.IsNullOrWhiteSpace(dto.szuloneve) || string.IsNullOrWhiteSpace(dto.emailcim) )
                 throw new InvalidOperationException("Nincs minden adat megadva");
-            if (!_context.Osztalyok.Any(x => x.osztaly_id == dto.osztaly_id))
-                throw new KeyNotFoundException("Nincs ilyen diak");
 
 
             await using var trx = await _context.Database.BeginTransactionAsync();
             diak.diak_id = dto.diak_id;
             diak.diak_nev = dto.diak_nev;
-            diak.osztaly_id = dto.osztaly_id;
             diak.lakcim = dto.lakcim;
             diak.szuloneve = dto.szuloneve;
             diak.emailcim = dto.emailcim;
-            diak.szuletesi_datum = dto.szuletesi_datum;
 
             await _context.SaveChangesAsync();
             await trx.CommitAsync();
@@ -139,6 +143,21 @@ namespace BS_KretaProjekt.Model
                 await trx.CommitAsync();
             }
             await Task.CompletedTask;
+        }
+
+        public async Task<List<ClassDto>> GetOsztalyok()
+        {
+            var list = await _context.Osztalyok.Select(x => new ClassDto
+                {
+                    osztaly_id = x.osztaly_id,
+                    osztaly_nev = x.osztaly_nev
+                })
+                .ToListAsync();
+
+            if (list.Count == 0)
+                throw new InvalidOperationException("Nincs osztály az adatbázisban.");
+
+            return list;
         }
     }
 }
