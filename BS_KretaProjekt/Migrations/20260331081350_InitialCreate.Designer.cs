@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BS_KretaProjekt.Migrations
 {
     [DbContext(typeof(KretaDbContext))]
-    [Migration("20260317175738_InitialCreate")]
+    [Migration("20260331081350_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -55,9 +55,6 @@ namespace BS_KretaProjekt.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("diak_id");
-
-                    b.HasIndex("emailcim")
-                        .IsUnique();
 
                     b.HasIndex("osztaly_id");
 

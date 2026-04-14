@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:KretaAvalonia_SB.ViewModels"
+             mc:Ignorable="d" 
+             x:Class="KretaAvalonia_SB.Views.GradeView"
+             x:DataType="vm:GradeViewModel"
+             Height="880"
+             MinHeight="880"
+             Width="480"
+             MinWidth="480"
+             >
+
+    <UserControl.Styles>
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#1565C0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI Variable"/>
+            <Setter Property="Padding" Value="14,6"/>
+        </Style>
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1E88E5"/>
+            <Setter Property="TextElement.Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#0D47A1"/>
+            <Setter Property="TextElement.Foreground" Value="White"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                <GradientStop Color="#7DD6F8" Offset="0"/>
+                <GradientStop Color="#42A5F5" Offset="0.5"/>
+                <GradientStop Color="#1E88E5" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Fejléc -->
+        <Border Grid.Row="0" Background="#1565C0" Padding="16,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+               <Button Grid.Column="0"
+                        Command="{Binding BackCommand}"
+                        Background="Transparent"
+                        BorderBrush="White"
+                        BorderThickness="1.5"
+                        CornerRadius="6"
+                        Padding="8,2">
+                    <TextBlock Text="KRÉTA"
+                               Foreground="White"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               FontFamily="Segoe UI Variable"
+                               VerticalAlignment="Center"/>
+                </Button>
+
+
+                <TextBlock Grid.Column="2"
+                           Text="Jegyeim"
+                           Foreground="White"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           FontFamily="Segoe UI Variable"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+
+                
+            </Grid>
+        </Border>
+
+        <!-- Jegyek kártya -->
+        <Border Grid.Row="1"
+        MaxWidth="420"
+        MinWidth="400"
+        Padding="20,16"
+        Margin="0,20"
+        Background="#FFFFFF"
+        CornerRadius="10"
+        BoxShadow="0 4 16 0 #55000000"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Stretch">
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding Grades}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#F8F8F8"
+                                    CornerRadius="6"
+                                    Padding="14,10"
+                                    Margin="0,0,0,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Spacing="2">
+                                        <TextBlock Text="{Binding tantargyNev}"
+                                                   FontWeight="Bold"
+                                                   FontFamily="Segoe UI Variable"
+                                                   Foreground="#1565C0"
+                                                   FontSize="14"/>
+                                        <TextBlock Text="{Binding tanarNev}"
+                                                   FontFamily="Segoe UI Variable"
+                                                   Foreground="#555555"
+                                                   FontSize="12"/>
+                                        <TextBlock Text="{Binding datum, StringFormat='{}{0:yyyy.MM.dd}'}"
+                                                   FontFamily="Segoe UI Variable"
+                                                   Foreground="#888888"
+                                                   FontSize="11"/>
+                                    </StackPanel>
+
+                                    <Border Grid.Column="1"
+                                            Background="#1565C0"
+                                            CornerRadius="6"
+                                            Width="40"
+                                            Height="40"
+                                            VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding ertek}"
+                                                   Foreground="White"
+                                                   FontSize="18"
+                                                   FontWeight="Bold"
+                                                   FontFamily="Segoe UI Variable"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

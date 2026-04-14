@@ -1,0 +1,47 @@
+
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:KretaAvalonia_SB.ViewModels"
+             xmlns:views="clr-namespace:KretaAvalonia_SB.Views"    
+             mc:Ignorable="d" 
+             x:Class="KretaAvalonia_SB.Views.MainView"
+             x:DataType="vm:MainViewModel"
+              Height="880"
+             MinHeight="880"
+             Width="480"
+             MinWidth="480"
+             >
+ <UserControl.DataTemplates>
+
+      <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+		 <views:LoginView/>
+     </DataTemplate>
+
+      <DataTemplate DataType="{x:Type vm:MenuViewModel}">
+		 <views:MenuView/>
+     </DataTemplate>
+
+	 <DataTemplate DataType="{x:Type vm:DataViewModel}">
+		 <views:DataView/>
+     </DataTemplate>
+
+      <DataTemplate DataType="{x:Type vm:GradeViewModel}">
+		 <views:GradeView/>
+     </DataTemplate>
+
+      <DataTemplate DataType="{x:Type vm:MessageViewModel}">
+		 <views:MessageView/>
+     </DataTemplate>
+
+      <DataTemplate DataType="{x:Type vm:TimeTableViewModel}">
+		 <views:TimeTableView/>
+     </DataTemplate>
+
+ </UserControl.DataTemplates>
+
+<ContentControl Content="{Binding CurrentPage}"></ContentControl>
+    
+ 
+</UserControl>

@@ -53,9 +53,6 @@ namespace BS_KretaProjekt.Migrations
 
                     b.HasKey("diak_id");
 
-                    b.HasIndex("emailcim")
-                        .IsUnique();
-
                     b.HasIndex("osztaly_id");
 
                     b.HasIndex("user_id");

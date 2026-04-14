@@ -224,12 +224,6 @@ namespace BS_KretaProjekt.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Diakok_emailcim",
-                table: "Diakok",
-                column: "emailcim",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Diakok_osztaly_id",
                 table: "Diakok",
                 column: "osztaly_id");
