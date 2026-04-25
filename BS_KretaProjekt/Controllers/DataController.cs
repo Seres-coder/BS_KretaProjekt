@@ -17,7 +17,7 @@ namespace BS_KretaProjekt.Controllers
             _model = model;
         }
         [HttpGet("getmydata")]
-        public async Task<ActionResult<StudentDto>> GetMyData(int user_id)
+        public async Task<ActionResult<StudentDto>> GetMyData([FromQuery] int user_id)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace BS_KretaProjekt.Controllers
         }
     
         [HttpGet("getmyteacherdata")]
-        public async Task<ActionResult<StudentDto>> GetMyTeacherData(int user_id)
+        public async Task<ActionResult<StudentDto>> GetMyTeacherData([FromQuery] int user_id)
         {
             try
             {

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tanar Felulet</title>
+    <title>Tanár Felület</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="Tanar.css">
 </head>
@@ -16,26 +16,26 @@
                 <button class="nav-link" data-panel-target="bejovo-uzenetek-panel">Bejövő Üzenetek</button>
                 <button class="nav-link" data-panel-target="uzenet-iras-panel">Üzenet Írása</button>
             </nav>
- 
+
             <br>Adatok:
             <nav>
                 <button class="nav-link" data-panel-target="adatok-panel">Adataim</button>
             </nav>
- 
+
             <br>Órarend:
             <nav>
                 <button class="nav-link" data-panel-target="orarend-panel">Órarendem</button>
             </nav>
- 
+
             <br>Jegyek:
             <nav>
                 <button class="nav-link" data-panel-target="jegyek-panel">Jegyek kezelése</button>
             </nav>
         </nav>
     </div>
- 
+
     <div class="content" id="content">
- 
+
         <!-- Bejövő üzenetek -->
         <section id="bejovo-uzenetek-panel" class="panel active">
             <div class="container-fluid mt-4">
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </section>
- 
+
         <!-- Üzenet írása -->
         <section id="uzenet-iras-panel" class="panel">
             <div class="container mt-4">
@@ -73,7 +73,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Téma</label>
-                            <input type="text" class="form-control" id="tema">
+                            <input type="text" class="form-control" id="tema" autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Üzenet</label>
@@ -85,7 +85,7 @@
                 </div>
             </div>
         </section>
- 
+
         <!-- Adataim -->
         <section id="adatok-panel" class="panel">
             <div class="container mt-4">
@@ -100,11 +100,12 @@
                             <label class="form-label"><b>Szak:</b></label>
                             <input type="text" class="form-control" id="szak" disabled>
                         </div>
+                        <p id="adatokStatus" class="mt-2"></p>
                     </div>
                 </div>
             </div>
         </section>
- 
+
         <!-- Órarend -->
         <section id="orarend-panel" class="panel">
             <div class="container mt-4">
@@ -116,12 +117,12 @@
                 </div>
             </div>
         </section>
- 
+
         <!-- Jegyek kezelése -->
         <section id="jegyek-panel" class="panel">
             <div class="container mt-4">
                 <h2>Jegyek kezelése</h2>
- 
+
                 <!-- Diák választó -->
                 <div class="card shadow-sm mt-3">
                     <div class="card-body">
@@ -131,7 +132,7 @@
                         </select>
                     </div>
                 </div>
- 
+
                 <!-- Jegy hozzáadása -->
                 <div class="card shadow-sm mt-3">
                     <div class="card-body">
@@ -148,7 +149,7 @@
                         <p id="jegyStatus" class="mt-2"></p>
                     </div>
                 </div>
- 
+
                 <!-- Jegyek táblázata -->
                 <div class="card shadow-sm mt-3">
                     <div class="card-body">
@@ -168,12 +169,12 @@
                         </div>
                     </div>
                 </div>
- 
+
             </div>
         </section>
- 
-    </div><!-- /.content -->
- 
+
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Tanar.js"></script>
 </body>

@@ -179,7 +179,7 @@ function panelMutatas(panelId) {
 async function diakAdatokBetoltese() {
     const mentettFelhasznalo = localStorage.getItem("kretaUser");
     if (!mentettFelhasznalo) {
-        alert("Nincs bejelentkezve.");
+        showMessage("adatokStatus", "Nincs bejelentkezve.");
         return;
     }
     const user = JSON.parse(mentettFelhasznalo);
@@ -190,7 +190,7 @@ async function diakAdatokBetoltese() {
             credentials: "include"
         });
         if (!response.ok) {
-            alert("Nem sikerült lekérni az adatokat.");
+            showMessage("adatokStatus", "Nem sikerült lekérni az adatokat.");
             return;
         }
         const studentData = await response.json();
@@ -199,16 +199,13 @@ async function diakAdatokBetoltese() {
         }
         adatokKiirasa(studentData);
         await jegyekBetoltese(studentData.diak_id);
-
         if (studentData.osztaly_id) {
             await orarendBetoltese(studentData.osztaly_id);
         }
-
         await getMessages(userId);
     } catch (error) {
-        alert("Nem sikerült kapcsolódni a szerverhez.");
+        showMessage("adatokStatus", "Nem sikerült kapcsolódni a szerverhez.");
     }
-    
 }
 
 function adatokKiirasa(studentData) {
