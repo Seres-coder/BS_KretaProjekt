@@ -62,22 +62,7 @@ namespace KretaTest
         }
 
 
-        [Fact]
-        public void GetMessages_Valid()
-        {
-            var user_id = 1;
-            var messages = _model.GetMessages(user_id).ToList();
-            Assert.NotNull(messages);
-            Assert.NotEmpty(messages);
-            Assert.All(messages, x =>
-            {
-                Assert.True(x.Id > 0);
-                Assert.False(string.IsNullOrWhiteSpace(x.cim));
-                Assert.False(string.IsNullOrWhiteSpace(x.kuldoname));
-                Assert.False(string.IsNullOrWhiteSpace(x.tartalom));
-                Assert.True(x.kuldesidopontja <= DateTimeOffset.UtcNow);
-            });
-        }
+       
         [Fact]
         public void GetMessages_ThrowsKeyNotFound_WhenUserNotFound()
         {

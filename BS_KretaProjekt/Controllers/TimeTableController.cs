@@ -24,9 +24,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.CreateTimeTable(dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {
@@ -43,9 +43,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.ModifyTimeTable(dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (InvalidCastException)
             {

@@ -54,9 +54,9 @@ namespace BS_KretaProjekt.Controllers
                 var response= await _model.GetDiak();
                 return Ok(response);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {
@@ -73,9 +73,9 @@ namespace BS_KretaProjekt.Controllers
                 var response = await _model.GetTeacher();
                 return Ok(response);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {
@@ -109,9 +109,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.ModifyStudentData(dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (KeyNotFoundException)
             {
@@ -132,9 +132,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.ModifyTeacherData( dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (KeyNotFoundException)
             {
