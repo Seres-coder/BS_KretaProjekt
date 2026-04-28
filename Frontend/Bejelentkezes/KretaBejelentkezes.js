@@ -17,8 +17,6 @@ function clearMessage(element) {
 
 function redirectByRole(user) {
     const role = (user.role || user.Role || "").toString().trim().toLowerCase();
-    console.log("Kapott role:", role);
-    console.log("Teljes user objektum:", user);
 
     if (role === "diak") {
         window.location.href = "../KretaDiakFelulet/Diak.html";
@@ -31,7 +29,7 @@ function redirectByRole(user) {
     }
     else {
         showMessage(loginMessage, "Sikertelen");
-        console.error("Ismeretlen role:", user);
+      
     }
 }
 
@@ -53,7 +51,7 @@ if (loginForm) {
             });
             if (response.ok) {
                 const user = await response.json();
-                console.log("Bejelentkezett user:", user);
+               
                 localStorage.setItem("kretaUser", JSON.stringify(user));
                 showMessage(loginMessage, "Sikeres bejelentkezés.", true);
                 setTimeout(() => {
@@ -68,7 +66,7 @@ if (loginForm) {
             const errorText = await response.text();
             showMessage(loginMessage, errorText || "Sikertelen bejelentkezés.");
         } catch (error) {
-            console.error("Login hiba:", error);
+        
             showMessage(loginMessage, "Nem sikerült kapcsolódni a szerverhez.");
         }
     });

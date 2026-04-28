@@ -18,8 +18,8 @@ const NAP_NEVEK = {
 };
 
 document.addEventListener("DOMContentLoaded", async function () {
-    sidebarGombInit();
-    panelValtasInit();
+    sidebarGomb()
+    panelValtas();
 
     await Promise.all([
         cimzettekBetoltese(),
@@ -32,32 +32,42 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 //#region Sidebar és panel
 
-function sidebarGombInit() {
-    document.getElementById("sidebar-toggle").addEventListener("click", function () {
-        document.getElementById("sidebar").classList.toggle("closed");
-    });
+function sidebarGomb() {
+    const sidebar = document.getElementById("sidebar");
+    const gomb = document.getElementById("sidebar-toggle");
+
+    if (sidebar && gomb) {
+        gomb.addEventListener("click", function () {
+            sidebar.classList.toggle("closed");
+        });
+    }
 }
 
-function panelValtasInit() {
+function panelValtas() {
     const gombok = document.querySelectorAll("[data-panel-target]");
 
     gombok.forEach(gomb => {
         gomb.addEventListener("click", function () {
             const panelId = this.getAttribute("data-panel-target");
-
-            document.querySelectorAll(".panel").forEach(p => {
-                p.style.display = "none";
-            });
-
-            const cel = document.getElementById(panelId);
-            if (cel) {
-                cel.style.display = "block";
-            }
+            panelMutatas(panelId);
 
             gombok.forEach(x => x.classList.remove("active"));
             this.classList.add("active");
         });
     });
+}
+
+function panelMutatas(panelId) {
+    const panelek = document.querySelectorAll(".panel");
+
+    panelek.forEach(panel => {
+        panel.style.display = "none";
+    });
+
+    const aktivPanel = document.getElementById(panelId);
+    if (aktivPanel) {
+        aktivPanel.style.display = "block";
+    }
 }
 
 //#endregion

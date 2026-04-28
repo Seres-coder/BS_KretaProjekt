@@ -24,9 +24,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.CreateMessage(dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {

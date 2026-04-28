@@ -42,7 +42,7 @@ async function getTeacherMessages() {
         kiirUzenetek(uzenetek);
     } catch (error) {
         listaUzenetek.innerHTML = "<p>Hiba történt az üzenetek lekérése közben.</p>";
-        console.error(error);
+       
     }
 }
 
@@ -137,7 +137,7 @@ async function kuldes() {
         }
     } catch (err) {
         status.innerText = "Nem sikerült kapcsolódni a szerverhez.";
-        console.error(err);
+        
     }
 }
 //#endregion
@@ -190,7 +190,7 @@ async function tanarAdatokBetoltese() {
     const mentettFelhasznalo = localStorage.getItem("kretaUser");
 
     if (!mentettFelhasznalo) {
-        alert("Nincs bejelentkezve.");
+        showMessage("adatokStatus", "Hiba történt a betöltés során.");
         return;
     }
 
@@ -204,7 +204,7 @@ async function tanarAdatokBetoltese() {
         });
 
         if (!response.ok) {
-            alert("Nem sikerült lekérni a tanár adatait.");
+            showMessage("adatokStatus", "Nem sikerült betölteni az adatokat.");
             return;
         }
 
@@ -220,8 +220,8 @@ async function tanarAdatokBetoltese() {
         await diakokBetoltese();       
 
     } catch (error) {
-        alert("Nem sikerült kapcsolódni a szerverhez.");
-        console.error(error);
+        showMessage("adatokStatus", "Nem sikerült kapcsolódni a szerverhez.");
+        
     }
 }
 
@@ -249,7 +249,7 @@ async function tanarOrarendBetoltese(tanarId) {
         tanarOrarendKiirasa(adat);
     } catch (error) {
         document.getElementById("tanarOrarendContainer").innerHTML = "Hiba történt.";
-        console.error(error);
+        
     }
 }
 
@@ -450,6 +450,11 @@ function jegyDatum(d) {
 	return `${dd.getFullYear()}.${String(dd.getMonth() + 1).padStart(2, "0")}.${String(
 		dd.getDate()
 	).padStart(2, "0")}`;
+}
+
+function showMessage(elementId, uzenet) {
+    const el = document.getElementById(elementId);
+    if (el) el.innerText = uzenet;
 }
 
 //#endregion

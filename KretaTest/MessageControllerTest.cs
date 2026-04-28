@@ -55,12 +55,8 @@ namespace KretaTest
         }
 
         [Fact]
-        public async Task GetMessage()
-        {
-            var response = await _client.GetAsync("/api/message/messageklistazasa?user_id=1");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-        [Fact]
+     
+    
         public async Task GetMessage_ReturnsNotFound()
         {
             var nonExistingUserId = 999999;

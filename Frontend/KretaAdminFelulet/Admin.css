@@ -1,7 +1,13 @@
-body {
+* {
+    box-sizing: border-box;
     margin: 0;
-    font-family: Arial;
-    background: #E0C097;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI Variable", "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #7DD6F8, #42A5F5, #1E88E5);
+    min-height: 100vh;
 }
 
 .sidebar {
@@ -10,10 +16,10 @@ body {
     left: 0;
     height: 100vh;
     width: 240px;
-    background: #B85C38;
-    border-right: 3px solid #5C3D2E;
-    box-shadow: 4px 0 14px rgba(0,0,0,0.22);
-    padding: 18px;
+    background: #1565C0;
+	border-right:3px solid black;
+    box-shadow: 4px 0 16px rgba(0,0,0,0.25);
+    padding: 18px 14px;
     transition: 0.3s;
     z-index: 1200;
 }
@@ -22,44 +28,50 @@ body {
     left: -240px;
 }
 
-.sidebar-title {
-    font-weight: 900;
-    font-size: 20px;
-    color: black;
-    margin-bottom: 20px;
-}
-
 .sidebar .nav-link {
-    color: black;
-    font-weight: bold;
-    font-size: 18px;
-    padding: 12px;
-    border-radius: 10px;
-    text-decoration: none;
-    display: block;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
 .sidebar .nav-link:hover {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.15);
 }
+
+.sidebar .nav-link.active {
+    background: rgba(255,255,255,0.25);
+    font-weight: bold;
+}
+
 
 .sidebar-toggle {
     position: absolute;
     top: 15px;
-    right: -50px;
-    width: 45px;
-    height: 45px;
-    border-radius: 10px;
-    border: 3px solid #5C3D2E;
-    background: white;
-    font-size: 22px;
+    right: -48px;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    border: none;
+    background: #1565C0;
+    color: white;
+    font-size: 20px;
     cursor: pointer;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
 .content {
     margin-left: 240px;
     transition: 0.3s;
+    min-height: 100vh;
+    padding: 24px;
 }
 
 .sidebar.closed ~ .content {
@@ -74,22 +86,126 @@ body {
     display: block;
 }
 
-/* Órarend megtekintés és módosítás — azonos stílus */
-#orarendContainer,
-#modOrarendContainer {
-    background-color: #B85C38;
-    padding: 10px;
-    border-radius: 10px;
+h2 {
+    color: white;
+    font-weight: bold;
+	
+    margin-bottom: 16px;
 }
 
-#orarendContainer table,
-#modOrarendContainer table {
-    width: 100%;
-    border-collapse: collapse;
+h5 {
+    color: #1565C0;
+    font-weight: bold;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.33);
+}
+
+.card-body {
+    padding: 24px;
+}
+
+.form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.form-control,
+.form-select {
+    background: #F0F0F0;
+    border: 1.5px solid #BBDEFB;
+    border-radius: 6px;
+    color: black;
+    font-family: "Segoe UI Variable", "Segoe UI", sans-serif;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: #F0F0F0;
+    border-color: #1E88E5;
+    color: black;
+    box-shadow: none;
+}
+
+.form-control:disabled {
+    background: #F8F8F8;
+    color: #333;
+}
+
+.btn-primary {
+    background: #1565C0;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-family: "Segoe UI Variable", "Segoe UI", sans-serif;
+    padding: 10px 20px;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background: #1E88E5;
+    border: none;
+}
+
+.btn-primary:active {
+    background: #0D47A1;
+    border: none;
+}
+
+.btn-success {
+    background: #1565C0;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-family: "Segoe UI Variable", "Segoe UI", sans-serif;
+    transition: background 0.2s;
+}
+
+.btn-success:hover {
+    background: #1E88E5;
+    border: none;
+}
+
+.list-group-item {
     background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 10px;
+    border-left: none;
+    border-right: none;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.list-group-item:hover,
+.list-group-item-action:hover {
+    background: #E3F2FD;
+}
+
+.list-group-item.active,
+.list-group-item-action.active {
+    background: #1565C0;
+    color: white;
+    border-color: #1565C0;
+}
+
+.table-primary th,
+.table thead th {
+    background: #1565C0;
+    color: white;
+    border: none;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background: #F0F7FF;
+}
+
+#orarendConatiner table,
+#modOrarendContainer table{
+    width: 100%;
 }
 
 #orarendContainer table td,
@@ -98,66 +214,12 @@ body {
 #modOrarendContainer table th {
     vertical-align: middle;
     text-align: center;
-    padding: 8px;
-    min-width: 140px;
+    padding: 10px;
+    min-width: 120px;
 }
 
-#orarendContainer table tr:nth-child(even),
-#modOrarendContainer table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-#orarendContainer table thead tr,
-#modOrarendContainer table thead tr {
-    background-color: #B85C38;
+#orarendContainer thead,
+#modOrarendContainer thead {
+    background: #1565C0;
     color: white;
-}
-
-#orarendContainer h4,
-#modOrarendContainer h4 {
-    font-weight: bold;
-}
-select {
-    background-color: white;
-    color: #333;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 8px;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 15px;
-}
-
-select:focus {
-    outline: none;
-    border-color: #B85C38;
-}
-.mod-orarend-box {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px;
-}
-
-#modOsztalySelect {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-.mod-orarend-btn {
-    background: #B85C38;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-.reg-card {
-    max-width: 520px;
-    width: 100%;
 }

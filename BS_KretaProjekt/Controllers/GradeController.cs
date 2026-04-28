@@ -28,7 +28,7 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message); 
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception ex)
             {
@@ -48,9 +48,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.GradeModify( dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {
@@ -91,9 +91,9 @@ namespace BS_KretaProjekt.Controllers
             {
                 return Ok(_model.AllGrades(id, tanar_id));
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {

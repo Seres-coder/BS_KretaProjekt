@@ -17,7 +17,7 @@ namespace BS_KretaProjekt.Controllers
             _model = model;
         }
         [HttpGet("getmydata")]
-        public async Task<ActionResult<StudentDto>> GetMyData(int user_id)
+        public async Task<ActionResult<StudentDto>> GetMyData([FromQuery] int user_id)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace BS_KretaProjekt.Controllers
         }
     
         [HttpGet("getmyteacherdata")]
-        public async Task<ActionResult<StudentDto>> GetMyTeacherData(int user_id)
+        public async Task<ActionResult<StudentDto>> GetMyTeacherData([FromQuery] int user_id)
         {
             try
             {
@@ -54,9 +54,9 @@ namespace BS_KretaProjekt.Controllers
                 var response= await _model.GetDiak();
                 return Ok(response);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {
@@ -73,9 +73,9 @@ namespace BS_KretaProjekt.Controllers
                 var response = await _model.GetTeacher();
                 return Ok(response);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {
@@ -109,9 +109,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.ModifyStudentData(dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (KeyNotFoundException)
             {
@@ -132,9 +132,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.ModifyTeacherData( dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (KeyNotFoundException)
             {

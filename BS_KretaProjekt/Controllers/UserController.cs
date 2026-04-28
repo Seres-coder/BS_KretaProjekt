@@ -30,11 +30,11 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                { return StatusCode(406, ex.Message); }
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                { return BadRequest(ex.Message); }
             }
         }
         #endregion
@@ -50,9 +50,9 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                { return StatusCode(406, ex.Message); }
             }
-            catch (InvalidOperationException ex) // "mar letezik"
+            catch (InvalidOperationException ex) 
             {
                 return Conflict(ex.Message);
             }
@@ -126,7 +126,7 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                { return StatusCode(406, ex.Message); }
             }
             catch (KeyNotFoundException ex)
             {
@@ -148,7 +148,7 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                { return StatusCode(406, ex.Message); }
             }
             catch (KeyNotFoundException ex)
             {

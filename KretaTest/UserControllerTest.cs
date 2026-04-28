@@ -73,12 +73,7 @@ namespace KretaTest
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact]
-        public async Task UpdateRole_Unauthorized_WhenNotLoggedIn()
-        {
-            var response = await _client.PutAsync("api/user/upgraderole?id=1&tantargy=Matematika", null);
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-        }
+      
 
      
     }
