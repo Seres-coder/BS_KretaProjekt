@@ -6,7 +6,7 @@ namespace BS_KretaProjekt.Persistence
     {
 
 
-
+        //SHA-256 hash-eli a megadott jelszót Base64 formátumban. Az éles alkalmazással megegyező módszerrel tárolja a jelszavakat, így a tesztek valós loginokat is tudnak szimulálni.
         private static string HashPassword(string password)
         {
             using var sha = System.Security.Cryptography.SHA256.Create();
@@ -14,6 +14,7 @@ namespace BS_KretaProjekt.Persistence
             var hash = sha.ComputeHash(bytes);
             return Convert.ToBase64String(hash);
         }
+        //Feltölti az adatbázist alap tesztadatokkal a következő sorrendben: 1. Felhasználók (admin, tanar1, diak1) → 2. Osztályok → 3. Tantárgyak → 4. Tanárok → 5. Diákok → 6. Órarendek → 7. Üzenetek → 8. Jegyek → 9. Hiányzások. Ha a Users tábla már tartalmaz adatot, a metódus nem csinál semmit (idempotens).
         public static void Seed(KretaDbContext db)
         {
             db.Database.EnsureCreated();

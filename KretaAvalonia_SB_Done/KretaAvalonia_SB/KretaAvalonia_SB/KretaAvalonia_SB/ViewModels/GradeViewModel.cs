@@ -59,7 +59,7 @@ namespace KretaAvalonia_SB.ViewModels
 
             _ = LoadGrades();
         }
-
+        //Lekéri a bejelentkezett diák összes jegyét és feltölti a Grades kollekcióba
         private async Task LoadGrades()
         {
             var studentId = _auth.CurrentUserId;

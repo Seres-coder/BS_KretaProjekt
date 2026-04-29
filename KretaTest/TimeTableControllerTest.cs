@@ -22,7 +22,7 @@ namespace KretaTest
                 HandleCookies = true
             });
         }
-
+        //POST /api/timetable/orarendkrealas hívással új órarend bejegyzést ad hozzá érvényes adatokkal. Elvárás: 200 OK.
         [Fact]
         public async Task AddTimeTable()
         {
@@ -46,7 +46,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
+        //Bejelentkezik tanar1-ként, majd POST hívást küld ahol osztaly_id = 0 (érvénytelen). Elvárás: 400 BadRequest.
         [Fact]
         public async Task AddTimeTable_ReturnsBadRequest()
         {
@@ -67,13 +67,14 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+        //Lekéri az első seed-elt órarend ID-ját közvetlenül az adatbázisból (DI scope-on keresztül), hogy ne kelljen fix ID-t hardcode-olni.
         private int GetSeededOrarendId()
         {
             using var scope = _factory.Services.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
             return db.Orarendek.Select(j => j.orarend_id).First();
         }
-
+        //PUT /api/timetable/modifytimetable hívással módosítja az első seed-elt órarend bejegyzést. Elvárás: 200 OK.
         [Fact]
         public async Task ModifyTimeTable()
         {
@@ -100,7 +101,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
+        //Bejelentkezik tanar1-ként, majd PUT hívást küld ahol ora = 0 (érvénytelen). Elvárás: 400 BadRequest.
         [Fact]
         public async Task ModifyTimeTable_ReturnsBadRequest_missingdata()
         {
@@ -124,6 +125,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+        //Ugyanaz mint az előző – ellenőrzi, hogy érvénytelen ora esetén is 400 BadRequest érkezik.
         [Fact]
         public async Task ModifyTimeTable_ReturnsBadRequest_badorarend()
         {
@@ -147,7 +149,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-
+        //DELETE /api/timetable/deletetimetable?id=1 hívással töröl egy órarend bejegyzést. Elvárás: 200 OK.
         [Fact]
         public async Task DeleteTimeTable()
         {
@@ -157,7 +159,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
+        //Bejelentkezik tanar1-ként, majd DELETE hívást küld nem létező ID-val (9999999). Elvárás: 400 BadRequest.
         [Fact]
         public async Task DeleteTimeTable_ReturnsBadRequest()
         {
@@ -170,6 +172,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+        //GET /api/timetable/gettimetable?osztaly_id=1 lekéri a 10.A osztály órarendjét. Elvárás: 200 OK.
         [Fact]
         public async Task GetTimeTable()
         {

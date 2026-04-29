@@ -20,7 +20,7 @@ namespace KretaTest
             _context = DbContextFactory.Create();
             _model = new MessageModel(_context);
         }
-
+        //Ellenőrzi, hogy a CreateMessage metódus sikeresen létrehoz egy új üzenetet, a rekordszám eggyel nő, és az üzenet adatai megegyeznek a DTO-val.
         [Fact]
 
         public async Task CreateMessage_Valid()
@@ -45,7 +45,7 @@ namespace KretaTest
             Assert.Equal(dto.fogado_id, created_message.fogado_id);
             Assert.Equal(dto.user_id, created_message.user_id);
         }
-
+        //Ellenőrzi, hogy a CreateMessage metódus InvalidOperationException-t dob "Nincs minden adat megadva" üzenettel, ha a cím mező üres.
         [Fact]
         public async Task CreateMessage_ThrowsInvalidOperation()
         {
@@ -62,7 +62,7 @@ namespace KretaTest
         }
 
 
-       
+        //Ellenőrzi, hogy a GetMessages metódus KeyNotFoundException-t dob "nincs ilyen user" üzenettel, ha a megadott user_id nem létezik.
         [Fact]
         public void GetMessages_ThrowsKeyNotFound_WhenUserNotFound()
         {
@@ -74,7 +74,7 @@ namespace KretaTest
             Assert.Equal("nincs ilyen user", ex.Message);
         }
 
-
+        //Ellenőrzi, hogy a GetOneMessage metódus visszaad egy létező üzenetet, amelynek van érvényes ID-je, neve, feladója és küldési időpontja.
         [Fact]
         public void GetOneMessage_Valid()
         {
@@ -88,6 +88,7 @@ namespace KretaTest
             Assert.False(string.IsNullOrWhiteSpace(message.tartalom));
             Assert.True(message.kuldesidopontja <= DateTimeOffset.Now);
         }
+        //Ellenőrzi, hogy a GetOneMessage metódus KeyNotFoundException-t dob "nincs ilyen user" üzenettel, ha a user_id nem létezik.
         [Fact]
         public void GetOneMessage_ThrowsKeyNotFound()
         {
@@ -103,7 +104,7 @@ namespace KretaTest
             Assert.Equal("nincs ilyen user", ex.Message);
         }
 
-
+        //Ellenőrzi, hogy a DeleteMessage metódus sikeresen törli az üzenetet: a rekordszám eggyel csökken, és az üzenet nem található többé.
         [Fact]
         public async Task DeleteMessage_Valid()
         {
@@ -116,7 +117,7 @@ namespace KretaTest
             var deleted_message = _context.Uzenetek.Where(x => x.uzenet_id == message_id).FirstOrDefault();
             Assert.Null(deleted_message);
         }
-
+        //Ellenőrzi, hogy a DeleteMessage metódus InvalidCastException-t dob "nincs ilyen uzenet" üzenettel, ha a megadott üzenet ID nem létezik.
         [Fact]
         public async Task DeleteMessage_ThrowsInvalidCastException_WhenMessageNotFound()
         {

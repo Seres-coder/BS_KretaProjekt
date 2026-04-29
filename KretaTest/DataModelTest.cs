@@ -17,7 +17,7 @@ namespace KretaTest
             _model = new DataModel(_context);
             DbSeeder.Seed(_context);
         }
-
+        //Ellenõrzi, hogy a GetDiak metódus sikeresen visszaadja a diákok listáját, és tartalmazza a seed-elt "Nagy Diák" nevû diákot.
         [Fact]
         public async Task  GetDiak_Ok()
         {
@@ -27,7 +27,7 @@ namespace KretaTest
             Assert.Contains(result, x => x.diak_nev == "Nagy Diák");
 
         }
-
+        //Ellenõrzi, hogy a GetDiak metódus InvalidOperationException-t dob, ha az adatbázisban nincs egyetlen diák sem (üres tábla).
         [Fact]
         public async Task GetDiak_ThrowsInvalidOperationException()
         {
@@ -36,7 +36,7 @@ namespace KretaTest
             await Assert.ThrowsAsync<InvalidOperationException>(() => _model.GetDiak());
         }
 
-
+        //Ellenõrzi, hogy a GetTeacher metódus visszaad legalább egy tanárt, és minden tanárnak van neve, ID-je és szaktárgya.
         [Fact]
         public async Task GetTeacher_Ok()
         {
@@ -50,7 +50,7 @@ namespace KretaTest
                 Assert.False(string.IsNullOrWhiteSpace(x.szak));
             });
         }
-
+        //Ellenõrzi, hogy a GetTeacher metódus InvalidOperationException-t dob, ha nincs egyetlen tanár sem az adatbázisban.
         [Fact]
         public async Task GetTeacher_ThrowsInvalidOperationException()
         {
@@ -58,7 +58,7 @@ namespace KretaTest
             await _context.SaveChangesAsync();
             await Assert.ThrowsAsync<InvalidOperationException>(() => _model.GetTeacher());
         }
-
+        //Ellenõrzi, hogy a ModifyStudentData metódus sikeresen frissíti a diák adatait: a módosított név és email megjelenik az adatbázisban.
         [Fact]
         public async Task ModifyStudentData_Valid()
         {
@@ -83,7 +83,7 @@ namespace KretaTest
             Assert.Equal(dto.diak_nev, modified.diak_nev);
             Assert.Equal(dto.emailcim, modified.emailcim);
         }
-
+        //Ellenõrzi, hogy a ModifyStudentData metódus InvalidOperationException-t dob "Nincs minden adat megadva" üzenettel, ha a diak_nev mezõ üres.
         [Fact]
         public async Task ModifyStudentData_ThrowsInvalidOperation()
         {
@@ -105,7 +105,7 @@ namespace KretaTest
         }
 
 
-
+        //Ellenõrzi, hogy a ModifyTeacherData metódus sikeresen frissíti a tanár nevét és szakját.
         [Fact]
 
         public async Task ModifyTeacherData_Valid()
@@ -127,7 +127,7 @@ namespace KretaTest
             Assert.Equal(dto.tanar_nev, modifed.tanar_nev);
             Assert.Equal(dto.tanar_id, modifed.tanar_id);
         }
-
+        //Ellenõrzi, hogy a ModifyTeacherData metódus InvalidOperationException-t dob, ha a tanar_nev mezõ üres.
         [Fact]
         public async Task ModifyTeacherData_ThrowsInvalidOperation()
         {
@@ -143,7 +143,7 @@ namespace KretaTest
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _model.ModifyTeacherData(dto));
             Assert.Equal("Nincs minden adat megadva", ex.Message);
         }
-
+        //Ellenõrzi, hogy a ModifyTeacherData metódus KeyNotFoundException-t dob, ha a megadott tanar_id nem létezik az adatbázisban.
         [Fact]
         public async Task ModifyTeacherData_ThrowsKeyNotFound()
         {
@@ -163,7 +163,7 @@ namespace KretaTest
             Assert.Equal("Nincs ilyen tanar", ex.Message);
         }
 
-
+        //Ellenõrzi, hogy a DeleteStudentData metódus sikeresen törli a diákot: a rekordszám eggyel csökken, és az adott ID többé nem található.
         [Fact]
         public async Task DeleteStudentData_Valid()
         {
@@ -175,7 +175,7 @@ namespace KretaTest
             Assert.Equal(before_count - 1, _context.Diakok.Count());
             Assert.False(_context.Diakok.Any(x => x.diak_id == student.diak_id));
         }
-
+        //Ellenõrzi, hogy a DeleteStudentData metódus InvalidOperationException-t dob "nincs ilyen diak" üzenettel, ha a megadott ID nem létezik.
         [Fact]
         public async Task DeleteStudentData_ThrowsInvalidOperation()
         {
@@ -187,7 +187,7 @@ namespace KretaTest
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _model.DeleteStudentData(nonExistingId));
             Assert.Equal("nincs ilyen diak", ex.Message);
         }
-
+        //Ellenõrzi, hogy a DeleteTeacherData metódus sikeresen törli a tanárt: a rekordszám eggyel csökken, és az adott ID többé nem található.
         [Fact]
         public async Task DeleteTeacherData_Valid()
         {

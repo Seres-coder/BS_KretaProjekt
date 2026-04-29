@@ -23,7 +23,7 @@ namespace KretaAvalonia_SB.Model
         public int CurrentClassId { get; set; } = 0;
         public bool IsLoggedIn => CurrentUser != null;
 
-
+        //Bejelentkezési kérést küld a szervernek, sikeres válasz esetén elmenti a bejelentkezett usert
         public async Task<LoginResDto?> Login(string username, string password)
         {
             var endpoint = "api/User/login";
@@ -35,6 +35,7 @@ namespace KretaAvalonia_SB.Model
             CurrentUser = await response.Content.ReadFromJsonAsync<LoginResDto>();
             return CurrentUser;
         }
+        //Kijelentkeztet: törli az eltárolt bejelentkezett user adatait
         public void Logout()
         {
             CurrentUser = null;

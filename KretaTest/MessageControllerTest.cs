@@ -21,7 +21,7 @@ namespace KretaTest
                 AllowAutoRedirect = false,
             });
         }
-
+        //POST /api/message/messageadd hívással új üzenetet küld érvényes adatokkal. Elvárás: 200 OK.
         [Fact]
         public async Task AddNewMessage_OK()
         {
@@ -36,7 +36,7 @@ namespace KretaTest
             var response = await _client.PostAsync("/api/message/messageadd", content);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
+        //POST /api/message/messageadd hívással üres cím mezőt küld. Elvárás: 400 BadRequest.
         [Fact]
         public async Task AddNewMessage_ReturnsBadRequest()
         {
@@ -53,7 +53,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-
+        //GET /api/message/messageklistazasa nem létező user_id-val (999999). Elvárás: 404 NotFound.
         [Fact]
      
     
@@ -65,13 +65,14 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
-
+        //GET /api/message/egymessagelistazasa létező adatokkal (user_id=1, uzenet_id=1). Elvárás: 200 OK.
         [Fact]
         public async Task GetOneMessage()
         {
             var response = await _client.GetAsync("/api/message/egymessagelistazasa?user_id=1&uzenet_id=1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        //GET /api/message/egymessagelistazasa nem létező user_id-val. Elvárás: 404 NotFound.
         [Fact]
         public async Task GetOneMessage_ReturnsNotFound()
         {
@@ -81,13 +82,14 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
-
+        //DELETE /api/message/deletemessage?id=1&message_id=1 hívással töröl egy létező üzenetet. Elvárás: 200 OK.
         [Fact]
         public async Task DeleteMessage()
         {
             var response = await _client.DeleteAsync("/api/message/deletemessage?id=1&message_id=1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        //DELETE /api/message/deletemessage nem létező user ID-val. Elvárás: 404 NotFound.
         [Fact]
         public async Task DeleteMessage_ReturnsNotFound()
         {

@@ -24,7 +24,7 @@ namespace KretaTest
                     HandleCookies = true
                 });
         }
-
+        //Ellenőrzi, hogy a GET /api/data/diaklistazasa végpont 200 OK-val tér vissza, amikor van legalább egy diák az adatbázisban (seed után).
         [Fact]
         public async Task GetDiakok()
         {
@@ -34,7 +34,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
+        //Ellenőrzi, hogy a GET /api/data/diaklistazasa végpont vagy 200 OK-val, vagy 400 BadRequest-tel tér vissza. (Rugalmas teszt, mindkét válasz elfogadott.)
         [Fact]
         public async Task GetDiakok_ReturnsBadRequest()
         {
@@ -43,7 +43,7 @@ namespace KretaTest
             var response = await _client.GetAsync("api/data/diaklistazasa");
             Assert.True(response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.BadRequest);
         }
-
+        //Ellenőrzi, hogy a GET /api/data/tanarlistazasa végpont 200 OK-val tér vissza, amikor van legalább egy tanár az adatbázisban.
         [Fact]
         public async Task GetTanarok()
         {
@@ -52,7 +52,7 @@ namespace KretaTest
             var response = await _client.GetAsync("api/data/tanarlistazasa");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
+        //Ellenőrzi, hogy a PUT /api/data/modifystudentdata végpont 200 OK-val tér vissza érvényes diákadat küldésekor (id=1, nem üres név, valós mezők).
         [Fact]
         public async Task ModifyStudentData()
         {
@@ -80,7 +80,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
+        //Ellenőrzi, hogy a PUT /api/data/modifystudentdata végpont 400 BadRequest-tel tér vissza, ha a diak_nev mező üres stringet tartalmaz (kötelező mező validáció).
         [Fact]
         public async Task ModifyStudentData_ReturnsBadRequest_baddiak()
         {
@@ -107,7 +107,7 @@ namespace KretaTest
             var response = await _client.PutAsync("/api/data/modifystudentdata", content);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }
+        }//Ellenőrzi, hogy a PUT /api/data/modifystudentdata végpont 400 BadRequest-tel tér vissza, ha a megadott diak_id nem létezik az adatbázisban (999999-es nem létező ID).
 
         [Fact]
         public async Task ModifyStudentData_ReturnsBadRequest_badiddiak()
@@ -136,7 +136,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-
+        //Ellenőrzi, hogy a PUT /api/data/modifyteacherdata végpont 200 OK-val tér vissza érvényes tanáradat küldésekor.
         [Fact]
         public async Task ModifyTeacherData()
         {
@@ -158,7 +158,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
+        //Ellenőrzi, hogy a DELETE /api/data/deletestudentdata végpont 404 NotFound-dal tér vissza, ha a megadott id nem létezik az adatbázisban.
         [Fact]
         public async Task DeleteStudentData_NotFound()
         {
@@ -167,7 +167,7 @@ namespace KretaTest
             var response = await _client.DeleteAsync("/api/data/deletestudentdata?id=9999");
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
-
+        //Ellenőrzi, hogy a DELETE /api/data/deletestudentdata végpont 200 OK-val tér vissza egy valóban létező diák törlésekor. Az ID-t az adatbázisból kéri le dinamikusan.
         [Fact]
         public async Task DeleteStudentData_Ok()
         {
@@ -181,7 +181,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
+        //Ellenőrzi, hogy a DELETE /api/data/deleteteacherdata végpont 200 OK-val tér vissza egy valóban létező tanár törlésekor. Az ID-t az adatbázisból kéri le dinamikusan.
         [Fact]
         public async Task DeleteTeacherData_OK()
         {
@@ -194,7 +194,7 @@ namespace KretaTest
             var response = await _client.DeleteAsync($"/api/data/deleteteacherdata?id={id}");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
+        //Ellenőrzi, hogy a DELETE /api/data/deleteteacherdata végpont 404 NotFound-dal tér vissza, ha a megadott tanár ID nem létezik.
         [Fact]
         public async Task DeleteTeacherData_NotFound()
         {

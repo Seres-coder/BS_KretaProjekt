@@ -52,7 +52,7 @@ namespace KretaAvalonia_SB.ViewModels
 
             LoginCommand = new RelayCommand(async () => await LoggingIn());
         }
-
+        // Elvégzi a bejelentkezést; hiba esetén hibaüzenetet jelenít meg, sikernél a menüre navigál
         private async Task LoggingIn()
         {
             ErrorMessage = string.Empty;

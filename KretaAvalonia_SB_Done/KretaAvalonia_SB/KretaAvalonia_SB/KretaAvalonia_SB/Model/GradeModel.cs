@@ -18,7 +18,7 @@ namespace KretaAvalonia_SB.Model
         {
             _client = client;
         }
-
+        //Lekéri a diák összes jegyét a szervertől a diák azonosítója alapján
         public async Task<List<GradeDto>?> GetMyGrade(int studentId)
         {
             var response = await _client.GetAsync($"api/Grade/allgrade?id={studentId}");

@@ -75,7 +75,7 @@ namespace KretaAvalonia_SB.ViewModels
         }
 
         private TimeTableResponseDto? _allData;
-
+        //Lekéri az osztály teljes órarendjét a szervertől, majd szűri az aktuális napra
         private async Task LoadTimeTable()
         {
             if (_classId == 0) return;
@@ -86,7 +86,7 @@ namespace KretaAvalonia_SB.ViewModels
                 FilterByDay();
             }
         }
-
+        //A kiválasztott nap alapján szűri az órarendet és frissíti a FilteredTimeTable kollekcióba
         private void FilterByDay()
         {
             FilteredTimeTable.Clear();

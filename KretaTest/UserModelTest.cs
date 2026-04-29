@@ -20,7 +20,7 @@ namespace KretaTest
             _context = DbContextFactory.Create();
             _model = new UserModel(_context);
         }
-
+        //Ellenőrzi, hogy a Registration metódus sikeresen létrehozza az új felhasználót, a rekordszám eggyel nő, és a jelszó hash-elve van tárolva (nem plaintext).
         [Fact]
         public async Task Registration_Correct()
         {
@@ -37,13 +37,14 @@ namespace KretaTest
             Assert.NotEqual(password, createdUser.jelszo);
         }
 
-
+        //Ellenőrzi, hogy a ValidateUser metódus helyesen azonosítja az admin felhasználót és visszaadja a "Admin" szerepkört.
         [Fact]
         public void Login()
         {
             UserDto User = _model.ValidateUser("admin", "admin123");
             Assert.Equal(User._Role, "Admin");
         }
+        //Ellenőrzi, hogy a PromoteToTanar metódus sikeresen előlépteti a diákot tanárrá: Users mérete nem változik, Diakok -1, Tanarok +1, Role "Tanar"-ra vált.
         [Fact]
         public async Task PromoteTanar()
         {
@@ -65,12 +66,14 @@ namespace KretaTest
             var tanar = _context.Tanarok.First(t => t.user_id == userId);
             Assert.NotNull(tanar);
         }
+        //Ellenőrzi, hogy a PromoteToTanar metódus ArgumentOutOfRangeException-t dob "Érvénytelen userId." üzenettel, ha userId = 0.
         [Fact]
         public async Task PromoteToTanar_ThrowsArgumentOutOfRange()
         {
             var ex = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _model.PromoteToTanar(0, "Matematika"));
             Assert.Contains("Érvénytelen userId.", ex.Message);
         }
+        //Ellenőrzi, hogy a PromoteToTanar metódus ArgumentException-t dob "A tantárgy nem lehet üres." üzenettel, ha a tantargy paraméter üres.
         [Fact]
         public async Task PromoteToTanar_ThrowsArgumentException_subjectempty()
         {
@@ -80,7 +83,7 @@ namespace KretaTest
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => _model.PromoteToTanar(userId, ""));
             Assert.Contains("A tantárgy nem lehet üres.", ex.Message);
         }
-
+        //Ellenőrzi, hogy a ChangePassword metódus sikeresen megváltoztatja a jelszót: az új hash különbözik a régitől, és nem plaintext formában van tárolva.
         [Fact]
         public async Task ChangePassword()
         {
@@ -94,7 +97,7 @@ namespace KretaTest
             Assert.NotEqual(oldHash, updated.jelszo);
             Assert.NotEqual(newPlainPassword, updated.jelszo);
         }
-
+        //Ellenőrzi, hogy a ChangePassword metódus ArgumentException-t dob "Az új jelszó nem lehet üres." üzenettel, ha az új jelszó üres string.
         [Fact]
         public async Task ChangePassword_ThrowsArgumentException_epmtypassword()
         {
@@ -103,13 +106,14 @@ namespace KretaTest
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => _model.ChangePassword(user.user_id, ""));
             Assert.Contains("Az új jelszó nem lehet üres.", ex.Message);
         }
-
+        //Ellenőrzi, hogy a Registration metódus ArgumentException-t dob "A felhasználónév nem lehet üres." üzenettel, ha a felhasználónév üres.
         [Fact]
         public async Task Registration_ThrowsArgumentException_emptyusername()
         {
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => _model.Registration("", "pw123"));
             Assert.Contains("A felhasználónév nem lehet üres.", ex.Message);
         }
+        //Ellenőrzi, hogy a Registration metódus InvalidOperationException-t dob "mar letezik" üzenettel, ha már létező felhasználónévvel próbál regisztrálni.
         [Fact]
         public async Task Registration_ThrowsInvalidOperation_alreadyexist()
         {

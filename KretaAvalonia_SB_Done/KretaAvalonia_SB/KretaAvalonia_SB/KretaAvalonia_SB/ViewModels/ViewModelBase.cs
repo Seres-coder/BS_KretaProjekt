@@ -10,7 +10,7 @@ public abstract class ViewModelBase : INotifyPropertyChanged
     protected ViewModelBase() { }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-
+    //Értesíti a UI-t hogy egy property értéke megváltozott
     protected virtual void OnPropertyChanged([CallerMemberName] String? propertyName = null)
     {
         if (PropertyChanged != null)

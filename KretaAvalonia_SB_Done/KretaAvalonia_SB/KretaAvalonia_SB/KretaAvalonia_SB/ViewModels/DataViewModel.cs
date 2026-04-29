@@ -56,7 +56,7 @@ namespace KretaAvalonia_SB.ViewModels
 
             _ = LoadData();
         }
-
+        //Lekéri a bejelentkezett diák adatait és beállítja a StudentData property-t
         private async Task LoadData()
         {
             var userId = _auth.CurrentUserId;
