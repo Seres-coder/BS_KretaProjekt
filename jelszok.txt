@@ -1,0 +1,24 @@
+Adminok
+Felhasználónév	Jelszó
+admin1	Admin123!
+admin2	Admin123!
+Tanárok (mind: Tanar123!)
+Felhasználónév
+kovacs.peter
+szabo.anna
+nagy.gabor
+toth.eszter
+fekete.imre
+feher.judit
+varga.zoltan
+kiss.krisztina
+molnar.tibor
+balogh.bela
+Diákok (mind: Diak123!)
+9.A — kiss.adam, nemeth.bence, szabo.david, toth.mark, varga.levente, molnar.noel, horvath.patrik, balogh.dominik, papp.martin, farkas.kevin, lakatos.hanna, olah.zsofia, juhasz.reka, meszaros.lili, kovacs.nora, sipos.fanni, takacs.petra, gal.boglarka, vass.greta, simon.emese
+
+10.B — fekete.balint, feher.csaba, szucs.daniel, pinter.endre, lorincz.gergo, czibor.hunor, biro.istvan, dobos.jakab, erdos.kristof, fulop.laszlo, gulyas.maria, hegedus.nora, illes.orsolya, jakab.panna, kardos.rozsa, lendvai.sara, mate.timea, nadas.veronika, orban.zsuzsa, palfi.agnes
+
+11.A — racz.abel, sandor.benedek, szekeres.csongor, tamas.denes, ujvari.elemer, veress.florian, zoltan.gabor, abraham.henrik, bathori.ivan, cseh.jeno, der.katalin, erdei.luca, farkas.maja, gerencser.nikolett, hajdu.orsolya, imre.petra, janosi.rebeka, keckses.sara, lazar.tunde, merai.viktoria
+
+12.B — nagy.attila, orban.balazs, pocsi.csaba, ronai.david, soos.erno, tari.ferenc, ungvari.geza, vecsei.hajnalka, weber.istvan, arany.jeno, benko.klara, czigany.laura, dozsa.maria, elek.nikolett, fodor.orsolya, gombos.piroska, hevesi.renata, incze.sarolta, jambor.tekla, karpati.viola
