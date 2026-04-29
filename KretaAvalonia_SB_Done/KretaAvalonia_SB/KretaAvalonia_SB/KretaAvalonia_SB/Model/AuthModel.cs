@@ -19,7 +19,7 @@ namespace KretaAvalonia_SB.Model
         }
 
         public LoginResDto? CurrentUser { get; private set; }
-        public int CurrentUserId => CurrentUser?.UserId ?? 0;
+        public int CurrentUserId => CurrentUser?.id ?? 0;
         public int CurrentClassId { get; set; } = 0;
         public bool IsLoggedIn => CurrentUser != null;
 

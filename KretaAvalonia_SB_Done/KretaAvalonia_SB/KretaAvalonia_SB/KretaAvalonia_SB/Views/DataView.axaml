@@ -107,7 +107,7 @@
                                    FontWeight="Bold"
                                    FontFamily="Segoe UI Variable"
                                    Foreground="#1565C0"/>
-                        <TextBlock Text="{Binding StudentData?.diak_nev}"
+                        <TextBlock Text="{Binding StudentData?.diaknev}"
                                    FontFamily="Segoe UI Variable"
                                    Foreground="#333333"/>
                     </StackPanel>
@@ -147,7 +147,7 @@
                                    FontWeight="Bold"
                                    FontFamily="Segoe UI Variable"
                                    Foreground="#1565C0"/>
-                        <TextBlock Text="{Binding StudentData?.szuletesi_datum}"
+                        <TextBlock Text="{Binding StudentData?.szuletesidatum}"
                                    FontFamily="Segoe UI Variable"
                                    Foreground="#333333"/>
                     </StackPanel>

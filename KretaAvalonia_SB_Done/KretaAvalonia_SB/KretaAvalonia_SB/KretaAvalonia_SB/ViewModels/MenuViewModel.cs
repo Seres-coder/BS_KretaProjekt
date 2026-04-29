@@ -41,7 +41,7 @@ namespace KretaAvalonia_SB.ViewModels
     
             });
             //Betölti az osztályazonosítót, majd az órarend oldalra navigál
-            TimeTableCommand = new RelayCommand(async () =>
+            TimeTableCommand = new AsyncRelayCommand(async () =>
             {
                 if (_auth.CurrentClassId == 0)
                     await LoadStudentClassId();
@@ -79,7 +79,7 @@ namespace KretaAvalonia_SB.ViewModels
 
             var result = await _data.GetMyStudentData(userId);
             if (result != null)
-                _auth.CurrentClassId = result.osztaly_id ?? 0;
+                _auth.CurrentClassId = result.osztalyid ?? 0;
         }
     }
 }

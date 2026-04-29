@@ -23,9 +23,9 @@ namespace KretaAvalonia_SB.Model
         //Lekéri a bejelentkezett diák saját adatait a szervertől user_id alapján
         public async Task<StudentDto?> GetMyStudentData(int userId)
         {
-            
-            var response = await _client.GetAsync($"api/Data/getmydata?user_id={userId}");
-            
+
+            var response = await _client.GetAsync($"api/Data/mydata?userId={userId}");
+
             var json = await response.Content.ReadAsStringAsync();
            
 
