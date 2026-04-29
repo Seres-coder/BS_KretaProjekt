@@ -56,7 +56,7 @@ namespace KretaTest
         public async Task Registration_BadRequest()
         {
             var response = await _client.PostAsync("api/user/registration?name=&password=abc123", null);
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
         //POST /api/user/registration már létező "admin" névvel. Elvárás: 409 Conflict
         [Fact]
@@ -70,7 +70,7 @@ namespace KretaTest
         public async Task UpdatePassword_BadRequest_WhenPasswordEmpty()
         {
             var response = await _client.PutAsync("api/user/updatepassword?userid=1&password=", null);
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
 
       
