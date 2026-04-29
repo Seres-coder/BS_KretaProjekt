@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BS_KretaProjekt.Migrations
 {
     [DbContext(typeof(KretaDbContext))]
-    [Migration("20260429110800_InitialCreate")]
+    [Migration("20260429133435_Initial-Create")]
     partial class InitialCreate
     {
         /// <inheritdoc />
