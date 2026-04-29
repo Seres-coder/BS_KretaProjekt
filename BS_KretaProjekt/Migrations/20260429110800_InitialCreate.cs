@@ -75,7 +75,7 @@ namespace BS_KretaProjekt.Migrations
                     diak_nev = table.Column<string>(type: "text", nullable: true),
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     osztaly_id = table.Column<int>(type: "integer", nullable: true),
-                    szuletesi_datum = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    szuletesi_datum = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     lakcim = table.Column<string>(type: "text", nullable: true),
                     szuloneve = table.Column<string>(type: "text", nullable: true),
                     emailcim = table.Column<string>(type: "text", nullable: true)
@@ -139,10 +139,10 @@ namespace BS_KretaProjekt.Migrations
                 {
                     table.PrimaryKey("PK_Uzenetek", x => x.uzenet_id);
                     table.ForeignKey(
-                        name: "FK_Uzenetek_Diakok_fogado_id",
+                        name: "FK_Uzenetek_Users_fogado_id",
                         column: x => x.fogado_id,
-                        principalTable: "Diakok",
-                        principalColumn: "diak_id",
+                        principalTable: "Users",
+                        principalColumn: "user_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Uzenetek_Users_user_id",
@@ -318,16 +318,16 @@ namespace BS_KretaProjekt.Migrations
                 name: "Uzenetek");
 
             migrationBuilder.DropTable(
-                name: "Tanarok");
-
-            migrationBuilder.DropTable(
                 name: "Diakok");
 
             migrationBuilder.DropTable(
-                name: "Tantargyok");
+                name: "Tanarok");
 
             migrationBuilder.DropTable(
                 name: "Osztalyok");
+
+            migrationBuilder.DropTable(
+                name: "Tantargyok");
 
             migrationBuilder.DropTable(
                 name: "Users");

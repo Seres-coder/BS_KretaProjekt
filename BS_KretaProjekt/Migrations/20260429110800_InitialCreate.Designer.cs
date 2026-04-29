@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BS_KretaProjekt.Migrations
 {
     [DbContext(typeof(KretaDbContext))]
-    [Migration("20260331081350_InitialCreate")]
+    [Migration("20260429110800_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace BS_KretaProjekt.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("szuletesi_datum")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("szuloneve")
                         .HasColumnType("text");
@@ -371,7 +371,7 @@ namespace BS_KretaProjekt.Migrations
 
             modelBuilder.Entity("BS_KretaProjekt.Persistence.Uzenet", b =>
                 {
-                    b.HasOne("BS_KretaProjekt.Persistence.Diak", "Fogado")
+                    b.HasOne("BS_KretaProjekt.Persistence.User", "Fogado")
                         .WithMany()
                         .HasForeignKey("fogado_id")
                         .OnDelete(DeleteBehavior.Cascade)
