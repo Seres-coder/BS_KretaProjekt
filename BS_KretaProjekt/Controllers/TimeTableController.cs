@@ -15,6 +15,7 @@ namespace BS_KretaProjekt.Controllers
         {
             _model = model;
         }
+        //POST /api/timetable/orarendkrealas – létrehoz egy új órarendi bejegyzést
         [Authorize(Roles = "Admin")]
         [HttpPost("orarendkrealas")]
         public async Task<ActionResult> AddTimeTabel([FromBody] CreateOrarendDto dto)
@@ -34,6 +35,7 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
+        //PUT /api/timetable/modifytimetable – módosítja a megadott órarendi bejegyzést
         [Authorize(Roles = "Admin")]
         [HttpPut("modifytimetable")]
         public async Task<ActionResult> ModifyTimeTable([FromBody] UpdateOrarendDto dto)
@@ -56,6 +58,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
+        // DELETE /api/timetable/deletetimetable – törli a megadott órarendi bejegyzést
         [Authorize(Roles = "Admin")]
         [HttpDelete("deletetimetable")]
         public async Task<ActionResult> DeleteTimeTable([FromQuery] int id)
@@ -75,7 +78,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
 
-   
+        //GET /api/timetable/gettimetable – visszaadja egy osztály órarendjét napok szerint csoportosítva
         [HttpGet("gettimetable")]
         public ActionResult<Dictionary<DayOfWeek, List<TimeTableItemDto>>> GetTimeTable([FromQuery] int osztaly_id)
         {
@@ -93,7 +96,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-
+        // GET /api/timetable/teachertimetabel – visszaadja egy tanár órarendjét napok szerint csoportosítva
         [HttpGet("teachertimetabel")]
         public ActionResult<Dictionary<DayOfWeek, List<TeacherTimeTabelDto>>> GetTeacherTimeTable([FromQuery] int tanarId)
         {

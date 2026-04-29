@@ -13,6 +13,7 @@ namespace BS_KretaProjekt.Model
             _context = context;
         }
         #region Grade Add
+        //Új jegyet ad hozzá egy diáknak, a tanár neve és a diák neve alapján
         public async Task AddNewGrade(GradeAdd dto)
         {
             if(string.IsNullOrWhiteSpace(dto.tanar_nev) || string.IsNullOrWhiteSpace(dto.tantargy_nev) || string.IsNullOrWhiteSpace(dto.diak_nev) || dto.ertek == 0 )
@@ -44,6 +45,7 @@ namespace BS_KretaProjekt.Model
 
         #endregion
         #region -Grade Modify
+        //Módosítja egy meglévő jegy értékét és módosítási dátumát
         public async Task GradeModify(GradeModify dto)
         {
             if (dto.ertek == 0 || dto.updatedatum == DateTimeOffset.MinValue)
@@ -60,6 +62,7 @@ namespace BS_KretaProjekt.Model
         }
         #endregion
         #region -Grade Delete
+        //Törli a megadott azonosítójú jegyet az adatbázisból
         public async Task DeleteGrade(int id)
         {
             if(!_context.Jegyek.Any(x => x.jegy_id == id))
@@ -72,6 +75,7 @@ namespace BS_KretaProjekt.Model
         }
         #endregion
         #region -Grade Listing
+        //Visszaadja egy diák vagy tanár jegyeit; ha mindkettő meg van adva, kivételt dob
         public IEnumerable<GradeListDto> AllGrades(int id = 0, int tanar_id = 0)
         {
             if (id != 0 && tanar_id != 0)
