@@ -20,7 +20,7 @@ namespace KretaAvalonia_SB.Model
             _client = client;
         }
 
-
+        //Lekéri a bejelentkezett diák saját adatait a szervertől user_id alapján
         public async Task<StudentDto?> GetMyStudentData(int userId)
         {
             

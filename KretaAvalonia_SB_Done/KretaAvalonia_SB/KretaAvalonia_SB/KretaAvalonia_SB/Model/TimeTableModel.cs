@@ -18,7 +18,7 @@ namespace KretaAvalonia_SB.Model
         {
             _client = client;
         }
-
+        //Lekéri az osztály órarendjét a szervertől az osztály azonosítója alapján
         public async Task<TimeTableResponseDto?> GetTimeTable(int classId)
         {
             var response = await _client.GetAsync($"api/TimeTable/gettimetable?osztaly_id={classId}");

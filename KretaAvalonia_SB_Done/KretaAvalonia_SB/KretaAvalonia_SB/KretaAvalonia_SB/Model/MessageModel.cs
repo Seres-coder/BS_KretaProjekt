@@ -18,6 +18,7 @@ namespace KretaAvalonia_SB.Model
         {
             _client = client;
         }
+        //Lekéri a diák összes bejövő üzenetét a szervertől a fogadó azonosítója alapján
         public async Task<List<MessageDto>?> GetMyMessage(int studentId)
         {
             var response = await _client.GetAsync($"api/Message/messageklistazasa?fogado_id={studentId}");

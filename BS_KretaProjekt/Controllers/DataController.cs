@@ -22,7 +22,7 @@ namespace BS_KretaProjekt.Controllers
         {
             try
             {
-                var response = await _model.GetMyData(user_id);
+                var response = await _model.GetMyData(userId);
                 return Ok(response);
             }
             catch (Exception)
@@ -36,7 +36,7 @@ namespace BS_KretaProjekt.Controllers
         {
             try
             {
-                var response = await _model.GetMyTeacherData(user_id);
+                var response = await _model.GetMyTeacherData(userId);
                 return Ok(response);
             }
             catch (Exception)

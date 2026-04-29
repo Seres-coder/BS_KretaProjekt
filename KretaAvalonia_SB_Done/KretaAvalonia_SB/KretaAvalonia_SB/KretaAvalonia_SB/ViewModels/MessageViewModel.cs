@@ -59,7 +59,7 @@ namespace KretaAvalonia_SB.ViewModels
 
             _ = LoadMessages();
         }
-
+        //Lekéri a bejelentkezett diák összes üzenetét és feltölti a Messages kollekcióba
         private async Task LoadMessages()
         {
             var studentId = _auth.CurrentUserId;

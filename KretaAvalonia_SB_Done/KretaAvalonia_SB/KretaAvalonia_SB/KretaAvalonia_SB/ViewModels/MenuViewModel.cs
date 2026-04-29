@@ -34,13 +34,13 @@ namespace KretaAvalonia_SB.ViewModels
             _message = message;
             _timetable = timetable;
             _data = data;
-
+            //Az adatok oldalra navigál
             DataCommand = new RelayCommand(() =>
             {
                 _main.CurrentPage = new DataViewModel(_main, _auth, _grade, _message, _timetable, _data);
     
             });
-
+            //Betölti az osztályazonosítót, majd az órarend oldalra navigál
             TimeTableCommand = new RelayCommand(async () =>
             {
                 if (_auth.CurrentClassId == 0)
@@ -49,19 +49,19 @@ namespace KretaAvalonia_SB.ViewModels
                 var classId = _auth.CurrentClassId;
                 _main.CurrentPage = new TimeTableViewModel(_main, _auth, _grade, _message, _timetable, _data, classId);
             });
-
+            //A jegyek oldalra navigál
             GradeCommand = new RelayCommand(() =>
             {
                 _main.CurrentPage = new GradeViewModel(_main, _auth, _grade, _message, _timetable, _data);
            
             });
-
+            //Az üzenetek oldalra navigál
             MessageCommand = new RelayCommand(() =>
             {
                 _main.CurrentPage = new MessageViewModel(_main, _auth, _grade, _message, _timetable, _data);
            
             });
-
+            // Kijelentkeztet és visszanavigál a bejelentkezési oldalra
             LogOutCommand = new RelayCommand(() =>
             {
                 _auth.Logout();
@@ -71,6 +71,7 @@ namespace KretaAvalonia_SB.ViewModels
 
             _ = LoadStudentClassId();
         }
+        //Lekéri a bejelentkezett diák osztályazonosítóját és eltárolja az AuthModel-ben
         private async Task LoadStudentClassId()
         {
             var userId = _auth.CurrentUserId;
