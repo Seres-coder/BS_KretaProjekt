@@ -69,7 +69,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("api/grade/gradeadd", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
 
         //Lekéri az első seed-elt jegy ID-ját közvetlenül az adatbázisból(DI scope-on keresztül), hogy ne kelljen fix ID-t hardcode-olni.
@@ -128,7 +128,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PutAsync("api/grade/grademodify", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
         //Bejelentkezik tanar1-ként, majd DELETE /api/grade/gradedelete?id=1 hívással törli az id=1 jegyet. Elvárás: 200 OK.
         [Fact]

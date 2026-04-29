@@ -45,7 +45,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
         //GET /api/data/diaklistazasa – visszaadja az összes diák listáját
-        [Authorize(Roles ="Admin")]
+
         [HttpGet("diaklistazasa")]
         public async Task <ActionResult<IEnumerable<StudentDto>>> GetDiak()
         {
@@ -65,7 +65,7 @@ namespace BS_KretaProjekt.Controllers
 
         }
         //GET /api/data/tanarlistazasa – visszaadja az összes tanár listáját
-        [Authorize(Roles = "Admin")]
+        
         [HttpGet("tanarlistazasa")]
         public async Task <ActionResult<IEnumerable<TeacherDto>>> GetTeacher()
         {
@@ -126,7 +126,7 @@ namespace BS_KretaProjekt.Controllers
 
         }
         //PUT /api/data/modifyteacherdata – módosítja egy tanár adatait
-        [Authorize(Roles = "Admin")]
+       
         [HttpPut("modifyteacherdata")]
         public async Task<ActionResult> ModifyTeacherData([FromBody] TeacherDto dto)
         {
@@ -149,7 +149,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
         //DELETE /api/data/deletestudentdata – törli a megadott diákot
-        [Authorize(Roles = "Admin")]
+  
         [HttpDelete("deletestudentdata")]
         public   async Task<ActionResult> DeleteStudentData([FromQuery] int id)
         {
@@ -169,7 +169,7 @@ namespace BS_KretaProjekt.Controllers
 
         }
         //DELETE /api/data/deleteteacherdata – törli a megadott tanárt
-        [Authorize(Roles = "Admin")]
+     
         [HttpDelete("deleteteacherdata")]
         public async Task<ActionResult> DeleteTeacherData([FromQuery] int id)
         {

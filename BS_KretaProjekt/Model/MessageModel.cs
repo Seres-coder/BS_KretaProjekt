@@ -40,7 +40,7 @@ namespace BS_KretaProjekt.Model
 
         #region Send Message
         //Visszaadja egy felhasználónak szóló összes üzenetet küldési idő szerint csökkenő sorrendben
-        public IEnumerable<MessageDto> GetMessages(int user_id)
+        public IEnumerable<MessageDto> GetMessages(int fogado_id)
         {
             if (!_context.Users.Any(x => x.user_id == fogado_id))
                 throw new KeyNotFoundException("nincs ilyen user");

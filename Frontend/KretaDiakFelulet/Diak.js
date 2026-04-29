@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     await tanarokBetoltese();
     
 });
+
+function showMessage(elementId, message) {
+    const el = document.getElementById(elementId);
+    if (el) el.textContent = message;
+}
 //#region  uzenetek lekérése
 const lista = document.querySelector("#lista");
 const kuldoElem = document.querySelector("#uzenet-kuldo");
@@ -185,7 +190,7 @@ async function diakAdatokBetoltese() {
     const user = JSON.parse(mentettFelhasznalo);
     const userId = user.id || user.Id;
     try {
-        const response = await fetch(`${API_BASE}/getmydata?user_id=${userId}`, {
+        const response = await fetch(`${API_BASE}/mydata?userId=${userId}`, {
             method: "GET",
             credentials: "include"
         });

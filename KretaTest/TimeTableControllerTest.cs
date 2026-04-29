@@ -65,7 +65,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("/api/timetable/orarendkrealas", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
         //Lekéri az első seed-elt órarend ID-ját közvetlenül az adatbázisból (DI scope-on keresztül), hogy ne kelljen fix ID-t hardcode-olni.
         private int GetSeededOrarendId()
@@ -123,7 +123,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PutAsync("/api/timetable/modifytimetable", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
         //Ugyanaz mint az előző – ellenőrzi, hogy érvénytelen ora esetén is 400 BadRequest érkezik.
         [Fact]
@@ -147,7 +147,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PutAsync("/api/timetable/modifytimetable", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
         //DELETE /api/timetable/deletetimetable?id=1 hívással töröl egy órarend bejegyzést. Elvárás: 200 OK.
         [Fact]

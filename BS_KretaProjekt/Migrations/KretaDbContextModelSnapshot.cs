@@ -43,7 +43,7 @@ namespace BS_KretaProjekt.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("szuletesi_datum")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("szuloneve")
                         .HasColumnType("text");

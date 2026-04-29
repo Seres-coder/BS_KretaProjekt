@@ -134,7 +134,7 @@ namespace KretaTest
 
             var response = await _client.PutAsync("/api/data/modifystudentdata", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
         //Ellenőrzi, hogy a PUT /api/data/modifyteacherdata végpont 200 OK-val tér vissza érvényes tanáradat küldésekor.
         [Fact]

@@ -198,7 +198,7 @@ async function tanarAdatokBetoltese() {
     const userId = user.id || user.Id;
 
     try {
-        const response = await fetch(`${API_BASE}/getmyteacherdata?user_id=${userId}`, {
+        const response = await fetch(`${API_BASE}/myteacherdata?userId=${userId}`, {
             method: "GET",
             credentials: "include"
         });
