@@ -13,6 +13,7 @@ namespace BS_KretaProjekt.Model
         }
 
         #region Create Message
+        // Létrehoz egy új üzenetet és elmenti az adatbázisba
         public async Task CreateMessage(CreateMessageDto dto)
         {
             if(string.IsNullOrWhiteSpace(dto.cim) || string.IsNullOrWhiteSpace(dto.tartalom) || dto.fogado_id == 0 || dto.user_id == 0)
@@ -38,7 +39,8 @@ namespace BS_KretaProjekt.Model
         #endregion
 
         #region Send Message
-        public IEnumerable<MessageDto> GetMessages(int fogado_id)
+        //Visszaadja egy felhasználónak szóló összes üzenetet küldési idő szerint csökkenő sorrendben
+        public IEnumerable<MessageDto> GetMessages(int user_id)
         {
             if (!_context.Users.Any(x => x.user_id == fogado_id))
                 throw new KeyNotFoundException("nincs ilyen user");
@@ -74,6 +76,7 @@ namespace BS_KretaProjekt.Model
         #endregion
 
         #region Get one message by id
+        //Visszaad egyetlen üzenetet a fogadó user_id és az üzenet azonosítója alapján
         public MessageDto GetOneMessage(int user_id,int uzenet_id)
         {
             if (!_context.Users.Any(x => x.user_id == user_id))
@@ -91,6 +94,7 @@ namespace BS_KretaProjekt.Model
         #endregion
 
         #region Delete Message
+        //Törli a megadott azonosítójú üzenetet az adatbázisból
         public async Task DeleteMessage(int uzenet_id, int message_id)
         {
             if (!_context.Uzenetek.Any(x => x.uzenet_id == uzenet_id))

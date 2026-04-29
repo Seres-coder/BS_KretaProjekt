@@ -14,7 +14,7 @@ namespace BS_KretaProjekt.Model
             _context = context;
         }
         #region Password Change
-
+        //Megváltoztatja a felhasználó jelszavát, az újat hashelve menti el
         public async Task ChangePassword(int userId, string ujjelszo)
         {
             if (string.IsNullOrWhiteSpace(ujjelszo))
@@ -27,6 +27,7 @@ namespace BS_KretaProjekt.Model
                await trx.CommitAsync();
             }
         }
+        //SHA-256 algoritmussal hasheli a megadott jelszót, Base64 formátumban adja vissza
         private string HashPassword(string password)
         {
             using var sha = System.Security.Cryptography.SHA256.Create();
@@ -36,6 +37,7 @@ namespace BS_KretaProjekt.Model
         }
         #endregion
         #region Registration(At first you can only registrate as a student,the admin can upgrade to being teacher)
+        //Regisztrál egy új felhasználót; alapértelmezetten diák szerepkörrel, ha a név már foglalt, kivételt dob
         public async Task Registration(string name, string password, string role = "Diak")
         {
 
@@ -64,7 +66,7 @@ namespace BS_KretaProjekt.Model
         }
         #endregion
         #region Login checker
-
+        //Ellenőrzi a belépési adatokat, sikeres egyezés esetén visszaadja a user adatait, különben null-t
         public UserDto? ValidateUser(string name, string password)
         {
             string hashpass = HashPassword(password);
@@ -79,6 +81,7 @@ namespace BS_KretaProjekt.Model
         }
         #endregion
         #region Role update
+        //Diákból tanárrá lépteti elő a felhasználót; törli a diák rekordot és létrehozza a tanárit
         public async Task PromoteToTanar(int userId, string tantargy)
         {
             if (userId <= 0)

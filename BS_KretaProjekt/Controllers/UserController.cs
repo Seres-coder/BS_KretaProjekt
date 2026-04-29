@@ -20,6 +20,7 @@ namespace BS_KretaProjekt.Controllers
         }
 
         #region Password Change
+        //PUT /api/user/updatepassword – megváltoztatja a felhasználó jelszavát
         [HttpPut("updatepassword")]
         public async Task<IActionResult> UpdatePassword([FromQuery] int userid, [FromQuery] string password)
         {
@@ -40,6 +41,7 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region Registration
+        // POST /api/user/registration – regisztrál egy új felhasználót diák szerepkörrel
         [HttpPost("registration")]
         public async Task<IActionResult> RegistrationController([FromQuery] string name, [FromQuery] string password)
         {
@@ -60,6 +62,7 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region Login checker
+        // POST /api/user/login – ellenőrzi a belépési adatokat, sikeres login esetén cookie-t állít be
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> LoginController([FromQuery] string username, [FromQuery] string password)
         {
@@ -97,7 +100,8 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region Role update
-
+        //PUT /api/user/upgraderole – diákból tanárrá lépteti elő a felhasználót
+        [Authorize(Roles = "Admin")]
         [HttpPut("upgraderole")]
         public async Task<IActionResult> UpdateRole([FromQuery] int id, [FromQuery] string tantargy)
         {

@@ -15,7 +15,7 @@ namespace BS_KretaProjekt.Controllers
             _model = model;
         }
 
-
+        //POST/api/message/messageadd – létrehoz és elment egy új üzenetet
         [HttpPost("messageadd")]
         public async Task<ActionResult> AddNewMessage([FromBody] CreateMessageDto dto)
         {
@@ -33,7 +33,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-
+        //GET/api/message/messageklistazasa – visszaadja egy felhasználó összes bejövő üzenetét
         [HttpGet("messageklistazasa")]
         public ActionResult<IEnumerable<MessageDto>> GetMessage([FromQuery] int fogado_id)
         {
@@ -50,7 +50,7 @@ namespace BS_KretaProjekt.Controllers
                 return BadRequest();
             }
         }
-
+        //GET/api/message/egymessagelistazasa – visszaad egyetlen üzenetet user és üzenet azonosító alapján
         [HttpGet("egymessagelistazasa")]
         public ActionResult<IEnumerable<MessageDto>> GetOneMessage([FromQuery] int user_id, [FromQuery]  int uzenet_id)
         {
@@ -68,6 +68,7 @@ namespace BS_KretaProjekt.Controllers
             }
 
         }
+        //DELETE/api/message/deletemessage – törli a megadott üzenetet
         [HttpDelete("deletemessage")]
         public async Task<ActionResult> DeleteMessage([FromQuery] int id, [FromQuery] int message_id)
         {

@@ -17,7 +17,8 @@ namespace BS_KretaProjekt.Controllers
         }
 
         #region Grade Add
-
+        //POST /api/grade/gradeadd – új jegyet ad hozzá egy diáknak
+        [Authorize(Roles = "Tanar")]
         [HttpPost("gradeadd")]
         public async Task<ActionResult> AddNewGrade([FromBody] GradeAdd dto)
         {
@@ -39,7 +40,8 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region -Grade Modify
-
+        //PUT /api/grade/grademodify – módosítja egy meglévő jegy értékét
+        [Authorize(Roles = "Tanar")]
         [HttpPut("grademodify")]
         public async Task<ActionResult> ModifyGrade([FromBody] GradeModify dto)
         {
@@ -61,7 +63,8 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region -Grade Delete
-       
+        //DELETE /api/grade/gradedelete – törli a megadott azonosítójú jegyet
+        [Authorize(Roles = "Tanar")]
         [HttpDelete("gradedelete")]
         public async Task<ActionResult> DeleteGrade([FromQuery] int id)
         {
@@ -83,7 +86,7 @@ namespace BS_KretaProjekt.Controllers
         #endregion
 
         #region -Grade Listing
-
+        //GET /api/grade/allgrade – visszaadja egy diák vagy tanár összes jegyét id alapján
         [HttpGet("allgrade")]
         public ActionResult<IEnumerable<GradeListDto>> GetAllGrades([FromQuery] int id = 0, [FromQuery] int tanar_id = 0)
         {

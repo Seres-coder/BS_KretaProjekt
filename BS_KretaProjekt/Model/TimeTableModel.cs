@@ -13,6 +13,7 @@ namespace BS_KretaProjekt.Model
         }
 
         #region Create TimeTable
+        //Létrehoz egy új órarendi bejegyzést a megadott osztályhoz, tanárhoz és tantárgyhoz
         public async Task CreateTimeTable(CreateOrarendDto dto)
         { 
             if(string.IsNullOrWhiteSpace(dto.tantargy) || string.IsNullOrWhiteSpace(dto.Tanarnev) || dto.osztaly_id == 0 || dto.nap == DayOfWeek.Sunday || dto.nap == DayOfWeek.Saturday || dto.ora <= 0)
@@ -38,9 +39,10 @@ namespace BS_KretaProjekt.Model
 
             await Task.CompletedTask;
         }
-#endregion
+        #endregion
 
         #region Modify TimeTable
+        //Módosítja a meglévő órarendi bejegyzés adatait (tanár, tantárgy, osztály, nap, óra)
         public async Task ModifyTimeTable(UpdateOrarendDto dto)
         {
 
@@ -73,6 +75,7 @@ namespace BS_KretaProjekt.Model
         #endregion
 
         #region Delete TimeTable
+        //Törli a megadott azonosítójú órarendi bejegyzést
         public async Task DeleteTimeTable(int orarend_id)
         {
             if (!_context.Orarendek.Any(x => x.orarend_id == orarend_id))
@@ -94,6 +97,7 @@ namespace BS_KretaProjekt.Model
         #endregion
 
         #region TimeTable Listing
+        //Visszaadja egy osztály órarendjét napok szerint csoportosítva, óraszám szerint rendezve
         public Dictionary<DayOfWeek, List<TimeTableItemDto>> GetTimeTable(int osztaly_id)
         {
 
@@ -127,7 +131,7 @@ namespace BS_KretaProjekt.Model
 
             return result;
         }
-
+        //Visszaadja egy tanár órarendjét napok szerint csoportosítva, az osztálynevekkel együtt
         public Dictionary<DayOfWeek, List<TeacherTimeTabelDto>> GetTeacherTimeTable(int tanar_id)
         {
             var result = _context.Orarendek

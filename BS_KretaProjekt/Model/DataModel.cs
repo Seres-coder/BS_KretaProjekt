@@ -12,7 +12,7 @@ namespace BS_KretaProjekt.Model
         {
             _context = context;
         }
-
+        //Visszaadja a bejelentkezett diák saját adatait user_id alapján
         public async Task<StudentDto> GetMyData(int user_id) 
         {
            var items= await _context.Diakok.Where(x => x.user_id == user_id).Select(x => new StudentDto
@@ -29,13 +29,13 @@ namespace BS_KretaProjekt.Model
             return items;
 
         }
-
+        //Visszaadja a bejelentkezett tanár saját adatait user_id alapján
         public async Task<TeacherDto> GetMyTeacherData(int user_id)
         {
             var items= await _context.Tanarok.Where(x=>x.user_id==user_id).Select(x=> new TeacherDto { tanar_id = x.tanar_id,szak=x.szak,tanar_nev=x.tanar_nev}).FirstAsync();
             return items;
         }
-
+        //Visszaadja az összes diák adatait listában
         public async Task<IEnumerable<StudentDto>> GetDiak()
         {
 
@@ -57,7 +57,8 @@ namespace BS_KretaProjekt.Model
                 throw new InvalidOperationException("nincs diak");
             return items;
         }
-        public async Task<List<TeacherDto>> GetTeacher()
+        //Visszaadja az összes tanár adatait a hozzájuk tartozó tantárggyal együtt
+        public async Task<IEnumerable<TeacherDto>> GetTeacher()
         {
             var items = await _context.Tanarok
                 .Include(x => x.Tantargy)  
@@ -78,7 +79,7 @@ namespace BS_KretaProjekt.Model
         {
             return await _context.Tantargyok.ToListAsync();
         }
-
+        //Módosítja egy diák adatait a kapott DTO alapján
         public async Task ModifyStudentData(StudentDto dto)
         {
             var diak = await _context.Diakok.SingleOrDefaultAsync(x => x.diak_id == dto.diak_id);
@@ -98,9 +99,7 @@ namespace BS_KretaProjekt.Model
             await _context.SaveChangesAsync();
             await trx.CommitAsync();
         }
-
-
-
+        //Módosítja egy tanár nevét és szakát a kapott DTO alapján
         public async Task ModifyTeacherData(TeacherDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.tanar_nev) || string.IsNullOrWhiteSpace(dto.szak))
@@ -117,6 +116,7 @@ namespace BS_KretaProjekt.Model
             }
             await Task.CompletedTask;
         }
+        //Törli a diákot és a hozzá tartozó jegyeket, üzeneteket, illetve a user rekordját
         public async Task DeleteStudentData(int id)
         {
             var diak = await _context.Diakok.SingleOrDefaultAsync(x => x.diak_id == id);
@@ -134,6 +134,7 @@ namespace BS_KretaProjekt.Model
             await _context.SaveChangesAsync();
             await trx.CommitAsync();
         }
+        //Törli a megadott azonosítójú tanárt az adatbázisból
         public async Task DeleteTeacherData(int id)
         {
             using (var trx = _context.Database.BeginTransaction())
