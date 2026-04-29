@@ -50,8 +50,7 @@ namespace KretaTest
         [Fact]
         public async Task AddTimeTable_ReturnsBadRequest()
         {
-            var login = await _client.PostAsync("api/user/login?username=tanar1&password=tanar123", null);
-            login.EnsureSuccessStatusCode();
+           
 
             var data = new
             {
@@ -105,8 +104,7 @@ namespace KretaTest
         [Fact]
         public async Task ModifyTimeTable_ReturnsBadRequest_missingdata()
         {
-            var login = await _client.PostAsync("api/user/login?username=tanar1&password=tanar123", null);
-            login.EnsureSuccessStatusCode();
+         
 
             var orarendId = GetSeededOrarendId();
 
@@ -129,9 +127,7 @@ namespace KretaTest
         [Fact]
         public async Task ModifyTimeTable_ReturnsBadRequest_badorarend()
         {
-            var login = await _client.PostAsync("api/user/login?username=tanar1&password=tanar123", null);
-            login.EnsureSuccessStatusCode();
-
+            
             var orarendId = GetSeededOrarendId();
 
             var data = new
@@ -163,9 +159,7 @@ namespace KretaTest
         [Fact]
         public async Task DeleteTimeTable_ReturnsBadRequest()
         {
-            var login = await _client.PostAsync("api/user/login?username=tanar1&password=tanar123", null);
-            login.EnsureSuccessStatusCode();
-
+            
             var nonExistingOrarendId =9999999;
 
             var response = await _client.DeleteAsync($"/api/timetable/deletetimetable?id={nonExistingOrarendId}");

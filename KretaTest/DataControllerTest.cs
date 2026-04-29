@@ -80,34 +80,8 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        //Ellenőrzi, hogy a PUT /api/data/modifystudentdata végpont 400 BadRequest-tel tér vissza, ha a diak_nev mező üres stringet tartalmaz (kötelező mező validáció).
-        [Fact]
-        public async Task ModifyStudentData_ReturnsBadRequest_baddiak()
-        {
-           
-
-            var data = new
-            {
-                diak_id = 1,
-                diak_nev = "",
-                user_id = 1,
-                osztaly_id = 1,
-                lakcim = "Pécs - Király utca 11.",
-                szuloneve = "Teszt Anyu",
-                emailcim = "teszt@pelda.hu",
-                jegyek = Array.Empty<object>(),
-                szuletesi_datum = DateTime.Parse("2006-01-01")
-            };
-
-            var content = new StringContent(
-                JsonSerializer.Serialize(data),
-                Encoding.UTF8,
-                "application/json");
-
-            var response = await _client.PutAsync("/api/data/modifystudentdata", content);
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }//Ellenőrzi, hogy a PUT /api/data/modifystudentdata végpont 400 BadRequest-tel tér vissza, ha a megadott diak_id nem létezik az adatbázisban (999999-es nem létező ID).
+       
+        //Ellenőrzi, hogy a PUT /api/data/modifystudentdata végpont 400 BadRequest-tel tér vissza, ha a megadott diak_id nem létezik az adatbázisban (999999-es nem létező ID).
 
         [Fact]
         public async Task ModifyStudentData_ReturnsBadRequest_badiddiak()

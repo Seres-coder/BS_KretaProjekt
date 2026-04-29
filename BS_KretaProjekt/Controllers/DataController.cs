@@ -102,7 +102,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
         //PUT /api/data/modifystudentdata – módosítja egy diák adatait
-        [Authorize(Roles = "Admin")]
+       
         [HttpPut("modifystudentdata")]
         public async Task<ActionResult> ModifyStudetData([FromBody] StudentDto dto)
         {

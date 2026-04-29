@@ -16,7 +16,7 @@ namespace BS_KretaProjekt.Controllers
             _model = model;
         }
         //POST /api/timetable/orarendkrealas – létrehoz egy új órarendi bejegyzést
-        [Authorize(Roles = "Admin")]
+      
         [HttpPost("orarendkrealas")]
         public async Task<ActionResult> AddTimeTabel([FromBody] CreateOrarendDto dto)
         {
@@ -36,7 +36,7 @@ namespace BS_KretaProjekt.Controllers
 
         }
         //PUT /api/timetable/modifytimetable – módosítja a megadott órarendi bejegyzést
-        [Authorize(Roles = "Admin")]
+      
         [HttpPut("modifytimetable")]
         public async Task<ActionResult> ModifyTimeTable([FromBody] UpdateOrarendDto dto)
         {
@@ -59,7 +59,7 @@ namespace BS_KretaProjekt.Controllers
             }
         }
         // DELETE /api/timetable/deletetimetable – törli a megadott órarendi bejegyzést
-        [Authorize(Roles = "Admin")]
+     
         [HttpDelete("deletetimetable")]
         public async Task<ActionResult> DeleteTimeTable([FromQuery] int id)
         {

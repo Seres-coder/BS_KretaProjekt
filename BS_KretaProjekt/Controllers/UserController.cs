@@ -112,7 +112,7 @@ namespace BS_KretaProjekt.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                { return StatusCode(406, ex.Message); }
             }
             catch (InvalidOperationException ex)
             {
