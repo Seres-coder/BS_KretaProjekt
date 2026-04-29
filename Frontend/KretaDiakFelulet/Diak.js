@@ -1,12 +1,137 @@
 const API_BASE = "https://localhost:7273/api/Data";
 const TIMETABLE_API = "https://localhost:7273/api/TimeTable";
 const GRADE_API = "https://localhost:7273/api/Grade";
+const MESSAGE_API="https://localhost:7273/api/Message";
 
 document.addEventListener("DOMContentLoaded", async function () {
     sidebarGomb();
     panelValtas();
     await diakAdatokBetoltese();
+    await tanarokBetoltese();
+    
 });
+//#region  uzenetek lekérése
+const lista = document.querySelector("#lista");
+const kuldoElem = document.querySelector("#uzenet-kuldo");
+const targyElem = document.querySelector("#uzenet-targy");
+const datumElem = document.querySelector("#uzenet-datum");
+const tartalomElem = document.querySelector("#uzenet-tartalom");
+
+async function getMessages(diakId) {
+    const res = await fetch(`${MESSAGE_API}/messageklistazasa?fogado_id=${diakId}`);
+    const uzenetek = await res.json();
+    kiir(uzenetek);
+}
+
+function kiir(uzenetek) {
+    lista.innerHTML = "";
+    uzenetek.forEach(u => {
+        const gomb = document.createElement("button");
+        gomb.className = "list-group-item list-group-item-action text-start";
+
+        gomb.innerHTML = `
+            <b>${u.kuldoname}</b><br>
+            ${u.cim}<br>
+            <small>${datum(u.kuldesidopontja)}</small>
+        `;
+
+        gomb.onclick = () => megjelenit(u);
+
+        lista.appendChild(gomb);
+    });
+}
+
+function megjelenit(u) {
+    kuldoElem.textContent = u.kuldoname;
+    targyElem.textContent = u.cim;
+    datumElem.textContent = datum(u.kuldesidopontja);
+    tartalomElem.textContent = u.tartalom;
+}
+
+function datum(d) {
+    return new Date(d).toLocaleDateString("hu-HU");
+}
+
+
+
+//#endregion
+
+//#region  uzenetek elkuldese
+
+async function kuldes() {
+    const tema = document.getElementById("tema").value.trim();
+    const szoveg = document.getElementById("szoveg").value.trim();
+    const select = document.getElementById("cimzett");
+    const fogadoId = parseInt(select.value);
+    const status = document.getElementById("uzenetStatus");
+
+    const mentettFelhasznalo = localStorage.getItem("kretaUser");
+    if (!mentettFelhasznalo) {
+        status.innerText = "Nincs bejelentkezve.";
+        return;
+    }
+    const user = JSON.parse(mentettFelhasznalo);
+    const userId = parseInt(user.id || user.Id);
+
+    if (!tema || !szoveg || !fogadoId || isNaN(fogadoId) || isNaN(userId)) {
+        status.innerText = "Tölts ki minden mezőt, és válassz fogadót!";
+        console.warn("Hiányzó vagy hibás mezők:", { tema, szoveg, fogadoId, userId });
+        return;
+    }
+
+    const dto = {
+        tartalom: szoveg,
+        cim: tema,
+        fogado_id: fogadoId,
+        user_id: userId
+    };
+    status.innerText = "Küldés...";
+
+    try {
+        const res = await fetch(`${MESSAGE_API}/messageadd`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(dto)
+        });
+
+        if (res.ok) {
+            status.innerText = "Üzenet elküldve!";
+            document.getElementById("tema").value = "";
+            document.getElementById("szoveg").value = "";
+
+            
+            await getMessages(userId);
+        } else {
+            const errorText = await res.text();
+            console.error("Backend hiba:", errorText);
+            status.innerText = "Hiba történt a küldés során.";
+        }
+    } catch (err) {
+        console.error("Hálózati hiba:", err);
+        status.innerText = "Nem sikerült kapcsolódni a szerverhez.";
+    }
+}
+
+async function tanarokBetoltese() {
+    const select = document.getElementById("cimzett");
+    select.innerHTML = '<option value="">-- Válassz tanárt --</option>';
+
+    const res = await fetch(`${API_BASE}/tanarlistazasa`, { credentials: "include" });
+    if (!res.ok) return;
+
+    const tanarok = await res.json();
+    tanarok.forEach(tanar => {
+        const option = document.createElement("option");
+        option.value = tanar.user_id; 
+        option.textContent = tanar.tanar_nev;
+        select.appendChild(option);
+    });
+}
+//#endregion 
+
+
+
 //#region  sidebar mukodese es a panel valtas
 
 
@@ -47,24 +172,25 @@ function panelMutatas(panelId) {
         aktivPanel.style.display = "block";
     }
 }
+
 //#endregion
 
 //#region ezzel toltjuk be a sajat adatait egy diaknak 
 async function diakAdatokBetoltese() {
     const mentettFelhasznalo = localStorage.getItem("kretaUser");
     if (!mentettFelhasznalo) {
-        alert("Nincs bejelentkezve.");
+        showMessage("adatokStatus", "Nincs bejelentkezve.");
         return;
     }
     const user = JSON.parse(mentettFelhasznalo);
     const userId = user.id || user.Id;
     try {
-        const response = await fetch(`${API_BASE}/mydata?userId=${userId}`, {
+        const response = await fetch(`${API_BASE}/getmydata?user_id=${userId}`, {
             method: "GET",
             credentials: "include"
         });
         if (!response.ok) {
-            alert("Nem sikerült lekérni az adatokat.");
+            showMessage("adatokStatus", "Nem sikerült lekérni az adatokat.");
             return;
         }
         const studentData = await response.json();
@@ -72,14 +198,14 @@ async function diakAdatokBetoltese() {
             await orarendBetoltese(studentData.osztaly_id);
         }
         adatokKiirasa(studentData);
-        await jegyekBetoltese(userId);
+        await jegyekBetoltese(studentData.diak_id);
         if (studentData.osztaly_id) {
             await orarendBetoltese(studentData.osztaly_id);
         }
+        await getMessages(userId);
     } catch (error) {
-        alert("Nem sikerült kapcsolódni a szerverhez.");
+        showMessage("adatokStatus", "Nem sikerült kapcsolódni a szerverhez.");
     }
-    
 }
 
 function adatokKiirasa(studentData) {
@@ -117,6 +243,7 @@ async function orarendBetoltese(osztalyId) {
     }
 }
 
+
 function orarendKiirasa(orarend) {
     const container = document.getElementById("diakOrarendContainer");
 
@@ -126,14 +253,14 @@ function orarendKiirasa(orarend) {
 
     napok.forEach((nap, index) => {
         if (index > 0) {
-            html += `<tr><td colspan="4" style="height:12px; background:#B85C38; border:none;"></td></tr>`;
+            html += `<tr><td colspan="4" style="height:8px;  border:none;"></td></tr>`;
         }
 
         orarend[nap].forEach(ora => {
             html += `
                 <tr>
                     <td>${maggyara(nap)}</td>
-                    <td>${ora.ora}</td>
+                    <td><span class="ora-badge">${ora.ora}</td>
                     <td>${ora.tantargyNev}</td>
                     <td>${ora.tanarNev}</td>
                 </tr>
@@ -155,9 +282,12 @@ function maggyara(nap) {
 //#endregion
 
 //#region  jegyek betoltese
-async function jegyekBetoltese(userId) {
+async function jegyekBetoltese(diakId) {
     try {
-        const res = await fetch(`${GRADE_API}/allgrade?id=${userId}`);
+        const res = await fetch(`${GRADE_API}/allgrade?id=${diakId}`, {
+            method: "GET",
+            credentials: "include" // <-- sends the auth cookie automatically
+        });
 
         if (!res.ok) {
             document.getElementById("jegyekTabla").innerHTML = "<tr><td colspan='3'>Nincs jegy.</td></tr>";
@@ -168,13 +298,11 @@ async function jegyekBetoltese(userId) {
         const jegyek = await res.json();
         jegyekKiirasa(jegyek);
         atlagokKiirasa(jegyek);
-
     } catch {
         document.getElementById("jegyekTabla").innerHTML = "<tr><td colspan='3'>Hiba történt.</td></tr>";
         document.getElementById("atlagLista").innerHTML = "<li class='list-group-item'>Hiba történt</li>";
     }
 }
-
 function jegyekKiirasa(jegyek) {
     const tabla = document.getElementById("jegyekTabla");
     let html = "";
@@ -222,4 +350,3 @@ function jegyDatum(datum) {
 }
 
 //#endregion
-

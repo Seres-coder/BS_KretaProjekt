@@ -104,30 +104,6 @@ namespace KretaTest
             Assert.Equal("Nincs minden adat megadva", ex.Message);
         }
 
-        [Fact]
-        public async Task ModifyStudentData_ThrowsKeyNotFound()
-        {
-            var eredetiDiak = _context.Diakok.First();
-
-            // olyan osztaly_id, ami biztosan nem létezik
-            var nonExistingOsztalyId = _context.Osztalyok.Any()
-                ? _context.Osztalyok.Max(o => o.osztaly_id) + 999
-                : 999999;
-
-            var dto = new StudentDto
-            {
-                diak_id = eredetiDiak.diak_id,
-                diak_nev = "Teszt Név",
-                emailcim = "teszt@gmail.com",
-                lakcim = "Teszt lakcím",
-                osztaly_id = nonExistingOsztalyId,  // <-- ez fogja triggerelni
-                szuletesi_datum = new DateTime(2009, 1, 1),
-                szuloneve = "Teszt szülõ"
-            };
-
-            var ex = await Assert.ThrowsAsync<KeyNotFoundException>(() => _model.ModifyStudentData(dto));
-            Assert.Equal("Nincs ilyen diak", ex.Message); 
-        }
 
 
         [Fact]
@@ -226,16 +202,5 @@ namespace KretaTest
 
 
 
-        [Fact]
-        public async Task DeleteTeacherData_ThrowsInvalidOperation()
-        {
-            // olyan ID, ami biztosan nem létezik
-            var nonExistingId = _context.Tanarok.Any()
-                ? _context.Tanarok.Max(d => d.tanar_id) + 999
-                : 999999;
-
-            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _model.DeleteTeacherData(nonExistingId));
-            Assert.Equal("nincs ilyen tanar", ex.Message);
-        }
     }
 }

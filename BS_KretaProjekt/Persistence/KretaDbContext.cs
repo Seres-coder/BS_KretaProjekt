@@ -60,7 +60,7 @@ namespace BS_KretaProjekt.Persistence
         public List<Orarend>? Orarend { get; set; }
     }
 
-    [Index(nameof(emailcim), IsUnique = true)]
+  
     public class Diak
     {
         [Key]
@@ -113,10 +113,10 @@ namespace BS_KretaProjekt.Persistence
         [Required]
         public string cim { get; set; } = string.Empty;
 
-        public int fogado_id { get; set; }
+        public int fogado_id { get; set; }         
 
-        [ForeignKey(nameof(fogado_id))]
-        public Diak? Fogado { get; set; }
+        [ForeignKey(nameof(fogado_id))]             
+        public User? Fogado { get; set; }           
 
         public int user_id { get; set; }
 

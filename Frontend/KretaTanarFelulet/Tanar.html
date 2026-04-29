@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tanar Felulet</title>
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Tanár Felület</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="Tanar.css">
 </head>
 <body>
@@ -27,43 +27,31 @@
                 <button class="nav-link" data-panel-target="orarend-panel">Órarendem</button>
             </nav>
 
-            <br>Jegyeim:
+            <br>Jegyek:
             <nav>
-                <button class="nav-link" data-panel-target="jegyek-panel">Jegyeim</button>
+                <button class="nav-link" data-panel-target="jegyek-panel">Jegyek kezelése</button>
             </nav>
         </nav>
     </div>
-     <div class="content" id="content">
+
+    <div class="content" id="content">
+
+        <!-- Bejövő üzenetek -->
         <section id="bejovo-uzenetek-panel" class="panel active">
             <div class="container-fluid mt-4">
                 <h2 class="mb-4"><br>Bejövő üzenetek</h2>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <div class="list-group" id="lista">
-                            <button class="list-group-item list-group-item-action" onclick="mutat(0)">
-                                <b>Osztályfőnök</b><br>
-                                Szülői értekezlet<br>
-                                <small>2026.03.05</small>
-                            </button>
-
-                            <button class="list-group-item list-group-item-action" onclick="mutat(1)">
-                                <b>Igazgatóság</b><br>
-                                Tanév rendje<br>
-                                <small>2026.03.04</small>
-                            </button>
-
-                            <button class="list-group-item list-group-item-action" onclick="mutat(2)">
-                                <b>Matektanár</b><br>
-                                Dolgozat<br>
-                                <small>2026.03.03</small>
-                            </button>
-							
-                        </div>
+                        <div class="list-group" id="lista"></div>
                     </div>
                     <div class="col-md-8">
                         <div class="card shadow-sm">
                             <div class="card-body" id="uzenet">
-                                Kattints egy üzenetre
+                                <h5 id="uzenet-kuldo">Kattints egy üzenetre</h5>
+                                <p class="mb-1"><strong>Tárgy:</strong> <span id="uzenet-targy">-</span></p>
+                                <p class="mb-3"><strong>Dátum:</strong> <span id="uzenet-datum">-</span></p>
+                                <hr>
+                                <p id="uzenet-tartalom">Válassz ki egy üzenetet a bal oldali listából.</p>
                             </div>
                         </div>
                     </div>
@@ -71,58 +59,54 @@
             </div>
         </section>
 
-       <section id="uzenet-iras-panel" class="panel">
+        <!-- Üzenet írása -->
+        <section id="uzenet-iras-panel" class="panel">
             <div class="container mt-4">
-
                 <h2>Üzenet írása</h2>
-
                 <div class="card shadow-sm mt-3">
                     <div class="card-body">
-
                         <div class="mb-3">
                             <label class="form-label">Címzett</label>
-                            <input type="text" class="form-control" id="cimzett" placeholder="pl. Osztályfőnök">
+                            <select class="form-control" id="cimzett">
+                                <option value="">-- Válassz diákot --</option>
+                            </select>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Téma</label>
-                            <input type="text" class="form-control" id="tema">
+                            <input type="text" class="form-control" id="tema" autocomplete="off">
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Üzenet</label>
                             <textarea class="form-control" id="szoveg" rows="5"></textarea>
                         </div>
-
                         <button class="btn btn-primary" onclick="kuldes()">Üzenet küldése</button>
-
                         <p id="uzenetStatus" class="mt-3"></p>
-
                     </div>
                 </div>
-
             </div>
         </section>
-        
+
+        <!-- Adataim -->
         <section id="adatok-panel" class="panel">
             <div class="container mt-4">
                 <h2>Adataim</h2>
-
                 <div class="card shadow-sm mt-3">
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label"><b>Név:</b></label>
-                            <input type="text" class="form-control" id="nev"  disabled>
+                            <input type="text" class="form-control" id="nev" disabled>
                         </div>
-                         <div class="mb-3">
+                        <div class="mb-3">
                             <label class="form-label"><b>Szak:</b></label>
-                            <input type="text" class="form-control" id="szak"  disabled>
+                            <input type="text" class="form-control" id="szak" disabled>
                         </div>
+                        <p id="adatokStatus" class="mt-2"></p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Órarend -->
         <section id="orarend-panel" class="panel">
             <div class="container mt-4">
                 <h2>Órarendem</h2>
@@ -133,45 +117,63 @@
                 </div>
             </div>
         </section>
+
+        <!-- Jegyek kezelése -->
         <section id="jegyek-panel" class="panel">
-            <div class="content">
-                <div class="container mt-4">
-                    <h2>Tanári jegyek</h2>
+            <div class="container mt-4">
+                <h2>Jegyek kezelése</h2>
 
-                    <div class="card shadow-sm mt-3">
-                        <div class="card-body">
-                            <label class="form-label"><b>Tantárgy</b></label>
-                            <select class="form-select" id="tantargy">
-                                <option>Matematika</option>
-                                <option>Magyar</option>
-                                <option>Történelem</option>
-                                <option>Angol</option>
-                            </select>
-                        </div>
+                <!-- Diák választó -->
+                <div class="card shadow-sm mt-3">
+                    <div class="card-body">
+                        <label class="form-label"><b>Diák kiválasztása:</b></label>
+                        <select class="form-select" id="diakValaszto" onchange="diakValasztva()">
+                            <option value="">-- Válassz diákot --</option>
+                        </select>
                     </div>
+                </div>
 
-                    <h4 class="mt-3" id="osztalyNev">9.A</h4>
+                <!-- Jegy hozzáadása -->
+                <div class="card shadow-sm mt-3">
+                    <div class="card-body">
+                        <h5>Új jegy felvétele</h5>
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-3">
+                                <label class="form-label">Jegy értéke (1-5)</label>
+                                <input type="number" class="form-control" id="ujJegy" min="1" max="5">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-success w-100" onclick="jegyHozzaadas()">Jegy felvétele</button>
+                            </div>
+                        </div>
+                        <p id="jegyStatus" class="mt-2"></p>
+                    </div>
+                </div>
 
-                    <div class="card shadow-sm mt-3">
-                        <div class="card-body">
+                <!-- Jegyek táblázata -->
+                <div class="card shadow-sm mt-3">
+                    <div class="card-body">
+                        <h5>Felvett jegyek</h5>
+                        <div class="table-responsive">
                             <table class="table table-striped align-middle">
                                 <thead>
                                     <tr>
-                                        <th>Név</th>
-                                        <th>Típus</th>
+                                        <th>Tantárgy</th>
                                         <th>Jegy</th>
                                         <th>Dátum</th>
-                                        <th></th>
+                                        <th>Műveletek</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tabla"></tbody>
+                                <tbody id="jegyekTabla"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
 
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Tanar.js"></script>

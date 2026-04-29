@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:KretaAvalonia_SB.ViewModels"
+             mc:Ignorable="d" 
+             x:Class="KretaAvalonia_SB.Views.LoginView"
+             x:DataType="vm:LoginViewModel"
+              Height="880"
+             MinHeight="880"
+             Width="480"
+             MinWidth="480"
+             >
+        <UserControl.Styles>
+            <Style Selector="TextBox">
+                <Setter Property="Background" Value="#F0F0F0"/>
+                <Setter Property="Foreground" Value="#000000"/>
+                <Setter Property="CaretBrush" Value="#000000"/>
+            </Style>
+            <Style Selector="TextBox:focus">
+                <Setter Property="Foreground" Value="#000000"/>
+            </Style>
+            <Style Selector="TextBox:focus-within">
+                <Setter Property="Foreground" Value="#000000"/>
+            </Style>
+            <Style Selector="TextBox:pointerover">
+                <Setter Property="Foreground" Value="#000000"/>
+            </Style>
+            <Style Selector="TextBox:focus /template/ Border">
+                <Setter Property="Background" Value="#F0F0F0"/>
+            </Style>
+            <Style Selector="TextBox:pointerover /template/ Border">
+                <Setter Property="Background" Value="#F0F0F0"/>
+            </Style>
+            <Style Selector="TextBox:focus-within /template/ Border">
+                <Setter Property="Background" Value="#F0F0F0"/>
+            </Style>
+            <Style Selector="Button">
+                <Setter Property="Background" Value="#1565C0"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+            <Style Selector="Button:pointerover /template/ ContentPresenter">
+                <Setter Property="Background" Value="#1E88E5"/>
+                <Setter Property="TextElement.Foreground" Value="White"/>
+            </Style>
+            <Style Selector="Button:pressed /template/ ContentPresenter">
+                <Setter Property="Background" Value="#0D47A1"/>
+                <Setter Property="TextElement.Foreground" Value="White"/>
+            </Style>
+        </UserControl.Styles>
+      <Grid>
+         <Grid.Background>
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                <GradientStop Color="#7DD6F8" Offset="0"/>
+                <GradientStop Color="#42A5F5" Offset="0.5"/>
+                <GradientStop Color="#1E88E5" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+           <Border Grid.Row="1"
+            Padding="30"
+            MaxWidth="350"
+            Background="#FFFFFF"
+            CornerRadius="10"
+            BoxShadow="0 4 16 0 #88000000">
+
+            <StackPanel Spacing="12">
+
+               <Border Background="#1565C0"
+                        CornerRadius="10,10,10,10"
+                        Padding="16,18">
+                    <TextBlock Text="KRÉTA"
+                               FontSize="34"
+                               FontWeight="Bold"
+                               FontFamily="Segoe UI Variable"
+                               Foreground="White"
+                               HorizontalAlignment="Center"/>
+                </Border>
+
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Felhasználónév  " Foreground="#555555"  FontSize="13" FontFamily="Segoe UI Variable"/>
+                    <TextBox Text="{Binding UserName}" Background="#F0F0F0"/>
+                </StackPanel>
+
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Jelszó  " Foreground="#555555" FontSize="13" FontFamily="Segoe UI Variable"/>
+                    <TextBox Text="{Binding Password}" FontSize="10" PasswordChar="●" Background="#F0F0F0"/>
+                </StackPanel>
+
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="#E53935"
+                           FontSize="12"
+                           FontFamily="Segoe UI Variable"
+                           />
+
+                <Button Content="Belépés"
+                        Command="{Binding LoginCommand}"
+                        Background="#1565C0"
+                        Foreground="White"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Margin="0,8,0,0"
+                        FontFamily="Segoe UI Variable"
+                        />
+                        
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

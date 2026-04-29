@@ -53,9 +53,6 @@ namespace BS_KretaProjekt.Migrations
 
                     b.HasKey("diak_id");
 
-                    b.HasIndex("emailcim")
-                        .IsUnique();
-
                     b.HasIndex("osztaly_id");
 
                     b.HasIndex("user_id");
@@ -371,7 +368,7 @@ namespace BS_KretaProjekt.Migrations
 
             modelBuilder.Entity("BS_KretaProjekt.Persistence.Uzenet", b =>
                 {
-                    b.HasOne("BS_KretaProjekt.Persistence.Diak", "Fogado")
+                    b.HasOne("BS_KretaProjekt.Persistence.User", "Fogado")
                         .WithMany()
                         .HasForeignKey("fogado_id")
                         .OnDelete(DeleteBehavior.Cascade)

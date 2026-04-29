@@ -24,9 +24,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.CreateMessage(dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {
@@ -35,11 +35,11 @@ namespace BS_KretaProjekt.Controllers
         }
         //GET/api/message/messageklistazasa – visszaadja egy felhasználó összes bejövő üzenetét
         [HttpGet("messageklistazasa")]
-        public ActionResult<IEnumerable<MessageDto>> GetMessage([FromQuery] int user_id)
+        public ActionResult<IEnumerable<MessageDto>> GetMessage([FromQuery] int fogado_id)
         {
             try
             {
-                return Ok(_model.GetMessages(user_id));
+                return Ok(_model.GetMessages(fogado_id));
             }
             catch (KeyNotFoundException)
             {
@@ -49,7 +49,6 @@ namespace BS_KretaProjekt.Controllers
             {
                 return BadRequest();
             }
-
         }
         //GET/api/message/egymessagelistazasa – visszaad egyetlen üzenetet user és üzenet azonosító alapján
         [HttpGet("egymessagelistazasa")]

@@ -22,18 +22,12 @@ namespace BS_KretaProjekt.Controllers
         {
             try
             {
-                var response = await _model.GetMyData(userId);
-
-                if (response == null)
-                {
-                    return NotFound("Nincs ilyen diákadat.");
-                }
-
+                var response = await _model.GetMyData(user_id);
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, $"Szerverhiba: {ex.Message}");
+                return BadRequest();
             }
         }
         //GET /api/data/getmyteacherdata – visszaadja a bejelentkezett tanár saját adatait
@@ -42,18 +36,12 @@ namespace BS_KretaProjekt.Controllers
         {
             try
             {
-                var response = await _model.GetMyTeacherData(userId);
-
-                if (response == null)
-                {
-                    return NotFound("Nincs ilyen tanáradat.");
-                }
-
+                var response = await _model.GetMyTeacherData(user_id);
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, $"Szerverhiba: {ex.Message}");
+                return BadRequest();
             }
         }
         //GET /api/data/diaklistazasa – visszaadja az összes diák listáját
@@ -66,9 +54,9 @@ namespace BS_KretaProjekt.Controllers
                 var response= await _model.GetDiak();
                 return Ok(response);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {
@@ -79,16 +67,34 @@ namespace BS_KretaProjekt.Controllers
         //GET /api/data/tanarlistazasa – visszaadja az összes tanár listáját
         [Authorize(Roles = "Admin")]
         [HttpGet("tanarlistazasa")]
-        public async Task <ActionResult<IEnumerable<StudentDto>>> GetTeacher()
+        public async Task <ActionResult<IEnumerable<TeacherDto>>> GetTeacher()
         {
             try
             {
-                await _model.GetTeacher();
-                return Ok();
+                var response = await _model.GetTeacher();
+                return Ok(response);
+            }
+            catch (InvalidOperationException ex)
+            {
+                { return StatusCode(406, ex.Message); }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("osztalylistazasa")]
+        public async Task<ActionResult<List<ClassDto>>> GetOsztalyok()
+        {
+            try
+            {
+                var result = await _model.GetOsztalyok();
+                return Ok(result);
             }
             catch (InvalidOperationException)
             {
-                return BadRequest();
+                return NotFound("Nincs osztály az adatbázisban.");
             }
             catch (Exception)
             {
@@ -105,9 +111,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.ModifyStudentData(dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (KeyNotFoundException)
             {
@@ -129,9 +135,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.ModifyTeacherData( dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (KeyNotFoundException)
             {
@@ -183,7 +189,12 @@ namespace BS_KretaProjekt.Controllers
 
         }
 
-
+        [HttpGet("tantargylistazasa")]
+        public async Task<ActionResult> TantargyListazasa()
+        {
+            var list = await _model.TantargyListazasa();
+            return Ok(list);
+        }
 
 
 

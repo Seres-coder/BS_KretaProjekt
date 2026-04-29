@@ -27,13 +27,14 @@ namespace BS_KretaProjekt.Controllers
                 await _model.AddNewGrade(dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                Console.WriteLine(ex.ToString()); // ← teljes stack trace
+                return BadRequest(ex.Message + " | Inner: " + ex.InnerException?.Message);
             }
         }
         #endregion
@@ -49,9 +50,9 @@ namespace BS_KretaProjekt.Controllers
                 await _model.GradeModify( dto);
                 return Ok();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {
@@ -87,15 +88,15 @@ namespace BS_KretaProjekt.Controllers
         #region -Grade Listing
         //GET /api/grade/allgrade – visszaadja egy diák vagy tanár összes jegyét id alapján
         [HttpGet("allgrade")]
-        public ActionResult<IEnumerable<GradeListDto>> GetAllGrades([FromQuery] int id)
+        public ActionResult<IEnumerable<GradeListDto>> GetAllGrades([FromQuery] int id = 0, [FromQuery] int tanar_id = 0)
         {
             try
             {
-                return Ok(_model.AllGrades(id));
+                return Ok(_model.AllGrades(id, tanar_id));
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest();
+                { return StatusCode(406, ex.Message); }
             }
             catch (Exception)
             {
