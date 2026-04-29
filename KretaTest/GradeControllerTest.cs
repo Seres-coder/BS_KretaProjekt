@@ -26,7 +26,7 @@ namespace KretaTest
                 HandleCookies = true
             });
         }
-
+        //Bejelentkezik tanar1-ként, majd POST /api/grade/gradeadd hívással hozzáad egy új 5-ös jegyet Nagy Diáknak Matematikából. Elvárás: 200 OK.
         [Fact]
         public async Task AddNewGrade()
         {
@@ -51,6 +51,7 @@ namespace KretaTest
             var response = await _client.PostAsync("api/grade/gradeadd", content);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        //Bejelentkezik tanar1-ként, majd elküld egy jegyfelviteli kérést ahol az ertek = 0, ami érvénytelen. Elvárás: 400 BadRequest.
         [Fact]
         public async Task AddNewGrade_ReturnsBadRequest()
         {
@@ -71,7 +72,7 @@ namespace KretaTest
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        //scope mivel eddig mukododtt mostmeg mar for some reason nem?
+        //Lekéri az első seed-elt jegy ID-ját közvetlenül az adatbázisból(DI scope-on keresztül), hogy ne kelljen fix ID-t hardcode-olni.
         private int GetSeededJegyId()
         {
 
@@ -80,6 +81,7 @@ namespace KretaTest
             var db = scope.ServiceProvider.GetRequiredService<KretaDbContext>();
             return db.Jegyek.Select(j => j.jegy_id).First();
         }
+        //Bejelentkezik tanar1-ként, majd PUT /api/grade/grademodify hívással módosítja az első seed-elt jegyet (4-esre állítja). Elvárás: 200 OK.
         [Fact]
         public async Task ModifyGrade()
         {
@@ -107,6 +109,7 @@ namespace KretaTest
             var response = await _client.PutAsync("api/grade/grademodify", content);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        //Bejelentkezik tanar1-ként, majd PUT /api/grade/grademodify hívást küld ahol az ertek = 0 (érvénytelen). Elvárás: 400 BadRequest.
         [Fact]
         public async Task ModifyGrade_ReturnsBadRequest_WhenMissingData()
         {
@@ -127,7 +130,7 @@ namespace KretaTest
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-
+        //Bejelentkezik tanar1-ként, majd DELETE /api/grade/gradedelete?id=1 hívással törli az id=1 jegyet. Elvárás: 200 OK.
         [Fact]
         public async Task DeleteGrade()
         {
@@ -145,13 +148,14 @@ namespace KretaTest
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-
+        //Lekéri GET /api/grade/allgrade?id=1 végpontot (diák ID=1 jegyei). Elvárás: 200 OK.
         [Fact]
         public async Task GetAllGrades()
         {
             var response = await _client.GetAsync("api/grade/allgrade?id=1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        //Lekéri GET /api/grade/allgrade?id= végpontot üres ID-val. Elvárás: 400 BadRequest (hiányzó kötelező paraméter).
         [Fact]
         public async Task AllGrades_ReturnsNotFound()
         {

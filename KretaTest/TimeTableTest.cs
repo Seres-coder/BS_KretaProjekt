@@ -19,6 +19,7 @@ namespace KretaTest
             _context = DbContextFactory.Create();
             _model = new TimeTableModel(_context);
         }
+        //Ellenőrzi, hogy a CreateTimeTable metódus sikeresen létrehoz egy új órarend bejegyzést: a rekordszám eggyel nő.
         [Fact]
         public async Task CreateTimeTable_Valid()
         {
@@ -35,6 +36,7 @@ namespace KretaTest
             var after_count = _context.Orarendek.Count();
             Assert.Equal(before_count + 1, after_count);
         }
+        //Ellenőrzi, hogy a CreateTimeTable metódus InvalidOperationException-t dob "Nincs minden adat megadva" üzenettel, ha osztaly_id = 0.
         [Fact]
         public async Task CreateTimeTable_ThrowsInvalidOperation()
         {
@@ -51,7 +53,7 @@ namespace KretaTest
             Assert.Equal("Nincs minden adat megadva", ex.Message);
         }
 
-
+        //Ellenőrzi, hogy a ModifyTimeTable metódus sikeresen frissíti az órarend napját és óráját (keddre, 2. órára).
         [Fact]
         public async Task ModifyTimeTable_Valid()
         {
@@ -70,7 +72,7 @@ namespace KretaTest
             Assert.Equal(2, modified_orarend.ora);
             Assert.Equal(DayOfWeek.Tuesday, modified_orarend.nap);
         }
-
+        //Ellenőrzi, hogy a ModifyTimeTable metódus InvalidOperationException-t dob, ha ora = 0.
         [Fact]
         public async Task ModifyTimeTable_ThrowsInvalidOperation()
         {
@@ -89,7 +91,7 @@ namespace KretaTest
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _model.ModifyTimeTable(dto));
             Assert.Equal("Nincs minden adat megadva", ex.Message);
         }
-
+        //Ellenőrzi, hogy a ModifyTimeTable metódus InvalidCastException-t dob "Nincs ilyen órarend!" üzenettel, ha az orarend_id nem létezik.
         [Fact]
         public async Task ModifyTimeTable_ThrowsInvalidCast_WhenOrarendNotFound()
         {
@@ -111,7 +113,7 @@ namespace KretaTest
             Assert.Equal("Nincs ilyen órarend!", ex.Message);
         }
 
-
+        //Ellenőrzi, hogy a DeleteTimeTable metódus sikeresen törli az órarend bejegyzést: a rekordszám eggyel csökken, és az adott ID nem található többé.
         [Fact]
         public async Task DeleteTimeTable_Valid()
         {
@@ -123,7 +125,7 @@ namespace KretaTest
             Assert.Equal(before_count - 1, _context.Orarendek.Count());
             Assert.False(_context.Orarendek.Any(x => x.orarend_id == orarend.orarend_id));
         }
-
+        //Ellenőrzi, hogy a DeleteTimeTable metódus KeyNotFoundException-t dob "Nincs ilyen órarend!" üzenettel, ha a megadott ID nem létezik.
         [Fact]
         public async Task DeleteTimeTable_ThrowsKeyNotFound()
         {

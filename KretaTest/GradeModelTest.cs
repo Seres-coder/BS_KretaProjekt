@@ -20,7 +20,7 @@ namespace KretaTest
             _context = DbContextFactory.Create();
             _model = new GradeModel(_context);
         }
-
+        //Ellenőrzi, hogy az AddNewGrade metódus sikeresen hozzáad egy új jegyet, és a jegy a megfelelő diákhoz, tanárhoz és tantárgyhoz van rendelve. A rekordszám eggyel nő.
         [Fact]
         public async Task AddNewGrade_Valid()
         {
@@ -49,7 +49,7 @@ namespace KretaTest
             Assert.Equal(dto.tanar_nev, ujJegy.Tanar.tanar_nev);
             Assert.Equal(dto.tantargy_nev, ujJegy.Tantargy.tantargy_nev);
         }
-
+        //Ellenőrzi, hogy az AddNewGrade metódus InvalidOperationException-t dob "Nincs minden adat megadva" üzenettel, ha az ertek = 0.
         [Fact]
         public async Task AddNewGrade_ThrowsInvalidOperation()
         {
@@ -64,7 +64,7 @@ namespace KretaTest
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => _model.AddNewGrade(dto));
             Assert.Equal("Nincs minden adat megadva", ex.Message);
         }
-
+        //Ellenőrzi, hogy a GradeModify metódus sikeresen frissíti a jegy értékét és dátumát az adatbázisban.
         [Fact]
         public async Task GradeModify_Valid()
         {
@@ -84,6 +84,7 @@ namespace KretaTest
             Assert.Equal(dto.jegy_id, modifed.jegy_id);
             Assert.Equal(dto.updatedatum, modifed.updatedatum);
         }
+        //Ellenőrzi, hogy a GradeModify metódus InvalidOperationException-t dob "Nincs minden adat megadva" üzenettel, ha az ertek = 0.
         [Fact]
         public async Task GradeModify_ThrowsInvalidOperation()
         {
@@ -100,7 +101,7 @@ namespace KretaTest
             Assert.Equal("Nincs minden adat megadva", ex.Message);
         }
 
-
+        //Ellenőrzi, hogy a DeleteGrade metódus sikeresen törli a jegyet: a rekordszám eggyel csökken.
         [Fact]
         public async Task GradeDelete_Valid()
         {
@@ -110,6 +111,7 @@ namespace KretaTest
             Assert.Equal(before_count - 1, _context.Jegyek.Count());
         }
         [Fact]
+        //Ellenőrzi, hogy a DeleteGrade metódus KeyNotFoundException-t dob "Nincs ilyen jegy" üzenettel, ha a megadott ID nem létezik.
         public async Task GradeDelete_ThrowsKeyNotFound()
         {
             // olyan ID, ami biztosan nem létezik
@@ -120,7 +122,7 @@ namespace KretaTest
             var ex = await Assert.ThrowsAsync<KeyNotFoundException>(() => _model.DeleteGrade(nonExistingId));
             Assert.Equal("Nincs ilyen jegy", ex.Message);
         }
-
+        //Ellenőrzi, hogy az AllGrades metódus diák ID alapján visszaadja a jegyeket. A seed-elt diáknak (ID=1) pontosan 2 jegye van.
         [Fact]
         public void AllGradesByStudent_Valid()
         {
@@ -128,6 +130,7 @@ namespace KretaTest
             Assert.NotEmpty(grades_student);
             Assert.Equal(2, grades_student.Count());
         }
+        //Ellenőrzi, hogy az AllGrades metódus tanár ID alapján visszaadja a jegyeket. A seed-elt tanárnak (ID=1) pontosan 2 jegye van
         [Fact]
         public void AllGradesByTeacher_Valid()
         {
@@ -136,6 +139,7 @@ namespace KretaTest
             Assert.Equal(2, grades_student.Count());
 
         }
+        //Ellenőrzi, hogy az AllGrades metódus InvalidOperationException-t dob, ha mindkét ID (diák és tanár) meg van adva egyszerre.
         [Fact]
         public void AllGrades_ThrowsInvalidOperation()
         {

@@ -12,6 +12,7 @@ namespace KretaTest
 {
     public  class DbContextFactory
     {
+        //Létrehoz egy tesztadatokkal feltöltött (seeded) in-memory adatbázis kontextust. A kapcsolat nyitva marad az egész életciklus alatt, majd a GC eldobja. Használd, ha a tesztnek szüksége van előre betöltött adatokra.
         public static KretaDbContext Create()
         {
 
@@ -31,6 +32,7 @@ namespace KretaTest
             //adjuk vissza a adatbázist
             return context;
         }
+        //Létrehoz egy üres (seed nélküli) in-memory adatbázis kontextust. Használd, ha a teszt maga szeretné kontrolálni a kezdőállapotot, vagy üres adatbázison szeretné ellenőrizni a hibaágakat.
         public static KretaDbContext CreateEmpty()
         {
 
