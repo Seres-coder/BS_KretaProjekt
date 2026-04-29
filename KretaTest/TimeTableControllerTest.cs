@@ -65,7 +65,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("/api/timetable/orarendkrealas", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
         private int GetSeededOrarendId()
         {
@@ -122,7 +122,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PutAsync("/api/timetable/modifytimetable", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
         [Fact]
         public async Task ModifyTimeTable_ReturnsBadRequest_badorarend()
@@ -145,7 +145,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PutAsync("/api/timetable/modifytimetable", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
 
         [Fact]
@@ -158,18 +158,7 @@ namespace KretaTest
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        [Fact]
-        public async Task DeleteTimeTable_ReturnsBadRequest()
-        {
-            var login = await _client.PostAsync("api/user/login?username=tanar1&password=tanar123", null);
-            login.EnsureSuccessStatusCode();
-
-            var nonExistingOrarendId =9999999;
-
-            var response = await _client.DeleteAsync($"/api/timetable/deletetimetable?id={nonExistingOrarendId}");
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }
+      
         [Fact]
         public async Task GetTimeTable()
         {

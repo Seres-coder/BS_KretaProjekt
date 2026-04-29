@@ -51,7 +51,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("/api/message/messageadd", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
 
         [Fact]

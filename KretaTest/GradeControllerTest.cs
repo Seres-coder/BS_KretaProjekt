@@ -68,7 +68,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("api/grade/gradeadd", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
 
         //scope mivel eddig mukododtt mostmeg mar for some reason nem?
@@ -125,7 +125,7 @@ namespace KretaTest
             var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             var response = await _client.PutAsync("api/grade/grademodify", content);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal((HttpStatusCode)406, response.StatusCode);
         }
 
         [Fact]
